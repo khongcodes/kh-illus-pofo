@@ -15,3 +15,37 @@ $mobile-breakpoint: 788px;
 //////////////             Colors
 ////////////////////////////////////////////////////////////////
 
+$red: rgba(212, 2, 2, .83);
+$light-red: #FFA8A8;
+
+
+////////////////////////////////////////////////////////////////
+//////////////             Type Styles
+////////////////////////////////////////////////////////////////
+
+@mixin copy-type {
+  font-size: 13px;
+  line-height: 21px;
+}
+
+@mixin copy-head-type {
+  font-size: 18px;
+  line-height: 25px;
+  font-weight: 600;
+}
+
+@mixin menu-link-type {
+  font-size: 15px;
+  line-height: 24px;
+}
+
+@mixin art-meta-head-type {
+  font-size: 13px;
+  line-height: 18px;
+  color: #FFF;
+}
+
+@mixin art-meta-copy-type {
+  @include copy-type();
+  color: #FFF;
+}
