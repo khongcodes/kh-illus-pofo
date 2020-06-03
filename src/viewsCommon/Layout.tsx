@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import menuData from '../configData/menuData.json';
-import { ItemType, LinkShape, SubmenuShape } from '../model/MenuShape'
+// import menuData from '../configData/menuData.json';
+import { muddyMenuData, LinkShape, SubmenuShape } from '../model/MenuShape'
 
 import layoutStyles from '../style/Layout.module.sass';
 
@@ -14,36 +14,100 @@ type MenuProps = {
   data: (LinkShape|SubmenuShape)[]
 }
 
+const TogglingSubmenu = ({ item }: { item: SubmenuShape }) => {
+  const [submenuOpen, toggleSubmenu] = useState(false);
+  const handleSubmenuToggle = () => toggleSubmenu(!submenuOpen)
 
-const SideMenu = ({ data }: MenuProps) => (
-  <div>
-    side menu
-  </div>
+  return (
+    <li>
+      <span
+        className={layoutStyles.submenuTitle}
+        onClick={handleSubmenuToggle}
+      >
+        {item.text}
+      </span>
+      
+      <ul className={`${layoutStyles.submenuList} ${submenuOpen ? layoutStyles.open : ''}`}>
+        {
+          item.items.map(subitem => {
+            if (subitem.type==='link') {
+              return (
+                <li key={subitem.path}>
+                  {subitem.text}
+                  {subitem.path}
+                </li>
+              )   
+            }
+          }
+        )}
+      </ul>
+    </li>
+  )
+}
+
+const LockedSubmenu = ({ item }: { item: SubmenuShape }) => (
+  <li>
+    {item.text}
+    <ul>
+      {item.items.map(subitem => {
+        if (subitem.type==='link') {
+          return (
+            <li key={subitem.path}>
+              {subitem.text}
+              {subitem.path}
+            </li>
+          )
+        }
+      })}
+    </ul>
+  </li>
 )
 
-const MobileMenuDrawer = ({ data }: MenuProps) => {
-  
-  const menuContent = data.map(item => {
-    switch (item.type) {
+const mapMenuContent = (
+  data: (LinkShape|SubmenuShape)[],
+  submenuType: "toggling"|"locked"
+  ) => (
+  data.map(item => {
+    switch(item.type) {
+
       case "link":
         return (
-          <div>
+          <li key={item.path}>
             {item.text}
-          </div>
+            {item.path}
+          </li>
         );
+
       case "submenu":
-        return (
-          <div>
-            {item.text}
-          </div>
-        );
+        switch (submenuType) {
+          case "toggling":
+            return (
+              <TogglingSubmenu item={item} key={item.text}/>
+            )
+          case "locked":
+            return (
+              <LockedSubmenu item={item} key={item.text}/>
+            )
+        }
     }
   })
+)
 
+const SideMenu = ({ data }: MenuProps): JSX.Element => {
+  return (
+    <div className={layoutStyles.sideMenuContainer} >
+      <ul className={layoutStyles.sideMenuList}>
+        {mapMenuContent(data, "toggling")}
+      </ul>
+    </div>
+  )
+}
+
+const MobileMenuDrawer = ({ data }: MenuProps): JSX.Element => {
   return (
     <div className={layoutStyles.mobileMenuContainer} >
       <ul>
-        {menuContent}
+        {mapMenuContent(data, "locked")}
       </ul>
     </div>
   )
@@ -51,9 +115,10 @@ const MobileMenuDrawer = ({ data }: MenuProps) => {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (
   <>
-    <MobileMenuDrawer data={menuData} />
+    <MobileMenuDrawer data={muddyMenuData} />
 
-    <div className={layoutStyles.pageContentContainer} >
+    <div id={layoutStyles.pageContentContainer} >
+      <SideMenu data={muddyMenuData} />
       {children}
     </div>
   </>
