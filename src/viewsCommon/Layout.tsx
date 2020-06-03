@@ -33,8 +33,7 @@ const TogglingSubmenu = ({ item }: { item: SubmenuShape }) => {
             if (subitem.type==='link') {
               return (
                 <li key={subitem.path}>
-                  {subitem.text}
-                  {subitem.path}
+                  <NavLink to={subitem.path}> {subitem.text} </NavLink>
                 </li>
               )   
             }
@@ -53,8 +52,7 @@ const LockedSubmenu = ({ item }: { item: SubmenuShape }) => (
         if (subitem.type==='link') {
           return (
             <li key={subitem.path}>
-              {subitem.text}
-              {subitem.path}
+              <NavLink to={subitem.path}> {subitem.text} </NavLink>
             </li>
           )
         }
@@ -73,8 +71,7 @@ const mapMenuContent = (
       case "link":
         return (
           <li key={item.path}>
-            {item.text}
-            {item.path}
+            <NavLink to={item.path}> {item.text} </NavLink>
           </li>
         );
 
@@ -117,9 +114,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => (
   <>
     <MobileMenuDrawer data={muddyMenuData} />
 
-    <div id={layoutStyles.pageContentContainer} >
+    <div id={layoutStyles.appLayout} >
       <SideMenu data={muddyMenuData} />
-      {children}
+      <div id={layoutStyles.pageContentContainer}>
+        {children}
+      </div>
     </div>
   </>
 )

@@ -5,7 +5,7 @@
   100% {margin-top: 0px}
 
 
-#pageContentContainer
+#appLayout
   width: auto
   height: fit-content
   margin: space(7)
@@ -13,8 +13,6 @@
   display: grid
   grid-template-columns: space(27) auto
   grid-template-rows: auto
-
-  background-color: orange
 
   @include mobile-media
     margin: space(2.5)
@@ -39,6 +37,7 @@
     .submenuTitle
       &:hover
         color: $light-red
+        cursor: pointer
 
     .submenuList
       height: space(0)
@@ -53,3 +52,6 @@
 
     @include mobile-media
       display: none
+
+#pageContentContainer
+  background-color: orange
