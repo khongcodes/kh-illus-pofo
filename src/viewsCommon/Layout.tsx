@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-// import menuData from '../configData/menuData.json';
-import { muddyMenuData, LinkShape, SubmenuShape } from '../model/MenuShape'
+import { LinkShape, SubmenuShape, MenuDataShape } from '../model/MenuShape'
+import rawMenuData from '../configData/menuData.json';
 
 import siteLogo from '../images/site-logo.png'
 
 import layoutStyles from '../style/Layout.module.sass';
+
+const menuData = rawMenuData as MenuDataShape;
 
 
 type LayoutProps = {
   children: React.ReactNode[] | React.ReactNode
 }
 type MenuDataProps = {
-  data: (LinkShape|SubmenuShape)[]
+  data: (LinkShape | SubmenuShape)[]
 }
 type MobileMenuControlProps = {
   mobileMenuOpen: boolean;
   handleMobileMenuToggle?: () => void;
   resetMobileMenu: () => void;
 }
+
 
 const ListItemNavLink = ({ item, resetMobileMenu }: {
   item: LinkShape;
@@ -80,8 +83,8 @@ const LockedSubmenu = ({ item, resetMobileMenu }: {
 )
 
 const mapMenuContent = (
-  data: (LinkShape|SubmenuShape)[],
-  submenuType: "toggling"|"locked",
+  data: (LinkShape | SubmenuShape)[],
+  submenuType: "toggling" | "locked",
   resetMobileMenu: () => void
   ) => (
   data.map(item => {
@@ -167,14 +170,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <MobileMenuDrawer 
-        data = {muddyMenuData} 
+        data = {menuData} 
         mobileMenuOpen = {mobileMenuOpen}
         resetMobileMenu = {resetMobileMenu}
       />
 
       <div id={layoutStyles.appLayout} >
         <SideMenu 
-          data = {muddyMenuData} 
+          data = {menuData} 
           mobileMenuOpen = {mobileMenuOpen}
           handleMobileMenuToggle = {handleMobileMenuToggle}
           resetMobileMenu = {resetMobileMenu}
