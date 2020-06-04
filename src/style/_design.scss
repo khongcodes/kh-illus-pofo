@@ -24,7 +24,8 @@ $space-unit: 8px;
 
 $red: #C3291C;
 $light-red: #FFA8A8;
-
+$ui-gray: #CCC;
+$white: #FFF;
 
 ////////////////////////////////////////////////////////////////
 //////////////             Type Styles
@@ -48,10 +49,10 @@ $light-red: #FFA8A8;
 @mixin art-meta-head-type {
   font-size: 13px;
   line-height: 18px;
-  color: #FFF;
+  color: $white;
 }
 
 @mixin art-meta-copy-type {
   @include copy-type();
-  color: #FFF;
+  color: $white;
 }

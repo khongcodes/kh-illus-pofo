@@ -17,6 +17,7 @@
   width: 100%
   height: 0
   padding-bottom: 100%
+  cursor: pointer
 
   .thumbContainer
     position:absolute
@@ -25,10 +26,61 @@
     height: 100%
 
 #lightboxRoot
-  width: 100vw
-  height: 100vh
-  z-index: 3
+  width: 100%
+  height: 100%
+  z-index: 10
   position: absolute
   top: 0
   left: 0
   background-color: rgba(0,0,0,0.8)
+  padding: space(3)
+  box-sizing: border-box
+
+  %lightboxNav
+    height: 95%
+    width: 49%
+    position: absolute
+    top: 2.5%
+    padding-top: 25%
+    box-sizing: border-box
+    color: $ui-gray
+    font-size: 30px
+    z-index: 12
+    opacity: 0
+    transition: opacity 0.4s
+    
+    &:hover
+      opacity: 1
+    
+    .arrow
+      user-select: none
+      transition: color 0.4s
+      &:hover
+        color: $white
+
+  .lightboxLeft
+    @extend %lightboxNav
+    left: 1%
+
+  .lightboxRight
+    @extend %lightboxNav
+    right: 1%
+    text-align: right
+
+  .lightboxClose
+    position: absolute
+    right: space(4)
+    top: space(3.5)
+    color: $ui-gray
+    z-index: 13
+    &:hover
+      cursor: pointer
+      color: $white
+  
+  .lightboxEdge
+    z-index: 11
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
