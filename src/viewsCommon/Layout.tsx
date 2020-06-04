@@ -25,7 +25,7 @@ const ListItemNavLink = ({ item, resetMobileMenu }: {
   item: LinkShape;
   resetMobileMenu: () => void;
 }) => (
-  <li key={item.path}>
+  <li>
     <NavLink to={item.path} onClick={resetMobileMenu}> {item.text} </NavLink>
   </li>
 )
@@ -51,7 +51,7 @@ const TogglingSubmenu = ({ item, resetMobileMenu }: {
           item.items.map(subitem => {
             if (subitem.type==='link') {
               return (
-                <ListItemNavLink item={subitem} resetMobileMenu={resetMobileMenu}/>
+                <ListItemNavLink item={subitem} resetMobileMenu={resetMobileMenu} key={subitem.path}/>
               )
             }
           }
@@ -71,7 +71,7 @@ const LockedSubmenu = ({ item, resetMobileMenu }: {
       {item.items.map(subitem => {
         if (subitem.type==='link') {
           return (
-            <ListItemNavLink item={subitem} resetMobileMenu={resetMobileMenu}/>
+            <ListItemNavLink item={subitem} resetMobileMenu={resetMobileMenu} key={subitem.path}/>
           )
         }
       })}
@@ -91,7 +91,7 @@ const mapMenuContent = (
 
       case "link":
         return (
-          <ListItemNavLink item={item} resetMobileMenu={resetMobileMenu}/>
+          <ListItemNavLink item={item} resetMobileMenu={resetMobileMenu} key={item.path}/>
         )
 
       case "submenu":

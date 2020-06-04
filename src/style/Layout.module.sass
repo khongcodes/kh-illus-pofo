@@ -71,9 +71,16 @@
     cursor: pointer
     @include mobile-media
       display: inline
-
-      &.open
-        
+      
+      &.open div.bar1
+        transition: transform 0.5s ease
+        transform: rotate(45deg) translate(20%, 200%)
+      &.open div.bar2
+        transition: opacity 0.2s ease
+        opacity: 0
+      &.open div.bar3
+        transition: transform 0.5s ease
+        transform: rotate(-45deg) translate(24%, -260%)
       
       &:hover div
         transition: background-color 0.2s ease
@@ -87,9 +94,6 @@
         background-color: $red
         &:last-child
           margin-bottom: 0
-      // .bar1
-
-
 
 #pageContentContainer
   background-color: orange
