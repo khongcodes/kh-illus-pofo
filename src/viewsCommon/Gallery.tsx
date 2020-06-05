@@ -10,11 +10,12 @@ type GalleryProps = {
   galleryMetadata: GalleryItemShape[];
 }
 type LightboxProps = {
-  currentImg: number;
+  currentImg: number | null;
   toNextImg: VoidFunction;
   toPrevImg: VoidFunction;
   closeLightbox: VoidFunction;
   imgArray: string[];
+  galleryMetadata: GalleryItemShape[];
 }
 
 // CURRENTLY:
@@ -23,7 +24,7 @@ type LightboxProps = {
 // IN THE FUTURE:
 // use galleryMetadata object's path/thumb members to pull images from 3rd party host
 
-const Lightbox = ({ currentImg, toNextImg, toPrevImg, closeLightbox, imgArray }: LightboxProps) => {
+const Lightbox = ({ currentImg, toNextImg, toPrevImg, closeLightbox, imgArray, galleryMetadata }: LightboxProps) => {
   
   // disable scroll on body while Lightbox modal is open
   useEffect(() => {
@@ -31,14 +32,25 @@ const Lightbox = ({ currentImg, toNextImg, toPrevImg, closeLightbox, imgArray }:
     return () => {document.body.style.overflow="unset"};
   }, [])
 
+  const isLightboxHidden = currentImg === null;
+
   return (
-    <div id={galleryStyles.lightboxRoot}>
+    <div className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}>
 
       <div className={galleryStyles.lightboxImgContainer}>
-        <img 
-          className={galleryStyles.lightboxImg}
-          src={imgArray[currentImg]}
-        />
+        {/* later derive SRC of this image from galleryMetadata[currentImg].path */}
+        {galleryMetadata.map(data => {
+          const isThisImgActive = data.id === currentImg;
+
+          return (
+            <img 
+              className={`${galleryStyles.lightboxImg} ${isThisImgActive ? galleryStyles.activeImg : ''}`}
+              src={imgArray[data.id]}
+              key={data.id}
+            />
+          )
+        })}
+          
 
       </div>
       
@@ -66,32 +78,34 @@ const Lightbox = ({ currentImg, toNextImg, toPrevImg, closeLightbox, imgArray }:
 const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps) => {
   const [currentImg, setCurrentImg] = useState<number | null>(null);
   
+  const firstImgIndex = 0;
+  const lastImgIndex = imgArray.length-1;
+
   const toNextImg = (): void => {
     if (currentImg !== null) {
-      setCurrentImg(currentImg + 1)
+      currentImg !== lastImgIndex ? setCurrentImg(currentImg + 1) : setCurrentImg(firstImgIndex)
     }
   }
   const toPrevImg = (): void => {
-    if (currentImg!== null) {
-      setCurrentImg(currentImg - 1)
+    if (currentImg !== null) {
+      currentImg !== firstImgIndex ? setCurrentImg(currentImg - 1) : setCurrentImg(lastImgIndex)
     }
   }
   const closeLightbox = (): void => {
     // close lightbox animation
-    setTimeout(() => setCurrentImg(null), 100);
+    setCurrentImg(null);
   }
 
   return (
     <>
-      { currentImg !== null ? 
-        <Lightbox 
-          currentImg = {currentImg}
-          toNextImg = {toNextImg}
-          toPrevImg = {toPrevImg}
-          closeLightbox = {closeLightbox}
-          imgArray = {imgArray}
-
-        /> : <></> }
+      <Lightbox 
+        currentImg = {currentImg}
+        toNextImg = {toNextImg}
+        toPrevImg = {toPrevImg}
+        closeLightbox = {closeLightbox}
+        imgArray = {imgArray}
+        galleryMetadata = {galleryMetadata}
+      />
 
       <div id={galleryStyles.galleryRootContainer}>
         {
@@ -102,6 +116,7 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
               key = {index}
             >
               <div className={galleryStyles.thumbContainer}>
+                {/* later derive SRC of this image from item.thumb */}
                 <img className={galleryStyles.thumbImg} src={thumbnailSrcArray[index]}/>
               </div>
             </div>
