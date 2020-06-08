@@ -13,6 +13,8 @@ type LightboxProps = {
   currentImg: number | null;
   toNextImg: VoidFunction;
   toPrevImg: VoidFunction;
+  returnNextImg: (imgIndex: number | null) => number | null;
+  returnPrevImg: (imgIndex: number | null) => number | null;
   closeLightbox: VoidFunction;
   imgArray: string[];
   galleryMetadata: GalleryItemShape[];
@@ -24,34 +26,47 @@ type LightboxProps = {
 // IN THE FUTURE:
 // use galleryMetadata object's path/thumb members to pull images from 3rd party host
 
-const Lightbox = ({ currentImg, toNextImg, toPrevImg, closeLightbox, imgArray, galleryMetadata }: LightboxProps) => {
-  
-  // disable scroll on body while Lightbox modal is open
-  useEffect(() => {
-    document.body.style.overflow="hidden";
-    return () => {document.body.style.overflow="unset"};
-  }, [])
+const Lightbox = ({ 
+  currentImg, returnNextImg, returnPrevImg,
+  toNextImg, toPrevImg, closeLightbox,
+  imgArray, galleryMetadata 
+}: LightboxProps) => {
 
   const isLightboxHidden = currentImg === null;
 
   return (
     <div className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}>
+      <div className={galleryStyles.carouselWrapper}>
+        <div className={galleryStyles.carousel}>
+          {/* later derive SRC of this image from galleryMetadata[currentImg].path */}
+          {galleryMetadata.map(data => {
+            const isThisImgActive = data.id === currentImg;
+            const isThisPrevOfActive = data.id === returnPrevImg(currentImg);
+            const isThisNextOfActive = data.id === returnNextImg(currentImg);
+            
+            let imgClassModifier: string;
 
-      <div className={galleryStyles.lightboxImgContainer}>
-        {/* later derive SRC of this image from galleryMetadata[currentImg].path */}
-        {galleryMetadata.map(data => {
-          const isThisImgActive = data.id === currentImg;
+            if (isThisImgActive) {
+              imgClassModifier = galleryStyles.activeImg;
+            } else if (isThisPrevOfActive) {
+              imgClassModifier = galleryStyles.prevImg;
+            } else if (isThisNextOfActive) {
+              imgClassModifier = galleryStyles.nextImg;
+            } else {
+              imgClassModifier = ''
+            }
 
-          return (
-            <img 
-              className={`${galleryStyles.lightboxImg} ${isThisImgActive ? galleryStyles.activeImg : ''}`}
-              src={imgArray[data.id]}
-              key={data.id}
-            />
-          )
-        })}
-          
-
+            return (
+              <img 
+                className={`
+                  ${galleryStyles.lightboxImg} ${imgClassModifier}`}
+                src={imgArray[data.id]}
+                key={data.id}
+              />
+            )
+          })}
+            
+        </div>
       </div>
       
       <div className={galleryStyles.lightboxLeft} onClick={toPrevImg}> 
@@ -81,19 +96,45 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
   const firstImgIndex = 0;
   const lastImgIndex = imgArray.length-1;
 
+  const returnPrevImg = (imgIndex: number | null): number | null => {
+    if (imgIndex !== null) {
+      return (imgIndex !== firstImgIndex) ? imgIndex - 1 : lastImgIndex;
+    } else {
+      return imgIndex;
+    }
+  }
+  const returnNextImg = (imgIndex: number | null): number | null => {
+    if (imgIndex !== null) {
+      return (imgIndex !== lastImgIndex) ? imgIndex + 1 : firstImgIndex;
+    } else {
+      return imgIndex;
+    }
+  }
+
   const toNextImg = (): void => {
     if (currentImg !== null) {
-      currentImg !== lastImgIndex ? setCurrentImg(currentImg + 1) : setCurrentImg(firstImgIndex)
+      setCurrentImg(returnNextImg(currentImg))
     }
   }
   const toPrevImg = (): void => {
     if (currentImg !== null) {
-      currentImg !== firstImgIndex ? setCurrentImg(currentImg - 1) : setCurrentImg(lastImgIndex)
+      setCurrentImg(returnPrevImg(currentImg))
     }
   }
   const closeLightbox = (): void => {
-    // close lightbox animation
+    document.body.style.overflowY="unset";
+    document.body.style.paddingRight = `0px`;
     setCurrentImg(null);
+  }
+  const openLightbox = (index: number): void => {;
+    // create gap replacing righthand scrollbar to prevent disruption of body on modal open
+    const documentWidth = document.documentElement.clientWidth;
+    const windowWidth = window.innerWidth;
+    const scrollBarWidth = windowWidth - documentWidth;
+    document.body.style.paddingRight = `${scrollBarWidth}px`;
+    
+    document.body.style.overflowY="hidden";
+    setCurrentImg(index);
   }
 
   return (
@@ -102,6 +143,8 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
         currentImg = {currentImg}
         toNextImg = {toNextImg}
         toPrevImg = {toPrevImg}
+        returnNextImg = {returnNextImg}
+        returnPrevImg = {returnPrevImg}
         closeLightbox = {closeLightbox}
         imgArray = {imgArray}
         galleryMetadata = {galleryMetadata}
@@ -112,7 +155,9 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
           galleryMetadata.map((item: GalleryItemShape, index: number): JSX.Element => (
             <div 
               className = {galleryStyles.thumbSquareSizer}
-              onClick = {() => setCurrentImg(index)}
+              onClick = {() => {
+                openLightbox(index)
+              }}
               key = {index}
             >
               <div className={galleryStyles.thumbContainer}>
