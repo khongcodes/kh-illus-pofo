@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 
@@ -33,13 +33,25 @@ const Lightbox = ({
 }: LightboxProps) => {
 
   const isLightboxHidden = currentImg === null;
+  
+  const nextArrow = useRef<HTMLDivElement>(null);
+  const prevArrow = useRef<HTMLDivElement>(null);
+
+  const midBoundary = window.innerWidth / 2;
+  // const handleMouseOver = () => ();
+  // 
 
   return (
-    <div className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}>
-      <div className={galleryStyles.carouselWrapper}>
-        <div className={galleryStyles.carousel}>
+    // if !isLightboxHidden
+    // onMouseMove = {isLightboxHiden ? ( () => {} ) : handleMouseOver}
+    <div 
+      className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
+      // onMouseMove={}
+    >
+      {/* <div className={galleryStyles.carouselWrapper}>
+        <div className={galleryStyles.carousel}> */}
           {/* later derive SRC of this image from galleryMetadata[currentImg].path */}
-          {galleryMetadata.map(data => {
+          {/* {galleryMetadata.map(data => {
             const isThisImgActive = data.id === currentImg;
             const isThisPrevOfActive = data.id === returnPrevImg(currentImg);
             const isThisNextOfActive = data.id === returnNextImg(currentImg);
@@ -57,19 +69,36 @@ const Lightbox = ({
             }
 
             return (
-              <img 
-                className={`
-                  ${galleryStyles.lightboxImg} ${imgClassModifier}`}
-                src={imgArray[data.id]}
+              <div 
+                className={`${galleryStyles.lightboxImgContainer} ${imgClassModifier}`}
+                onClick={(e) => console.log(e.target)}
                 key={data.id}
-              />
+              >
+                <img 
+                  className={galleryStyles.lightboxImg}
+                  src={imgArray[data.id]}
+                />
+                <div className={`${galleryStyles.imgMetaContainer} ${isThisImgActive? galleryStyles.metaActive : ''}`}>
+                  <h1>{data.title}</h1>
+                  <p>{data.description}</p>
+                </div>
+              </div>
             )
           })}
             
         </div>
-      </div>
+      </div> */}
       
-      <div className={galleryStyles.lightboxLeft} onClick={toPrevImg}> 
+      <div 
+        className={galleryStyles.lightboxLeft} 
+        onClick={() => {
+          if (prevArrow && prevArrow.current) {
+            prevArrow.current.classList.add(galleryStyles.active);
+            toPrevImg();
+          }
+        }}
+        ref={prevArrow}
+      > 
         <span className={galleryStyles.arrow}>
           &lt;
         </span>
@@ -89,6 +118,7 @@ const Lightbox = ({
     </div>
   )
 }
+
 
 const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps) => {
   const [currentImg, setCurrentImg] = useState<number | null>(null);

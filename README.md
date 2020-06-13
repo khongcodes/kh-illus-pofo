@@ -1,3 +1,10 @@
+## Work-in-Progress
+
+This is a work in progress rebuild of my old squarespace illustration portfolio.
+Screenshots of my wireframing and prototyping in Figma below
+![](https://i.imgur.com/EjJX6jd.png)
+![](https://i.imgur.com/B5JMbeR.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

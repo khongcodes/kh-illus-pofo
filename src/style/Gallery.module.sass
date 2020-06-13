@@ -1,5 +1,7 @@
 @import 'design'
 
+$transition-time: 0.5s;
+
 #galleryRootContainer
   width: 100%
   height: auto
@@ -32,18 +34,18 @@
   position: fixed
   top: 0
   left: 0
-  background-color: rgba(0,0,0,0.8)
+  background-color: rgba(0,0,0,0.9)
   padding: space(3)
   box-sizing: border-box
   
   visibility: visible
   opacity: 1
-  transition: visibility 0s linear 0.5s, opacity 0.1s linear
+  transition: visibility 0s linear $transition-time, opacity 0.1s linear
   transition-delay: 0s
   &.hidden
     opacity: 0
     visibility: hidden
-    transition: visibility 0s linear 0.5s, opacity 0.1s linear 
+    transition: visibility 0s linear $transition-time, opacity 0.1s linear 
     
 
   %lightboxNav
@@ -57,17 +59,22 @@
     font-size: 30px
     z-index: 12
     opacity: 0
-    transition: opacity 0.4s
+    transition: opacity $transition-time
     
-    &:hover
+    &.active
       opacity: 1
+      .arrow
+        color: $white
+        cursor: pointer
+    // &:hover
+    //   opacity: 1
     
     .arrow
       user-select: none
-      transition: color 0.4s
-      &:hover
-        color: $white
-        cursor: pointer
+      transition: color $transition-time
+      // &:hover
+      //   color: $white
+      //   cursor: pointer
 
   .lightboxLeft
     @extend %lightboxNav
@@ -101,33 +108,57 @@
   max-height: 97.8%
   position: absolute
   top: space(1)
-  left: space(2)
+  left: 1.85%
   width: 100%
   height: 100%
   display: flex
   align-items: center
+  overflow: hidden
   
   .carousel
     display: flex
     align-items: center
     transform-style: preserve-3d
+    &:hover .imgMetaContainer
+      opacity: 1
 
   
-  .lightboxImg
-    max-width: 100%
-    max-height: 100%
+  .lightboxImgContainer
+    width: 100%
     position: absolute
     top: 0
     margin: 0 auto
     opacity: 0
     z-index: 100;
-    transition: transform .4s, opacity .4s, z-index .4s
+    transition: transform $transition-time, opacity $transition-time, z-index $transition-time
 
     &.activeImg
       opacity: 1
-      position: relative;
-      z-index: 900;
+      position: relative
+      z-index: 900
     &.prevImg
       transform: translateX(-100%)
     &.nextImg
       transform: translateX(100%)
+    
+    .lightboxImg
+      max-width: 100%
+      max-height: 100%
+  
+    .imgMetaContainer
+      position: absolute
+      // bottom: 0
+      padding: space(1.5) space(3)
+      width: 100%
+      z-index: 901
+      background-color: rgba(0,0,0,0.6)
+      color: white
+      opacity: 0
+
+      &.metaActive
+        opacity: 1
+      
+      h1
+        @include art-meta-head-type
+      p
+        @include art-meta-copy-type
