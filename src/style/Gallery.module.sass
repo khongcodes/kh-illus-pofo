@@ -49,11 +49,13 @@ $transition-time: 0.5s;
     
 
   %lightboxNav
-    height: 95%
-    width: 49%
-    position: fixed
-    top: 2.5%
-    padding-top: 25%
+    display: flex
+    height: 20px
+    width: 20px
+    position: absolute
+    top: 50%
+    align-items: center
+    justify-content: center
     box-sizing: border-box
     color: $ui-gray
     font-size: 30px
@@ -78,11 +80,11 @@ $transition-time: 0.5s;
 
   .lightboxLeft
     @extend %lightboxNav
-    left: 1%
+    left: 2%
 
   .lightboxRight
     @extend %lightboxNav
-    right: 1%
+    right: 2%
     text-align: right
 
   .lightboxClose

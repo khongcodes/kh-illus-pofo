@@ -1,6 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, SyntheticEvent } from 'react';
+import clsx from 'clsx';
 
 import { GalleryItemShape } from '../model/GalleryShape';
+import useWindowDimensions from '../util/UseWindowDimensions';
 
 import galleryStyles from '../style/Gallery.module.sass';
 
@@ -26,6 +28,8 @@ type LightboxProps = {
 // IN THE FUTURE:
 // use galleryMetadata object's path/thumb members to pull images from 3rd party host
 
+
+
 const Lightbox = ({ 
   currentImg, returnNextImg, returnPrevImg,
   toNextImg, toPrevImg, closeLightbox,
@@ -33,25 +37,39 @@ const Lightbox = ({
 }: LightboxProps) => {
 
   const isLightboxHidden = currentImg === null;
-  
-  const nextArrow = useRef<HTMLDivElement>(null);
-  const prevArrow = useRef<HTMLDivElement>(null);
 
-  const midBoundary = window.innerWidth / 2;
-  // const handleMouseOver = () => ();
-  // 
+  const { windowHeight, windowWidth } = useWindowDimensions();
+  const midBoundary = windowWidth / 2;
+
+  const [leftArrowStatus, setLeftArrow] = useState<boolean>(false);
+  const [rightArrowStatus, setRightArrow] = useState<boolean>(false);
+  
+  const activateLeftArrow = () => {
+    // for some reason only works first time
+    // need to create some kind of thing to check that mouse has stopped moving
+    setLeftArrow(true);
+    setInterval(() => setLeftArrow(false), 1000);
+  };
+
+  const handleMouseOver = (event: React.MouseEvent) => {
+    if (event.clientX <= midBoundary) {
+      activateLeftArrow();
+    } else {
+      console.log('no');
+    }
+  };
 
   return (
     // if !isLightboxHidden
     // onMouseMove = {isLightboxHiden ? ( () => {} ) : handleMouseOver}
     <div 
       className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
-      // onMouseMove={}
+      onMouseMove={handleMouseOver}
     >
-      {/* <div className={galleryStyles.carouselWrapper}>
-        <div className={galleryStyles.carousel}> */}
+      <div className={galleryStyles.carouselWrapper}>
+        <div className={galleryStyles.carousel}>
           {/* later derive SRC of this image from galleryMetadata[currentImg].path */}
-          {/* {galleryMetadata.map(data => {
+          {galleryMetadata.map(data => {
             const isThisImgActive = data.id === currentImg;
             const isThisPrevOfActive = data.id === returnPrevImg(currentImg);
             const isThisNextOfActive = data.id === returnNextImg(currentImg);
@@ -87,17 +105,11 @@ const Lightbox = ({
           })}
             
         </div>
-      </div> */}
+      </div>
       
       <div 
-        className={galleryStyles.lightboxLeft} 
-        onClick={() => {
-          if (prevArrow && prevArrow.current) {
-            prevArrow.current.classList.add(galleryStyles.active);
-            toPrevImg();
-          }
-        }}
-        ref={prevArrow}
+        className={`${galleryStyles.lightboxLeft} ${leftArrowStatus ? galleryStyles.active : ''}`} 
+        onClick={toPrevImg}
       > 
         <span className={galleryStyles.arrow}>
           &lt;
@@ -111,7 +123,7 @@ const Lightbox = ({
       </div>
       
       <div className={galleryStyles.lightboxClose} onClick={closeLightbox}>
-        <span style={{userSelect: 'none'}}> X </span>
+        <span style={{userSelect: 'none'}}> {`${leftArrowStatus}`} </span>
       </div>
 
       <div className={galleryStyles.lightboxEdge} onClick={closeLightbox} />
