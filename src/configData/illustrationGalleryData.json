@@ -4,6 +4,7 @@
     "order": 0,
     "path": "",
     "thumb": "",
+    "thumbStyle": "ill-layers",
     "title": "Layers",
     "description": "Accompanying an article about avatars, for designer-writer Zachary Deocadiz (July 2019)."
   },
@@ -12,6 +13,7 @@
     "order": 1,
     "path": "",
     "thumb": "",
+    "thumbStyle": "ill-social-design",
     "title": "Social Design",
     "description": "For 'How to Design Social VR Spaces' by Zachary Deocadiz (May 2019)."
   },
@@ -20,6 +22,7 @@
     "order": 2,
     "path": "",
     "thumb": "",
+    "thumbStyle": "ill-clap",
     "title": "CLAP!",
     "description": "For 'Identity and Community in Virtual Reality' by Zachary Deocadiz (May 2019)."
   },
@@ -28,6 +31,7 @@
     "order": 3,
     "path": "",
     "thumb": "",
+    "thumbStyle": "ill-everything",
     "title": "Everything Is Where It Needs To Be",
     "description": "Fanart for the Twilight Mirage Fanzine for Friends at the Table (July 2019)."
   },
@@ -36,6 +40,7 @@
     "order": 4,
     "path": "",
     "thumb": "",
+    "thumbStyle": "ill-on-the-water",
     "title": "On the Water",
     "description": "For EX Dance Music (April 2019)."
   },
@@ -44,6 +49,7 @@
     "order": 5,
     "path": "",
     "thumb": "",
+    "thumbStyle": "ill-psychometric",
     "title": "Psychometric Aptitude",
     "description": "Fanart of Arkane Studio's Prey (2017) (January 2019)."
   },
@@ -52,6 +58,7 @@
     "order": 6,
     "path": "",
     "thumb": "",
+    "thumbStyle": "ill-together",
     "title": "Together",
     "description": "For commission for a friend's anniversary (June 2018)."
   }

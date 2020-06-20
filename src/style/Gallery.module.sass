@@ -23,10 +23,13 @@ $slide-transition-time: 0.5s
   cursor: pointer
 
   .thumbContainer
-    position:absolute
+    // position: absolute
+    .thumbImg
+      // width: 100%
+      // max-width: 100%
+      // max-height: 100%
 
-  .thumbImg
-    height: 100%
+      position: absolute
 
 .lightboxRoot
   width: 100%
@@ -69,15 +72,10 @@ $slide-transition-time: 0.5s
       .arrow
         color: $white
         cursor: pointer
-    // &:hover
-    //   opacity: 1
     
     .arrow
       user-select: none
       transition: color $transition-time
-      // &:hover
-      //   color: $white
-      //   cursor: pointer
 
   .lightboxLeft
     @extend %lightboxNav

@@ -4,6 +4,7 @@ import { GalleryItemShape } from '../model/GalleryShape';
 import useWindowDimensions from '../util/UseWindowDimensions';
 
 import galleryStyles from '../style/Gallery.module.sass';
+import galleryThumbStyles from '../style/GalleryThumbnail.module.sass';
 
 type GalleryProps = {
   thumbnailSrcArray: string[];
@@ -270,9 +271,17 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
               }}
               key = {index}
             >
+              {/* SOME KIND OF FUNCTION */}
+              {/* on window resize */}
+              {/* recalculate image size */}
+              
               <div className={galleryStyles.thumbContainer}>
                 {/* later derive SRC of this image from item.thumb */}
-                <img className={galleryStyles.thumbImg} src={thumbnailSrcArray[index]}/>
+                <img 
+                  className={`${galleryStyles.thumbImg} ${galleryThumbStyles[galleryMetadata[index].thumbStyle]}`} 
+                  src={thumbnailSrcArray[index]}
+                />
+                {console.log(galleryThumbStyles[galleryMetadata[index].thumbStyle])}
               </div>
             </div>
           ))        
