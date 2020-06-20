@@ -1,5 +1,4 @@
 import React, { useState, useRef, SyntheticEvent } from 'react';
-import clsx from 'clsx';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 import useWindowDimensions from '../util/UseWindowDimensions';
@@ -21,6 +20,11 @@ type LightboxProps = {
   imgArray: string[];
   galleryMetadata: GalleryItemShape[];
 }
+type TimeoutState = {
+  timerGoing: boolean | NodeJS.Timeout;
+  active: boolean;
+}
+type ArrowDirection = "left" | "right";
 
 // CURRENTLY:
 // use galleryMetadata index to index-match to thumbnailSrcArray, holding img srcs in array
@@ -41,92 +45,153 @@ const Lightbox = ({
   const { windowHeight, windowWidth } = useWindowDimensions();
   const midBoundary = windowWidth / 2;
 
-  const [leftArrowStatus, setLeftArrow] = useState<boolean>(false);
-  const [rightArrowStatus, setRightArrow] = useState<boolean>(false);
+  const [leftArrowStatus, setLeftArrow] = useState<TimeoutState>({
+    timerGoing: false,
+    active: false
+  });
+  const [rightArrowStatus, setRightArrow] = useState<TimeoutState>({
+    timerGoing: false,
+    active: false
+  });
   
-  const activateLeftArrow = () => {
-    // for some reason only works first time
-    // need to create some kind of thing to check that mouse has stopped moving
-    setLeftArrow(true);
-    setInterval(() => setLeftArrow(false), 1000);
+  const activateArrow = (direction: ArrowDirection) => {
+
+    let setReferencedArrow: React.Dispatch<React.SetStateAction<TimeoutState>>;
+    let referencedArrowStatus: TimeoutState;
+    let setOpposedArrow: React.Dispatch<React.SetStateAction<TimeoutState>>;
+    let opposedArrowStatus: TimeoutState;
+
+    switch (direction) {
+      case "left":
+        setReferencedArrow = setLeftArrow;
+        referencedArrowStatus = leftArrowStatus;
+        setOpposedArrow = setRightArrow;
+        opposedArrowStatus = rightArrowStatus;
+        break;
+      case "right":
+        setReferencedArrow = setRightArrow;
+        referencedArrowStatus = rightArrowStatus;
+        setOpposedArrow = setLeftArrow;
+        opposedArrowStatus = leftArrowStatus;
+        break;
+    }
+
+    const refreshTimer = () => {
+      const timer = setTimeout(
+        (() => setReferencedArrow({ timerGoing: false, active: false })
+      ),850);
+      setReferencedArrow({ timerGoing: timer, active: true })
+    }
+
+    // clear opposed timer if there is one
+    if (opposedArrowStatus.timerGoing !== false) {
+      clearTimeout(opposedArrowStatus.timerGoing as NodeJS.Timeout);
+      setOpposedArrow({ timerGoing: false, active: false });
+    }
+
+    // set current arrow timer, reset if there already is one
+    if (referencedArrowStatus.timerGoing === false) {
+      refreshTimer();
+    }
+    else {
+      clearTimeout(referencedArrowStatus.timerGoing as NodeJS.Timeout);
+      refreshTimer();
+    }
   };
 
   const handleMouseOver = (event: React.MouseEvent) => {
     if (event.clientX <= midBoundary) {
-      activateLeftArrow();
+      activateArrow("left");
     } else {
-      console.log('no');
+      activateArrow("right");
     }
   };
+
+  const handleSlideChange = (event: React.MouseEvent) => {
+    if (event.clientX <= midBoundary) {
+      toPrevImg();
+    } else {
+      toNextImg();
+    }
+  }
 
   return (
     // if !isLightboxHidden
     // onMouseMove = {isLightboxHiden ? ( () => {} ) : handleMouseOver}
-    <div 
-      className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
-      onMouseMove={handleMouseOver}
-    >
-      <div className={galleryStyles.carouselWrapper}>
-        <div className={galleryStyles.carousel}>
-          {/* later derive SRC of this image from galleryMetadata[currentImg].path */}
-          {galleryMetadata.map(data => {
-            const isThisImgActive = data.id === currentImg;
-            const isThisPrevOfActive = data.id === returnPrevImg(currentImg);
-            const isThisNextOfActive = data.id === returnNextImg(currentImg);
-            
-            let imgClassModifier: string;
-
-            if (isThisImgActive) {
-              imgClassModifier = galleryStyles.activeImg;
-            } else if (isThisPrevOfActive) {
-              imgClassModifier = galleryStyles.prevImg;
-            } else if (isThisNextOfActive) {
-              imgClassModifier = galleryStyles.nextImg;
-            } else {
-              imgClassModifier = ''
-            }
-
-            return (
-              <div 
-                className={`${galleryStyles.lightboxImgContainer} ${imgClassModifier}`}
-                onClick={(e) => console.log(e.target)}
-                key={data.id}
-              >
-                <img 
-                  className={galleryStyles.lightboxImg}
-                  src={imgArray[data.id]}
-                />
-                <div className={`${galleryStyles.imgMetaContainer} ${isThisImgActive? galleryStyles.metaActive : ''}`}>
-                  <h1>{data.title}</h1>
-                  <p>{data.description}</p>
-                </div>
-              </div>
-            )
-          })}
-            
-        </div>
-      </div>
+    <div>
       
       <div 
-        className={`${galleryStyles.lightboxLeft} ${leftArrowStatus ? galleryStyles.active : ''}`} 
-        onClick={toPrevImg}
-      > 
-        <span className={galleryStyles.arrow}>
-          &lt;
-        </span>
+        className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
+        onMouseMove={handleMouseOver}
+        onClick={handleSlideChange}
+      >
+        <div className={galleryStyles.carouselWrapper}>
+          <div className={galleryStyles.carousel}>
+            {/* later derive SRC of this image from galleryMetadata[currentImg].path */}
+            {galleryMetadata.map(data => {
+              const isThisImgActive = data.id === currentImg;
+              const isThisPrevOfActive = data.id === returnPrevImg(currentImg);
+              const isThisNextOfActive = data.id === returnNextImg(currentImg);
+              
+              let imgClassModifier: string;
+
+              if (isThisImgActive) {
+                imgClassModifier = galleryStyles.activeImg;
+              } else if (isThisPrevOfActive) {
+                imgClassModifier = galleryStyles.prevImg;
+              } else if (isThisNextOfActive) {
+                imgClassModifier = galleryStyles.nextImg;
+              } else {
+                imgClassModifier = ''
+              }
+
+              return (
+                <div 
+                  className={`${galleryStyles.lightboxImgContainer} ${imgClassModifier}`}
+                  onClick={(e) => console.log(e.target)}
+                  key={data.id}
+                >
+                  <img 
+                    className={galleryStyles.lightboxImg}
+                    src={imgArray[data.id]}
+                  />
+                  <div className={`${galleryStyles.imgMetaContainer} ${isThisImgActive? galleryStyles.metaActive : ''}`}>
+                    <h1>{data.title}</h1>
+                    <p>{data.description}</p>
+                  </div>
+                </div>
+              )
+            })}
+              
+          </div>
+        </div>
+        
+        <div 
+          className={`${galleryStyles.lightboxLeft} ${leftArrowStatus.timerGoing ? galleryStyles.active : ''}`} 
+          onClick={toPrevImg}
+        > 
+          <span className={galleryStyles.arrow}>
+            &lt;
+          </span>
+        </div>
+
+        <div 
+          className={`${galleryStyles.lightboxRight} ${rightArrowStatus.timerGoing ? galleryStyles.active : ''}`}
+          onClick={toNextImg}
+        > 
+          <span className={galleryStyles.arrow}>
+            &gt;
+          </span>
+        </div>
       </div>
 
-      <div className={galleryStyles.lightboxRight} onClick={toNextImg}> 
-        <span className={galleryStyles.arrow}>
-          &gt;
-        </span>
-      </div>
-      
-      <div className={galleryStyles.lightboxClose} onClick={closeLightbox}>
-        <span style={{userSelect: 'none'}}> {`${leftArrowStatus}`} </span>
-      </div>
 
-      <div className={galleryStyles.lightboxEdge} onClick={closeLightbox} />
+      <div 
+        className={`${galleryStyles.lightboxClose} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
+        onClick={closeLightbox}
+      >
+          <span style={{userSelect: 'none'}}> X </span>
+      </div>
     </div>
   )
 }
@@ -181,16 +246,19 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
 
   return (
     <>
-      <Lightbox 
-        currentImg = {currentImg}
-        toNextImg = {toNextImg}
-        toPrevImg = {toPrevImg}
-        returnNextImg = {returnNextImg}
-        returnPrevImg = {returnPrevImg}
-        closeLightbox = {closeLightbox}
-        imgArray = {imgArray}
-        galleryMetadata = {galleryMetadata}
-      />
+      <div>
+        <Lightbox 
+          currentImg = {currentImg}
+          toNextImg = {toNextImg}
+          toPrevImg = {toPrevImg}
+          returnNextImg = {returnNextImg}
+          returnPrevImg = {returnPrevImg}
+          closeLightbox = {closeLightbox}
+          imgArray = {imgArray}
+          galleryMetadata = {galleryMetadata}
+        />
+
+      </div>
 
       <div id={galleryStyles.galleryRootContainer}>
         {

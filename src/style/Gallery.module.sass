@@ -1,6 +1,7 @@
 @import 'design'
 
-$transition-time: 0.5s;
+$transition-time: 0.7s
+$slide-transition-time: 0.5s
 
 #galleryRootContainer
   width: 100%
@@ -34,7 +35,7 @@ $transition-time: 0.5s;
   position: fixed
   top: 0
   left: 0
-  background-color: rgba(0,0,0,0.9)
+  background-color: rgba(0,0,0,0.93)
   padding: space(3)
   box-sizing: border-box
   
@@ -86,16 +87,6 @@ $transition-time: 0.5s;
     @extend %lightboxNav
     right: 2%
     text-align: right
-
-  .lightboxClose
-    position: absolute
-    right: space(4)
-    top: space(3.5)
-    color: $ui-gray
-    z-index: 13
-    &:hover
-      cursor: pointer
-      color: $white
   
   .lightboxEdge
     z-index: 11
@@ -104,6 +95,19 @@ $transition-time: 0.5s;
     left: 0
     width: 100%
     height: 100%
+
+.lightboxClose
+    position: absolute
+    right: space(4)
+    top: space(3.5)
+    color: $ui-gray
+    z-index: 999
+    visibility: visible
+    &:hover
+      cursor: pointer
+      color: $white
+    &.hidden
+      visibility: hidden
 
 .carouselWrapper
   max-width: 96.5%
@@ -115,6 +119,7 @@ $transition-time: 0.5s;
   height: 100%
   display: flex
   align-items: center
+  justify-content: center
   overflow: hidden
   
   .carousel
@@ -132,33 +137,40 @@ $transition-time: 0.5s;
     margin: 0 auto
     opacity: 0
     z-index: 100;
-    transition: transform $transition-time, opacity $transition-time, z-index $transition-time
+    transition: transform $slide-transition-time ease, opacity 0s, z-index $slide-transition-time ease
+    pointer-events: none
 
     &.activeImg
+      pointer-events: auto
       opacity: 1
       position: relative
       z-index: 900
+      & .lightboxImg:hover+.imgMetaContainer
+        opacity: 1
+
     &.prevImg
-      transform: translateX(-100%)
+      z-index: 800
+      transform: translateX(-200%)
     &.nextImg
-      transform: translateX(100%)
+      z-index: 800
+      transform: translateX(200%)
     
     .lightboxImg
       max-width: 100%
-      max-height: 100%
-  
+      max-height: 100vh
+      object-fit: contain
+      margin: 0 auto
+
     .imgMetaContainer
       position: absolute
-      // bottom: 0
+      bottom: 5px
       padding: space(1.5) space(3)
       width: 100%
       z-index: 901
-      background-color: rgba(0,0,0,0.6)
+      background-color: rgba(0,0,0,0.8)
       color: white
       opacity: 0
-
-      &.metaActive
-        opacity: 1
+      transition: opacity 0.3s ease
       
       h1
         @include art-meta-head-type
