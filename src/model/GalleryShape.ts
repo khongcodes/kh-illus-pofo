@@ -4,6 +4,7 @@ export type GalleryItemShape = {
   path: string;
   thumb: string;
   thumbStyle: string;
+  orientation: string;
   title: string;
   description: string;
 }

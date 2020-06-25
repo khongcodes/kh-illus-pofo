@@ -1,4 +1,4 @@
-import React, { useState, useRef, SyntheticEvent } from 'react';
+import React, { useState, CSSProperties } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 import useWindowDimensions from '../util/UseWindowDimensions';
@@ -26,6 +26,9 @@ type TimeoutState = {
   active: boolean;
 }
 type ArrowDirection = "left" | "right";
+
+type ImageOrientationTypes = "portrait" | "landscape" | "square" | "";
+type ImageOrientations = ImageOrientationTypes[];
 
 // CURRENTLY:
 // use galleryMetadata index to index-match to thumbnailSrcArray, holding img srcs in array
@@ -233,8 +236,8 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
     document.body.style.overflowY="unset";
     document.body.style.paddingRight = `0px`;
     setCurrentImg(null);
-  }
-  const openLightbox = (index: number): void => {;
+  };
+  const openLightbox = (index: number): void => {
     // create gap replacing righthand scrollbar to prevent disruption of body on modal open
     const documentWidth = document.documentElement.clientWidth;
     const windowWidth = window.innerWidth;
@@ -243,7 +246,28 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
     
     document.body.style.overflowY="hidden";
     setCurrentImg(index);
+  };
+
+  const [imageOrientations, setImageOrientations] = useState(galleryMetadata.map(() => ""));
+
+  const getImgOrientation = (img: HTMLImageElement, index: number): void => {
+    const orientation = img.naturalHeight <= img.naturalWidth ? "landscape" : "portrait";
+    setImageOrientations(Object.assign(imageOrientations, { [index]: orientation }))
+  };
+
+  const makeOrientationDependentStyleObj = (orientation: ImageOrientationTypes): CSSProperties => {
+    switch (orientation) {
+      case "landscape":
+        return { "height": thumbnailWindowRatio * windowWidth };
+      case "portrait":
+        return { "width": thumbnailWindowRatio * windowWidth };
+      default:
+        return {}
+    }
   }
+
+  const { windowHeight, windowWidth } = useWindowDimensions();
+  const thumbnailWindowRatio = 360 / 1440;
 
   return (
     <>
@@ -263,28 +287,32 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
 
       <div id={galleryStyles.galleryRootContainer}>
         {
-          galleryMetadata.map((item: GalleryItemShape, index: number): JSX.Element => (
-            <div 
-              className = {galleryStyles.thumbSquareSizer}
-              onClick = {() => {
-                openLightbox(index)
-              }}
-              key = {index}
-            >
-              {/* SOME KIND OF FUNCTION */}
-              {/* on window resize */}
-              {/* recalculate image size */}
-              
-              <div className={galleryStyles.thumbContainer}>
-                {/* later derive SRC of this image from item.thumb */}
-                <img 
-                  className={`${galleryStyles.thumbImg} ${galleryThumbStyles[galleryMetadata[index].thumbStyle]}`} 
-                  src={thumbnailSrcArray[index]}
-                />
-                {console.log(galleryThumbStyles[galleryMetadata[index].thumbStyle])}
+          galleryMetadata.map((item: GalleryItemShape, index: number): JSX.Element => {
+            const orientationDependentStyling = makeOrientationDependentStyleObj(imageOrientations[index] as ImageOrientationTypes);
+
+            return (
+              <div 
+                className = {galleryStyles.thumbSquareSizer}
+                onClick = {() => {
+                  openLightbox(index)
+                }}
+                key = {index}
+              >
+                {/* SOME KIND OF FUNCTION */}
+                {/* on window resize */}
+                {/* recalculate image size */}
+
+                <div className={galleryStyles.thumbContainer}>
+                  {/* later derive SRC of this image from item.thumb */}
+                  <img 
+                    className={`${galleryStyles.thumbImg} ${galleryThumbStyles[galleryMetadata[index].thumbStyle]}`} 
+                    src={thumbnailSrcArray[index]}
+                    onLoad={(event) => getImgOrientation(event.target as HTMLImageElement, index)}
+                    style={orientationDependentStyling}
+                  />
+                </div>
               </div>
-            </div>
-          ))        
+          )})
         }    
       </div>
     </>

@@ -1,3 +1,10 @@
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                             IMPORTS
+// 1. system & packages
+// 2. models & config data
+// 3. assets
+// 4. styles
+
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -8,8 +15,19 @@ import siteLogo from '../images/site-logo.png'
 
 import layoutStyles from '../style/Layout.module.sass';
 
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               SETUP
+
+// export layout data
+export const mobileBreakpoint = 788;
+
+// assert type for imported JSON data, strings => literal types
 const menuData = rawMenuData as MenuDataShape;
 
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                 PAGE-SPECIFIC-TYPES
 
 type LayoutProps = {
   children: React.ReactNode[] | React.ReactNode
@@ -24,6 +42,12 @@ type MobileMenuControlProps = {
 }
 
 
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                  COMPONENTS & LOGIC
+
+// ListItemNavLink: FC
+// function: formats NavLinks as list items
+// why: DRY out code
 const ListItemNavLink = ({ item, resetMobileMenu }: {
   item: LinkShape;
   resetMobileMenu: () => void;
@@ -33,6 +57,11 @@ const ListItemNavLink = ({ item, resetMobileMenu }: {
   </li>
 )
 
+// TogglingSubMenu: FC
+// function: creates a submenu usable in SideMenu: FC - toggles open and shut
+// why: separated logic to its own part of the doc
+//      a specialized, higher-functioning version of ListItemNavLink (above)
+//      also calls ListItemNavLink for the item prop's subitems
 const TogglingSubmenu = ({ item, resetMobileMenu }: { 
   item: SubmenuShape;
   resetMobileMenu: () => void;
@@ -42,10 +71,7 @@ const TogglingSubmenu = ({ item, resetMobileMenu }: {
 
   return (
     <li>
-      <span
-        className={layoutStyles.submenuTitle}
-        onClick={handleSubmenuToggle}
-      >
+      <span className={layoutStyles.submenuTitle} onClick={handleSubmenuToggle}>
         {item.text}
       </span>
       
@@ -64,6 +90,12 @@ const TogglingSubmenu = ({ item, resetMobileMenu }: {
   )
 }
 
+
+// LockedSubmenu: FC
+// function: creates shape of submenu, like TogglingSubmenu, but not toggling
+// why: separated out logic
+// PROPOSE: refactor to combine with TogglingSubmenu;
+//          Submenu FC with prop - toggling: boolean
 const LockedSubmenu = ({ item, resetMobileMenu }: {
   item: SubmenuShape;
   resetMobileMenu: () => void;
