@@ -1,3 +1,15 @@
+//                                                     src/viewsCommon/Layout.tsx
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - display organization of children
+//  - hold keep track of menu state
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                                TODO
+// 1. continue documentation
+// 2. refactor LockedSubmenu and TogglingSubmenu into Submenu with toggling:bool
+
+
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                             IMPORTS
 // 1. system & packages
@@ -21,6 +33,7 @@ import layoutStyles from '../style/Layout.module.sass';
 
 // export layout data
 export const mobileBreakpoint = 788;
+export const maxWindowBreakpoint = 1440;
 
 // assert type for imported JSON data, strings => literal types
 const menuData = rawMenuData as MenuDataShape;

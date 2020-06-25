@@ -1,4 +1,4 @@
-@import 'design'
+@use 'design'
 
 $transition-time: 0.7s
 $slide-transition-time: 0.5s
@@ -8,9 +8,9 @@ $slide-transition-time: 0.5s
   height: auto
   display: grid
   grid-template-columns: 1fr 1fr 1fr
-  grid-gap: space(1)
+  grid-gap: design.space(1)
   
-  @include mobile-media
+  @include design.mobile-media
     grid-template-columns: 1fr 1fr
 
 
@@ -39,7 +39,7 @@ $slide-transition-time: 0.5s
   top: 0
   left: 0
   background-color: rgba(0,0,0,0.93)
-  padding: space(3)
+  padding: design.space(3)
   box-sizing: border-box
   
   visibility: visible
@@ -61,7 +61,7 @@ $slide-transition-time: 0.5s
     align-items: center
     justify-content: center
     box-sizing: border-box
-    color: $ui-gray
+    color: design.$ui-gray
     font-size: 30px
     z-index: 12
     opacity: 0
@@ -70,7 +70,7 @@ $slide-transition-time: 0.5s
     &.active
       opacity: 1
       .arrow
-        color: $white
+        color: design.$white
         cursor: pointer
     
     .arrow
@@ -96,14 +96,14 @@ $slide-transition-time: 0.5s
 
 .lightboxClose
     position: absolute
-    right: space(4)
-    top: space(3.5)
-    color: $ui-gray
+    right: design.space(4)
+    top: design.space(3.5)
+    color: design.$ui-gray
     z-index: 999
     visibility: visible
     &:hover
       cursor: pointer
-      color: $white
+      color: design.$white
     &.hidden
       visibility: hidden
 
@@ -111,7 +111,7 @@ $slide-transition-time: 0.5s
   max-width: 96.5%
   max-height: 97.8%
   position: absolute
-  top: space(1)
+  top: design.space(1)
   left: 1.85%
   width: 100%
   height: 100%
@@ -134,7 +134,7 @@ $slide-transition-time: 0.5s
     top: 0
     margin: 0 auto
     opacity: 0
-    z-index: 100;
+    z-index: 100
     transition: transform $slide-transition-time ease, opacity 0s, z-index $slide-transition-time ease
     pointer-events: none
 
@@ -162,7 +162,7 @@ $slide-transition-time: 0.5s
     .imgMetaContainer
       position: absolute
       bottom: 5px
-      padding: space(1.5) space(3)
+      padding: design.space(1.5) design.space(3)
       width: 100%
       z-index: 901
       background-color: rgba(0,0,0,0.8)
@@ -171,6 +171,6 @@ $slide-transition-time: 0.5s
       transition: opacity 0.3s ease
       
       h1
-        @include art-meta-head-type
+        @include design.art-meta-head-type
       p
-        @include art-meta-copy-type
+        @include design.art-meta-copy-type

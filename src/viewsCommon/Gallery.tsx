@@ -2,6 +2,7 @@ import React, { useState, CSSProperties } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 import useWindowDimensions from '../util/UseWindowDimensions';
+import { mobileBreakpoint, maxWindowBreakpoint } from './Layout';
 
 import galleryStyles from '../style/Gallery.module.sass';
 import galleryThumbStyles from '../style/GalleryThumbnail.module.sass';
@@ -256,19 +257,27 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
   };
 
   const makeOrientationDependentStyleObj = (orientation: ImageOrientationTypes): CSSProperties => {
-    switch (orientation) {
-      case "landscape":
-        return { "height": thumbnailWindowRatio * windowWidth };
-      case "portrait":
-        return { "width": thumbnailWindowRatio * windowWidth };
-      default:
-        return {}
+    if (windowWidth <= maxWindowBreakpoint) {
+      switch (orientation) {
+        case "landscape":
+          return { "height": getThumbnailWindowRatio() * windowWidth };
+        case "portrait":
+          return { "width": getThumbnailWindowRatio() * windowWidth };
+        default:
+          return {}
+      }
+    } else {
+      return {}
     }
   }
 
   const { windowHeight, windowWidth } = useWindowDimensions();
+  const getThumbnailWindowRatio = (): number => (
+    windowWidth >= mobileBreakpoint ? (360 / maxWindowBreakpoint) : (370 / mobileBreakpoint)
+  );
   const thumbnailWindowRatio = 360 / 1440;
-
+  
+  console.log(windowWidth);
   return (
     <>
       <div>

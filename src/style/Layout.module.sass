@@ -1,72 +1,72 @@
-@import 'design'
+@use 'design'
 
 #appLayout
   width: auto
-  max-width: space(159.5)
+  max-width: design.space(159.5)
   height: fit-content
-  margin: space(7)
+  margin: design.space(7)
 
   display: grid
-  grid-template-columns: space(27) auto
+  grid-template-columns: design.space(27) auto
   grid-template-rows: auto
 
-  @include mobile-media
-    margin: space(2.5)
+  @include design.mobile-media
+    margin: design.space(2.5)
     grid-template-columns: 100%
-    grid-template-rows: space(10.5) auto
+    grid-template-rows: design.space(10.5) auto
 
 .mobileMenuContainer
   width: 100%
   height: 0
   overflow: hidden
-  background-color: $red
+  background-color: design.$red
   transition-property: height
   transition-duration: 0.3s
 
   &.open
-    @include mobile-media
-      height: space(64)
+    @include design.mobile-media
+      height: design.space(64)
 
 .sideMenuContainer
-  padding-right: space(6)
+  padding-right: design.space(6)
   box-sizing: border-box
-  @include mobile-media
-    padding-bottom: space(3.5)
-    padding-right: space(0)
+  @include design.mobile-media
+    padding-bottom: design.space(3.5)
+    padding-right: design.space(0)
 
   #siteLogo
     width: 100%
     height: auto
-    @include mobile-media
+    @include design.mobile-media
       width: auto
       height: 100%
 
   .sideMenuList
-    @include mobile-media
+    @include design.mobile-media
       display: none
-    @include menu-link-type
+    @include  design.menu-link-type
 
     .submenuTitle
       &:hover
-        color: $light-red
+        color: design.$light-red
         cursor: pointer
 
     .submenuList
-      height: space(0)
+      height: design.space(0)
       overflow: hidden
       transition-property: height margin
       transition-duration: 0.3s
       &.open
-        margin: space(1) space(0)
-        height: space(9)
+        margin: design.space(1) design.space(0)
+        height: design.space(9)
 
   .mobileMenuControlContainer
     display: none
-    width: space(3)
-    margin: space(2.5)
+    width: design.space(3)
+    margin: design.space(2.5)
     float: right
     cursor: pointer
-    @include mobile-media
+    @include design.mobile-media
       display: inline
       
       &.open div.bar1
@@ -81,14 +81,14 @@
       
       &:hover div
         transition: background-color 0.2s ease
-        background-color: $light-red
+        background-color: design.$light-red
       
       div
         width: 100%
-        height: space(0.25)
-        border-radius: space(1)
+        height: design.space(0.25)
+        border-radius: design.space(1)
         margin-bottom: 5px
-        background-color: $red
+        background-color: design.$red
         &:last-child
           margin-bottom: 0
 

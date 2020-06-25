@@ -1,5 +1,16 @@
-////////////////////////////////////////////////////////////////
-//////////////             Breakpoints
+//                                                         src/style/_design.scss
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - hold global design information
+//    > Breakpoints
+//    > Layout
+//    > Colors
+//    > Type Styles
+//    > Animation
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                         BREAKPOINTS
 
 $mobile-breakpoint: 788px;
 
@@ -8,27 +19,34 @@ $mobile-breakpoint: 788px;
     @content;
   }
 }
+// usage:
+// @use 'design'
+// @include design.mobile-media
+//    background-color: red
 
 
-////////////////////////////////////////////////////////////////
-//////////////             Layout
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                              LAYOUT
 
 $space-unit: 8px;
 
 @function space($multiplier) {
   @return $multiplier * $space-unit;
 }
+// usage:
+// margin-left: space(8)
 
-////////////////////////////////////////////////////////////////
-//////////////             Colors
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                              COLORS
 
 $red: #C3291C;
 $light-red: #FFA8A8;
 $ui-gray: #CCC;
 $white: #FFF;
 
-////////////////////////////////////////////////////////////////
-//////////////             Type Styles
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                         TYPE STYLES
 
 @mixin copy-type {
   font-size: 13px;
@@ -55,4 +73,24 @@ $white: #FFF;
 @mixin art-meta-copy-type {
   @include copy-type();
   color: $white;
+}
+// usage:
+// @include art-meta-copy-type
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                          ANIMATIONS
+
+// mixin replicating keyframe animation for different vendors
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} { @content };
+  @-moz-keyframes #{$name} { @content };
+  @-ms-keyframes #{$name} { @content };
+  @keyframes #{$name} { @content };
+}
+// usage:
+// 
+
+@include keyframes(fade-in) {
+  0%    {opacity: 0;}
+  100%  {opacity: 1;}
 }
