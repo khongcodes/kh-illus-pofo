@@ -68,11 +68,13 @@ $white: #FFF;
   font-size: 13px;
   line-height: 18px;
   color: $white;
+  @include mobile-media { margin-block-end: 0; }
 }
 
 @mixin art-meta-copy-type {
   @include copy-type();
   color: $white;
+  @include mobile-media { margin-block-start: space(1.5); }
 }
 // usage:
 // @include art-meta-copy-type

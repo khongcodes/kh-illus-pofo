@@ -16,12 +16,12 @@
 // 3. components & assets
 // 4. styles
 
-import React, { useState, CSSProperties } from 'react';
+import React, { useState } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 
-import useWindowDimensions from '../util/UseWindowDimensions';
-import { mobileBreakpoint, maxWindowBreakpoint } from './Layout';
+// import useWindowDimensions from '../util/UseWindowDimensions';
+// import { mobileBreakpoint, maxWindowBreakpoint } from './Layout';
 
 import resizingGalleryStyles from '../style/ResizingThumbGallery.module.sass';
 import galleryThumbStyles from '../style/GalleryThumbnails.module.sass';
@@ -56,10 +56,11 @@ const ResizingThumbGallery = ({
 
   // get windowWidth
   // setup thumb to window-width ratio
-  const { windowHeight, windowWidth } = useWindowDimensions();
-  const getThumbnailWindowRatio = (): number => (
-    windowWidth >= mobileBreakpoint ? (360 / maxWindowBreakpoint) : (370 / mobileBreakpoint)
-  );
+  // const { windowHeight, windowWidth } = useWindowDimensions();
+  // const { windowWidth } = useWindowDimensions();
+  // const getThumbnailWindowRatio = (): number => (
+  //   windowWidth >= mobileBreakpoint ? (360 / maxWindowBreakpoint) : (370 / mobileBreakpoint)
+  // );
 
   // generate array of image orientations
   // onLoad, check if height or width is bigger
@@ -135,6 +136,7 @@ const ResizingThumbGallery = ({
                   className={imgClassName} 
                   // src={item.path}
                   src={imgArray[index]}
+                  alt={item.alt}
                   onLoad={(event) => handleImgLoad(event.target as HTMLImageElement, index)}
                   // LEGACY - NO LONGER NEEDED
                   // see const makeOrientationDependentStyleObj

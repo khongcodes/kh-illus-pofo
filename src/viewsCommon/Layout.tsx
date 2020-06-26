@@ -95,7 +95,7 @@ const TogglingSubmenu = ({ item, resetMobileMenu }: {
               return (
                 <ListItemNavLink item={subitem} resetMobileMenu={resetMobileMenu} key={subitem.path}/>
               )
-            }
+            } else { return <></> }
           }
         )}
       </ul>
@@ -121,7 +121,7 @@ const LockedSubmenu = ({ item, resetMobileMenu }: {
           return (
             <ListItemNavLink item={subitem} resetMobileMenu={resetMobileMenu} key={subitem.path}/>
           )
-        }
+        } else { return <></> }
       })}
     </ul>
   </li>
@@ -137,7 +137,7 @@ const mapMenuContent = (
   resetMobileMenu: () => void
   ) => (
   data.map(item => {
-    const linkTriggersMobileMenu = !!resetMobileMenu;
+    // const linkTriggersMobileMenu = !!resetMobileMenu;
 
     switch(item.type) {
 
@@ -158,6 +158,7 @@ const mapMenuContent = (
             )
         }
     }
+    return <></>;
   })
 )
 
@@ -195,6 +196,7 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
         <img 
           src={siteLogo}
           id={layoutStyles.siteLogo}
+          alt="K Hong Draws - website logo"
         />
       </Link>
       

@@ -5,7 +5,8 @@
     "path": "https://www.awkwardzombie.com/comics/1592796037-comic672.png",
     "thumbStyle": "ill-layers",
     "title": "Layers",
-    "description": "Accompanying an article about avatars, for designer-writer Zachary Deocadiz (July 2019)."
+    "description": "Accompanying an article about avatars, for designer-writer Zachary Deocadiz (July 2019).",
+    "alt": ""
   },
   {
     "id": 1,
@@ -13,7 +14,8 @@
     "path": "",
     "thumbStyle": "ill-social-design",
     "title": "Social Design",
-    "description": "For 'How to Design Social VR Spaces' by Zachary Deocadiz (May 2019)."
+    "description": "For 'How to Design Social VR Spaces' by Zachary Deocadiz (May 2019).",
+    "alt": ""
   },
   {
     "id": 2,
@@ -21,7 +23,8 @@
     "path": "",
     "thumbStyle": "ill-clap",
     "title": "CLAP!",
-    "description": "For 'Identity and Community in Virtual Reality' by Zachary Deocadiz (May 2019)."
+    "description": "For 'Identity and Community in Virtual Reality' by Zachary Deocadiz (May 2019).",
+    "alt": ""
   },
   {
     "id": 3,
@@ -29,7 +32,8 @@
     "path": "",
     "thumbStyle": "ill-everything",
     "title": "Everything Is Where It Needs To Be",
-    "description": "Fanart for the Twilight Mirage Fanzine for Friends at the Table (July 2019)."
+    "description": "Fanart for the Twilight Mirage Fanzine for Friends at the Table (July 2019).",
+    "alt": ""
   },
   {
     "id": 4,
@@ -37,7 +41,8 @@
     "path": "",
     "thumbStyle": "ill-on-the-water",
     "title": "On the Water",
-    "description": "For EX Dance Music (April 2019)."
+    "description": "For EX Dance Music (April 2019).",
+    "alt": ""
   },
   {
     "id": 5,
@@ -45,7 +50,8 @@
     "path": "",
     "thumbStyle": "ill-psychometric",
     "title": "Psychometric Aptitude",
-    "description": "Fanart of Arkane Studio's Prey (2017) (January 2019)."
+    "description": "Fanart of Arkane Studio's Prey (2017) (January 2019).",
+    "alt": ""
   },
   {
     "id": 6,
@@ -53,6 +59,7 @@
     "path": "",
     "thumbStyle": "ill-together",
     "title": "Together",
-    "description": "For commission for a friend's anniversary (June 2018)."
+    "description": "For commission for a friend's anniversary (June 2018).",
+    "alt": ""
   }
 ]

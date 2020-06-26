@@ -77,7 +77,8 @@ const Lightbox = ({
 
   const isLightboxHidden = currentImg === null;
 
-  const { windowHeight, windowWidth } = useWindowDimensions();
+  // const { windowHeight, windowWidth } = useWindowDimensions();
+  const { windowWidth } = useWindowDimensions();
   const midBoundary = windowWidth / 2;
 
   const [leftArrowStatus, setLeftArrow] = useState<TimeoutState>({
@@ -192,8 +193,9 @@ const Lightbox = ({
                   <img 
                     className={galleryStyles.lightboxImg}
                     src={imgArray[data.id]}
+                    alt={data.alt}
                   />
-                  <div className={`${galleryStyles.imgMetaContainer} ${isThisImgActive ? galleryStyles.metaActive : ''}`}>
+                  <div className={`${galleryStyles.imgMetaContainer}`}>
                     <h1>{data.title}</h1>
                     <p>{data.description}</p>
                   </div>
