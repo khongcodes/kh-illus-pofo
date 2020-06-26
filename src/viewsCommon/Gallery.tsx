@@ -8,9 +8,8 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                                TODO
-// 1. continue documentation
-// 2. extract ResizingThumbGallery functionality
-// 3. on deploy, setup getting img src from data path/thumb members
+// 1. REDO
+// 2. on deploy, setup getting img src from data path/thumb members
 // 
 // CURRENTLY:
 // use galleryMetadata index to index-match to thumbnailSrcArray, holding img srcs in array
@@ -26,21 +25,20 @@
 // 3. components & assets
 // 4. styles
 
-import React, { useState, CSSProperties } from 'react';
+import React, { useState } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 
+import ResizingThumbGallery from './ResizingThumbGallery';
 import useWindowDimensions from '../util/UseWindowDimensions';
-import { mobileBreakpoint, maxWindowBreakpoint } from './Layout';
 
 import galleryStyles from '../style/Gallery.module.sass';
-import galleryThumbStyles from '../style/GalleryThumbnails.module.sass';
 
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                               TYPES
 
-type GalleryProps = {
+type OuterGalleryProps = {
   thumbnailSrcArray: string[];
   imgArray: string[];
   galleryMetadata: GalleryItemShape[];
@@ -60,9 +58,6 @@ type TimeoutState = {
   active: boolean;
 }
 type ArrowDirection = "left" | "right";
-
-type ImageOrientationTypes = "portrait" | "landscape" | "square" | "";
-type ImageOrientations = ImageOrientationTypes[];
 
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -247,7 +242,7 @@ const Lightbox = ({
 //           contain state for slideshow - currentImg and open/closed
 //      why: this component will be able to be called and create a gallery+slideshow 
 //           on any page with any imagemetadata set
-const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps) => {
+const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: OuterGalleryProps) => {
   const [currentImg, setCurrentImg] = useState<number | null>(null);
   
   const firstImgIndex = 0;
@@ -298,38 +293,6 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
     setCurrentImg(index);
   };
   
-  // get windowWidth
-  // setup thumb to window-width ratio
-  const { windowHeight, windowWidth } = useWindowDimensions();
-  const getThumbnailWindowRatio = (): number => (
-    windowWidth >= mobileBreakpoint ? (360 / maxWindowBreakpoint) : (370 / mobileBreakpoint)
-  );
-  // generate array of image orientations
-  // onLoad, check if height or width is bigger
-  // if height, thumbnail width maps to windowWidth
-  // if width, thumbnail height maps to windowWidth
-  const [imageOrientations, setImageOrientations] = useState(galleryMetadata.map(() => ""));
-
-  const getImgOrientation = (img: HTMLImageElement, index: number): void => {
-    const orientation = img.naturalHeight <= img.naturalWidth ? "landscape" : "portrait";
-    setImageOrientations(Object.assign(imageOrientations, { [index]: orientation }))
-  };
-
-  const makeOrientationDependentStyleObj = (orientation: ImageOrientationTypes): CSSProperties => {
-    if (windowWidth <= maxWindowBreakpoint) {
-      switch (orientation) {
-        case "landscape":
-          return { "height": getThumbnailWindowRatio() * windowWidth };
-        case "portrait":
-          return { "width": getThumbnailWindowRatio() * windowWidth };
-        default:
-          return {}
-      }
-    } else {
-      return {}
-    }
-  }
-  
   return (
     <>
       <div>
@@ -345,30 +308,13 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
         />
       </div>
 
-      <div id={galleryStyles.galleryRootContainer}>
-        {
-          galleryMetadata.map((item: GalleryItemShape, index: number): JSX.Element => {
-            const orientationDependentStyling = makeOrientationDependentStyleObj(imageOrientations[index] as ImageOrientationTypes);
+      <ResizingThumbGallery 
+        thumbnailSrcArray = {thumbnailSrcArray}
+        imgArray = {imgArray}
+        galleryMetadata = {galleryMetadata}
+        openLightbox = {openLightbox}
+      />
 
-            return (
-              <div 
-                className = {galleryStyles.thumbSquareSizer}
-                onClick = {() => openLightbox(index)}
-                key = {index}
-              >
-                <div className={galleryStyles.thumbContainer}>
-                  {/* later derive SRC of this image from item.thumb */}
-                  <img 
-                    className={`${galleryStyles.thumbImg} ${galleryThumbStyles[galleryMetadata[index].thumbStyle]}`} 
-                    src={thumbnailSrcArray[index]}
-                    onLoad={(event) => getImgOrientation(event.target as HTMLImageElement, index)}
-                    style={orientationDependentStyling}
-                  />
-                </div>
-              </div>
-          )})
-        }    
-      </div>
     </>
   )
 }
