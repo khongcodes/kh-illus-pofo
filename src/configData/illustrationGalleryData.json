@@ -2,7 +2,7 @@
   {
     "id": 0,
     "order": 0,
-    "path": "https://www.awkwardzombie.com/comics/1592796037-comic672.png",
+    "path": "",
     "thumbStyle": "ill-layers",
     "title": "Layers",
     "description": "Accompanying an article about avatars, for designer-writer Zachary Deocadiz (July 2019).",
@@ -60,6 +60,96 @@
     "thumbStyle": "ill-together",
     "title": "Together",
     "description": "For commission for a friend's anniversary (June 2018).",
+    "alt": ""
+  },
+  {
+    "id": 7,
+    "order": 7,
+    "path": "",
+    "thumbStyle": "ill-magnet",
+    "title": "Johto Magnetone Line",
+    "description": "For the Pokemon Traveler Zine (November 2017).",
+    "alt": ""
+  },
+  {
+    "id": 8,
+    "order": 8,
+    "path": "",
+    "thumbStyle": "ill-woods",
+    "title": "The Wolf",
+    "description": "For the prompt, \"Into the Woods\" for Style and Substance at RISD (May 2017).",
+    "alt": ""
+  },
+  {
+    "id": 9,
+    "order": 9,
+    "path": "",
+    "thumbStyle": "ill-sympathizer",
+    "title": "The Sympathizer",
+    "description": "For the New York Times Sunday Book Review on The Sympathizer by Viet Thanh Nguyen (not commissioned) (December 2016).",
+    "alt": ""
+  },
+  {
+    "id": 10,
+    "order": 10,
+    "path": "",
+    "thumbStyle": "ill-arrivals",
+    "title": "A Note To Asian-American Activists About New Arrivals",
+    "description": "For the HuffPost piece, titled above, by Frank Wu (not commissioned) (April 2017).",
+    "alt": ""
+  },
+  {
+    "id": 11,
+    "order": 11,
+    "path": "",
+    "thumbStyle": "ill-house",
+    "title": "The Asian American Wealth Gap: Too Often Ignored",
+    "description": "For the HuffPost article, titled above, by Lilian Singh (not commissioned) (May 2017).",
+    "alt": ""
+  },
+  {
+    "id": 12,
+    "order": 12,
+    "path": "",
+    "thumbStyle": "ill-shapes",
+    "title": "A Song Portrait of Michael Kennedy",
+    "description": "For a story, titled above, by NowHereThis.org (March 2017).",
+    "alt": ""
+  },
+  {
+    "id": 13,
+    "order": 13,
+    "path": "",
+    "thumbStyle": "ill-buzzfeed",
+    "title": "Buzzfeed and Gentrification",
+    "description": "For a story, titled above, by NowHereThis.org (December 2016).",
+    "alt": ""
+  },
+  {
+    "id": 14,
+    "order": 14,
+    "path": "",
+    "thumbStyle": "ill-handshake",
+    "title": "Shakey",
+    "description": "For an article in the Brown Political Review about the state of relations between Germany and Turkey (October 2016).",
+    "alt": ""
+  },
+  {
+    "id": 15,
+    "order": 15,
+    "path": "",
+    "thumbStyle": "ill-wall",
+    "title": "Wash",
+    "description": "For a NYTimes article about China's botched repair to the Great Wall (not commissioned) (October 2016).",
+    "alt": ""
+  },
+  {
+    "id": 16,
+    "order": 16,
+    "path": "",
+    "thumbStyle": "ill-robbers",
+    "title": "Robbers",
+    "description": "For a collaboratively-told story (September 2016).",
     "alt": ""
   }
 ]

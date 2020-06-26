@@ -25,7 +25,7 @@
 // 4. styles
 // 5. lazy imports
 
-import React, { Suspense, lazy, useState } from 'react';
+import React, { Suspense, lazy, useState, useRef } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 
@@ -76,8 +76,7 @@ const Lightbox = ({
 
   const isLightboxHidden = currentImg === null;
 
-  // const { windowHeight, windowWidth } = useWindowDimensions();
-  const { windowWidth } = useWindowDimensions();
+  const { windowHeight, windowWidth } = useWindowDimensions();
   const midBoundary = windowWidth / 2;
 
   const [leftArrowStatus, setLeftArrow] = useState<TimeoutState>({
@@ -143,6 +142,35 @@ const Lightbox = ({
     }
   };
 
+  const lightboxCloseEl = useRef<HTMLDivElement>(null!);
+
+  // Check mouse position
+  // if inside close button bounded rectangle, close lightbox
+  // else change slide
+  const handleLightboxClick = (event: React.MouseEvent) => {
+    const fairGameBounds = {
+      top: windowHeight * 0.03,
+      left: 12,
+      bottom: windowHeight * 0.96,
+      right: windowWidth - 12
+    }
+    const mouseOutX = event.clientX < fairGameBounds.left || event.clientX > fairGameBounds.right;
+    const mouseOutY = event.clientY < fairGameBounds.top || event.clientY > fairGameBounds.bottom;
+    const mouseOutOfBounds = mouseOutX || mouseOutY;
+
+    const closeRect = lightboxCloseEl.current.getBoundingClientRect();
+    const mouseXIntersect = event.clientX >= closeRect.left && event.clientX <= closeRect.right;
+    const mouseYIntersect = event.clientY >= closeRect.top && event.clientY <= closeRect.bottom;
+    const mouseIntersectClose = mouseXIntersect && mouseYIntersect;
+
+    if (mouseOutOfBounds || mouseIntersectClose) {
+      closeLightbox();
+    }
+    else {
+      handleSlideChange(event);
+    }
+  }
+
   // switch which image gets pulled up on mouseX
   const handleSlideChange = (event: React.MouseEvent) => {
     if (event.clientX <= midBoundary) {
@@ -157,7 +185,7 @@ const Lightbox = ({
       <div 
         className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
         onMouseMove={handleMouseOver}
-        onClick={handleSlideChange}
+        onClick={handleLightboxClick}
       >
         <div className={galleryStyles.carouselWrapper}>
           <div className={galleryStyles.carousel}>
@@ -224,16 +252,25 @@ const Lightbox = ({
             &gt;
           </span>
         </div>
+
+        <div 
+          className={`${galleryStyles.lightboxClose} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
+          ref={lightboxCloseEl}
+          // onClick={closeLightbox}
+          // onLoad={()=>console.log("I loaded")}
+        >
+            <span style={{userSelect: 'none'}}> X </span>
+        </div>
       </div>
 
       {/* close button */}
       {/* needs to be located outside the gallery root in order to work, actually */}
-      <div 
+      {/* <div 
         className={`${galleryStyles.lightboxClose} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
         onClick={closeLightbox}
       >
           <span style={{userSelect: 'none'}}> X </span>
-      </div>
+      </div> */}
     </div>
   )
 }
