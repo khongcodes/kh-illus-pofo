@@ -39,7 +39,6 @@ import galleryStyles from '../style/Gallery.module.sass';
 /////////////                                                               TYPES
 
 type OuterGalleryProps = {
-  thumbnailSrcArray: string[];
   imgArray: string[];
   galleryMetadata: GalleryItemShape[];
 }
@@ -242,7 +241,7 @@ const Lightbox = ({
 //           contain state for slideshow - currentImg and open/closed
 //      why: this component will be able to be called and create a gallery+slideshow 
 //           on any page with any imagemetadata set
-const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: OuterGalleryProps) => {
+const Gallery = ({ imgArray, galleryMetadata }: OuterGalleryProps) => {
   const [currentImg, setCurrentImg] = useState<number | null>(null);
   
   const firstImgIndex = 0;
@@ -309,7 +308,6 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: OuterGalleryP
       </div>
 
       <ResizingThumbGallery 
-        thumbnailSrcArray = {thumbnailSrcArray}
         imgArray = {imgArray}
         galleryMetadata = {galleryMetadata}
         openLightbox = {openLightbox}

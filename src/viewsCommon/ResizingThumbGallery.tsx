@@ -31,7 +31,6 @@ import galleryThumbStyles from '../style/GalleryThumbnails.module.sass';
 /////////////                                                               TYPES
 
 type GalleryProps = {
-  thumbnailSrcArray: string[];
   imgArray: string[];
   galleryMetadata: GalleryItemShape[];
   openLightbox: (currentImg: number) => void;
@@ -47,7 +46,7 @@ type ImageOrientations = ImageOrientationTypes[];
 //      why: semantic clarity on Gallery
 //           and potentially, future reusability
 const ResizingThumbGallery = ({ 
-  thumbnailSrcArray, imgArray, galleryMetadata, openLightbox
+  imgArray, galleryMetadata, openLightbox
 }: GalleryProps) => {
 
   // get windowWidth
@@ -65,30 +64,40 @@ const ResizingThumbGallery = ({
 
   const getImgOrientation = (img: HTMLImageElement, index: number): void => {
     const orientation = img.naturalHeight <= img.naturalWidth ? "landscape" : "portrait";
-    setImageOrientations(Object.assign(imageOrientations, { [index]: orientation }))
+    setImageOrientations(Object.assign([], imageOrientations, { [index]: orientation }));
   };
 
-  const makeOrientationDependentStyleObj = (orientation: ImageOrientationTypes): CSSProperties => {
-    if (windowWidth <= maxWindowBreakpoint) {
-      switch (orientation) {
-        case "landscape":
-          return { "height": getThumbnailWindowRatio() * windowWidth };
-        case "portrait":
-          return { "width": getThumbnailWindowRatio() * windowWidth };
-        default:
-          return {}
-      }
-    } else {
-      return {}
-    }
-  }
+
+  // LEGACY - NO LONGER NEEDED
+  // state-dependent classname and CSS attribute object-fit: contain
+  // make this function no longer necessary
+  // no need to unnecessarily control styles at a granular level from React
+
+  // const makeOrientationDependentStyleObj = (orientation: ImageOrientationTypes): CSSProperties => {
+  //   if (windowWidth <= maxWindowBreakpoint) {
+  //     switch (orientation) {
+  //       case "landscape":
+  //         return { "height": getThumbnailWindowRatio() * windowWidth };
+  //       case "portrait":
+  //         return { "width": getThumbnailWindowRatio() * windowWidth };
+  //       default:
+  //         return {}
+  //     }
+  //   } else {
+  //     return {}
+  //   }
+  // }
 
   return (
     <div id={resizingGalleryStyles.galleryRootContainer}>
       {
         galleryMetadata.map((item: GalleryItemShape, index: number): JSX.Element => {
-          const orientationDependentStyling = makeOrientationDependentStyleObj(imageOrientations[index] as ImageOrientationTypes);
-
+          
+          // LEGACY - NO LONGER NEEDED
+          // entry point for setting style of thumbnail in React
+          // see const makeOrientationDependentStyleObj
+          // const orientationDependentStyling = makeOrientationDependentStyleObj(imageOrientations[index] as ImageOrientationTypes);
+          
           return (
             <div 
               className = {resizingGalleryStyles.thumbSquareSizer}
@@ -98,10 +107,12 @@ const ResizingThumbGallery = ({
               <div className={resizingGalleryStyles.thumbContainer}>
                 {/* later derive SRC of this image from item.thumb */}
                 <img 
-                  className={`${resizingGalleryStyles.thumbImg} ${galleryThumbStyles[galleryMetadata[index].thumbStyle]}`} 
-                  src={thumbnailSrcArray[index]}
+                  className={`${resizingGalleryStyles.thumbImg} ${galleryThumbStyles[galleryMetadata[index].thumbStyle]} ${resizingGalleryStyles[imageOrientations[index]]}`} 
+                  src={imgArray[index]}
                   onLoad={(event) => getImgOrientation(event.target as HTMLImageElement, index)}
-                  style={orientationDependentStyling}
+                  // LEGACY - NO LONGER NEEDED
+                  // see const makeOrientationDependentStyleObj
+                  // style = {orientationDependentStyling}
                 />
               </div>
             </div>

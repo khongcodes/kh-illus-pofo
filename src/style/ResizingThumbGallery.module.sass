@@ -10,6 +10,8 @@
 
 @use 'design'
 
+$grid-gap: design.space(0.5)
+
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                              STYLES
 
@@ -18,11 +20,10 @@
   height: auto
   display: grid
   grid-template-columns: 1fr 1fr 1fr
-  grid-gap: design.space(0.5)
+  grid-gap: $grid-gap
   
   @include design.mobile-media
     grid-template-columns: 1fr 1fr
-
 
 .thumbSquareSizer
   overflow: hidden
@@ -34,3 +35,12 @@
 
   .thumbContainer .thumbImg
       position: absolute
+
+.thumbImg
+  object-fit: contain
+
+  &.portrait
+    width: 100%
+
+  &.landscape
+    height: 100%
