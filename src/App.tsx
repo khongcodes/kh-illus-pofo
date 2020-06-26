@@ -10,11 +10,11 @@
 // 2. components & assets
 // 3. styles
 
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import Home from './views/Home';
-import PenInk from './views/PenInk';
+// import Home from './views/Home';
+// import PenInk from './views/PenInk';
 import ComicsSnake from './views/ComicsSnake';
 import ComicsDarkestKnife from './views/ComicsDarkestKnife';
 import ComicsEtc from './views/ComicsEtc';
@@ -27,10 +27,14 @@ import Layout from './viewsCommon/Layout';
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
 
+const Home = lazy(() => import('./views/Home'));
+const PenInk = lazy(() => import('./views/PenInk'));
+
 const App: React.FC = () => {
   return (
     <Router>
       <Layout>
+        <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/illustration' element={<Navigate to='/' />} />
@@ -43,6 +47,7 @@ const App: React.FC = () => {
           <Route path='/sketchbook' element={<Sketchbook />} />
           <Route path='/about' element={<About />} />
         </Routes>
+        </Suspense>
       </Layout>
     </Router>
   );

@@ -33,14 +33,17 @@ $grid-gap: design.space(0.5)
   padding-bottom: 100%
   cursor: pointer
 
-  .thumbContainer .thumbImg
-      position: absolute
-
 .thumbImg
+  position: absolute
   object-fit: contain
+  opacity: 0
+  transition: opacity 0.2s ease-in
 
   &.portrait
     width: 100%
 
   &.landscape
     height: 100%
+  
+  &.loaded
+    opacity: 1

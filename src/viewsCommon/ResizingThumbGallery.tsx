@@ -35,8 +35,13 @@ type GalleryProps = {
   galleryMetadata: GalleryItemShape[];
   openLightbox: (currentImg: number) => void;
 }
-type ImageOrientationTypes = "portrait" | "landscape" | "square" | "";
-type ImageOrientations = ImageOrientationTypes[];
+type ImageOrientationTypes = "portrait" | "landscape"| "";
+type ImageLoadedTypes = "loaded" | "";
+type SingleThumbType = {
+  orientation: ImageOrientationTypes,
+  loaded: ImageLoadedTypes
+};
+type ThumbType = SingleThumbType[];
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
@@ -60,13 +65,12 @@ const ResizingThumbGallery = ({
   // onLoad, check if height or width is bigger
   // if height, thumbnail width maps to windowWidth
   // if width, thumbnail height maps to windowWidth
-  const [imageOrientations, setImageOrientations] = useState<ImageOrientations>(galleryMetadata.map(() => ""));
-
-  const getImgOrientation = (img: HTMLImageElement, index: number): void => {
-    const orientation = img.naturalHeight <= img.naturalWidth ? "landscape" : "portrait";
-    setImageOrientations(Object.assign([], imageOrientations, { [index]: orientation }));
-  };
-
+  const [thumbState, setThumbState] = useState<ThumbType>(galleryMetadata.map(() => (
+    {
+      orientation: "",
+      loaded: ""
+    }
+  )));
 
   // LEGACY - NO LONGER NEEDED
   // state-dependent classname and CSS attribute object-fit: contain
@@ -88,6 +92,15 @@ const ResizingThumbGallery = ({
   //   }
   // }
 
+  const handleImgLoad = (img: HTMLImageElement, index: number): void => {
+    const adjucatedOrientation = img.naturalHeight <= img.naturalWidth ? "landscape" : "portrait";
+
+    setThumbState(Object.assign([], thumbState, { [index]: {
+      orientation: adjucatedOrientation,
+      loaded: "loaded"
+    }}))
+  }
+
   return (
     <div id={resizingGalleryStyles.galleryRootContainer}>
       {
@@ -97,7 +110,19 @@ const ResizingThumbGallery = ({
           // entry point for setting style of thumbnail in React
           // see const makeOrientationDependentStyleObj
           // const orientationDependentStyling = makeOrientationDependentStyleObj(imageOrientations[index] as ImageOrientationTypes);
-          
+
+          // combine element styles to make classname:
+          //    sass class thumbImg
+          //    metadata item thumbStyle
+          //    loaded image orientation
+          //    image loaded-status as boolean
+          const imgClassName = [
+            resizingGalleryStyles.thumbImg,
+            galleryThumbStyles[galleryMetadata[index].thumbStyle],
+            resizingGalleryStyles[thumbState[index].orientation],
+            resizingGalleryStyles[thumbState[index].loaded]
+          ].join(" ");
+
           return (
             <div 
               className = {resizingGalleryStyles.thumbSquareSizer}
@@ -107,9 +132,9 @@ const ResizingThumbGallery = ({
               <div className={resizingGalleryStyles.thumbContainer}>
                 {/* later derive SRC of this image from item.thumb */}
                 <img 
-                  className={`${resizingGalleryStyles.thumbImg} ${galleryThumbStyles[galleryMetadata[index].thumbStyle]} ${resizingGalleryStyles[imageOrientations[index]]}`} 
+                  className={imgClassName} 
                   src={imgArray[index]}
-                  onLoad={(event) => getImgOrientation(event.target as HTMLImageElement, index)}
+                  onLoad={(event) => handleImgLoad(event.target as HTMLImageElement, index)}
                   // LEGACY - NO LONGER NEEDED
                   // see const makeOrientationDependentStyleObj
                   // style = {orientationDependentStyling}
