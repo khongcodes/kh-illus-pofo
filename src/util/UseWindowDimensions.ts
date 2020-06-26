@@ -1,3 +1,20 @@
+//                                                             src/views/Home.tsx
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - Home page
+//  - serve Illustration Gallery and Lightbox
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                                TODO
+// 1. trim the fat on deploy
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                             IMPORTS
+// 1. system & packages
+// 2. models & config data
+// 3. components & assets
+// 4. styles
+
 import { useState, useEffect } from 'react';
 
 // function getWindowDimensions() {

@@ -8,8 +8,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                                TODO
-// 1. REDO
-// 2. on deploy, setup getting img src from data path/thumb members
+// 1. on deploy, setup getting img src from data path/thumb members
 // 
 // CURRENTLY:
 // use galleryMetadata index to index-match to thumbnailSrcArray, holding img srcs in array
