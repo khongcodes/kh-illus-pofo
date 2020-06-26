@@ -9,26 +9,31 @@
 // 1. system & packages
 // 2. components & assets
 // 3. styles
+// 4. lazy imports
 
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // import Home from './views/Home';
 // import PenInk from './views/PenInk';
-import ComicsSnake from './views/ComicsSnake';
-import ComicsDarkestKnife from './views/ComicsDarkestKnife';
-import ComicsEtc from './views/ComicsEtc';
-import Sketchbook from './views/Sketchbook';
-import About from './views/About';
+// import ComicsSnake from './views/ComicsSnake';
+// import ComicsDarkestKnife from './views/ComicsDarkestKnife';
+// import ComicsEtc from './views/ComicsEtc';
+// import Sketchbook from './views/Sketchbook';
+// import About from './views/About';
 
 import Layout from './viewsCommon/Layout';
 
+const Home = lazy(() => import('./views/Home'));
+const PenInk = lazy(() => import('./views/PenInk'));
+const ComicsSnake = lazy(() => import('./views/ComicsSnake'));
+const ComicsDarkestKnife = lazy(() => import('./views/ComicsDarkestKnife'));
+const ComicsEtc = lazy(() => import('./views/ComicsEtc'));
+const Sketchbook = lazy(() => import('./views/Sketchbook'));
+const About = lazy(() => import('./views/About'));
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
-
-const Home = lazy(() => import('./views/Home'));
-const PenInk = lazy(() => import('./views/PenInk'));
 
 const App: React.FC = () => {
   return (

@@ -24,17 +24,19 @@
 // 2. models & config data
 // 3. components & assets
 // 4. styles
+// 5. lazy imports
 
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 
-import ResizingThumbGallery from './ResizingThumbGallery';
+// import ResizingThumbGallery from './ResizingThumbGallery';
+
 import useWindowDimensions from '../util/UseWindowDimensions';
 
 import galleryStyles from '../style/Gallery.module.sass';
 
-
+const ResizingThumbGallery = lazy(() => import('./ResizingThumbGallery'));
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                               TYPES
 
@@ -306,12 +308,14 @@ const Gallery = ({ imgArray, galleryMetadata }: OuterGalleryProps) => {
           galleryMetadata = {galleryMetadata}
         />
       </div>
-
-      <ResizingThumbGallery 
-        imgArray = {imgArray}
-        galleryMetadata = {galleryMetadata}
-        openLightbox = {openLightbox}
-      />
+      
+      <Suspense fallback={<div/>}>
+        <ResizingThumbGallery 
+          imgArray = {imgArray}
+          galleryMetadata = {galleryMetadata}
+          openLightbox = {openLightbox}
+        />
+      </Suspense>
 
     </>
   )

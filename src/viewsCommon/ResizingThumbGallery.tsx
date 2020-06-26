@@ -130,9 +130,10 @@ const ResizingThumbGallery = ({
               key = {index}
             >
               <div className={resizingGalleryStyles.thumbContainer}>
-                {/* later derive SRC of this image from item.thumb */}
+                {/* later derive SRC of this image from item.path */}
                 <img 
                   className={imgClassName} 
+                  // src={item.path}
                   src={imgArray[index]}
                   onLoad={(event) => handleImgLoad(event.target as HTMLImageElement, index)}
                   // LEGACY - NO LONGER NEEDED
