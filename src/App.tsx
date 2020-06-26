@@ -1,3 +1,15 @@
+//                                                                    src/App.tsx
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - Organize routes within Layout
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                             IMPORTS
+// 1. system & packages
+// 2. components & assets
+// 3. styles
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -10,6 +22,10 @@ import Sketchbook from './views/Sketchbook';
 import About from './views/About';
 
 import Layout from './viewsCommon/Layout';
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                  COMPONENTS & LOGIC
 
 const App: React.FC = () => {
   return (

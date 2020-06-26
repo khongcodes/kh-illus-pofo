@@ -2,19 +2,19 @@
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                    RESPONSIBILITIES
 //  - display organization of children
-//  - hold keep track of menu state
+//  - hold keep track of menu state and define menus
+
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                                TODO
-// 1. continue documentation
-// 2. refactor LockedSubmenu and TogglingSubmenu into Submenu with toggling:bool
+// 1. refactor LockedSubmenu and TogglingSubmenu into Submenu with toggling:bool
 
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                             IMPORTS
 // 1. system & packages
 // 2. models & config data
-// 3. assets
+// 3. components & assets
 // 4. styles
 
 import React, { useState } from 'react';
@@ -40,7 +40,7 @@ const menuData = rawMenuData as MenuDataShape;
 
 
 /////////////////////////////////////////////////////////////////////////////////
-/////////////                                                 PAGE-SPECIFIC-TYPES
+/////////////                                                               TYPES
 
 type LayoutProps = {
   children: React.ReactNode[] | React.ReactNode
@@ -60,7 +60,7 @@ type MobileMenuControlProps = {
 
 // ListItemNavLink: FC
 // function: formats NavLinks as list items
-// why: DRY out code
+//      why: DRY out code
 const ListItemNavLink = ({ item, resetMobileMenu }: {
   item: LinkShape;
   resetMobileMenu: () => void;
@@ -71,10 +71,10 @@ const ListItemNavLink = ({ item, resetMobileMenu }: {
 )
 
 // TogglingSubMenu: FC
-// function: creates a submenu usable in SideMenu: FC - toggles open and shut
-// why: separated logic to its own part of the doc
-//      a specialized, higher-functioning version of ListItemNavLink (above)
-//      also calls ListItemNavLink for the item prop's subitems
+// function:  creates a submenu usable in SideMenu: FC - toggles open and shut
+//      why:  separated logic to its own part of the doc
+//            a specialized, higher-functioning version of ListItemNavLink (above)
+//            also calls ListItemNavLink for the item prop's subitems
 const TogglingSubmenu = ({ item, resetMobileMenu }: { 
   item: SubmenuShape;
   resetMobileMenu: () => void;
@@ -106,9 +106,9 @@ const TogglingSubmenu = ({ item, resetMobileMenu }: {
 
 // LockedSubmenu: FC
 // function: creates shape of submenu, like TogglingSubmenu, but not toggling
-// why: separated out logic
-// PROPOSE: refactor to combine with TogglingSubmenu;
-//          Submenu FC with prop - toggling: boolean
+//      why: separated out logic
+//  PROPOSE: refactor to combine with TogglingSubmenu;
+//           Submenu FC with prop - toggling: boolean
 const LockedSubmenu = ({ item, resetMobileMenu }: {
   item: SubmenuShape;
   resetMobileMenu: () => void;
@@ -127,6 +127,10 @@ const LockedSubmenu = ({ item, resetMobileMenu }: {
   </li>
 )
 
+
+// mapMenuContent: FC Controller
+// function: controller handling calling different list item components switching on type
+//      why: have a filter handling input and controlling output before passing data to FCs
 const mapMenuContent = (
   data: (LinkShape | SubmenuShape)[],
   submenuType: "toggling" | "locked",
@@ -157,6 +161,12 @@ const mapMenuContent = (
   })
 )
 
+
+// MobileMenuControl: FC
+// function: button for toggling mobileMenu. 
+//           animates - hamburger <-> X
+//      why: semantic clarity in SideMenu
+//           to keep in mind the transforming functionality
 const MobileMenuControl = ({ mobileMenuOpen, handleMobileMenuToggle }: MobileMenuControlProps) => {
   return (
     <div 
@@ -170,6 +180,12 @@ const MobileMenuControl = ({ mobileMenuOpen, handleMobileMenuToggle }: MobileMen
   )
 }
 
+
+// SideMenu: FC
+// function: take in menu config data and give shape to side menu
+//           display logo
+//           call component controller and MobileMenuControl
+//      why: semantic clarity in Layout
 const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMenu }: MenuDataProps & MobileMenuControlProps): JSX.Element => {
   
   return (
@@ -197,6 +213,10 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
   )
 }
 
+
+// MobileMenuDrawer: FC
+// function: take in menu config data and give shape to mobile menu
+//      why: semantic clarity in Layout
 const MobileMenuDrawer = ({ data, mobileMenuOpen, resetMobileMenu }: MenuDataProps & MobileMenuControlProps): JSX.Element => {
   return (
     <div className={`${layoutStyles.mobileMenuContainer} ${mobileMenuOpen ? layoutStyles.open : ''}`} >
@@ -207,6 +227,10 @@ const MobileMenuDrawer = ({ data, mobileMenuOpen, resetMobileMenu }: MenuDataPro
   )
 }
 
+// Layout: FC(main)
+// function: handle menu states (is mobile menu open?)
+//           give whole app shape
+//      why: DRY out code in pages
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [mobileMenuOpen, toggleMobileMenu] = useState(false);
   const handleMobileMenuToggle = () => toggleMobileMenu(!mobileMenuOpen)

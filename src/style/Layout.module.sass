@@ -1,4 +1,17 @@
+//                                                   src/style/Layout.module.sass
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - referenced in src/viewsCommon/Layout.tsx
+//  - establish styles for page layout wrapper - menu placement
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               SETUP
+
 @use 'design'
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                              STYLES
 
 #appLayout
   width: auto
@@ -15,6 +28,7 @@
     grid-template-columns: 100%
     grid-template-rows: design.space(10.5) auto
 
+
 .mobileMenuContainer
   width: 100%
   height: 0
@@ -26,6 +40,7 @@
   &.open
     @include design.mobile-media
       height: design.space(64)
+
 
 .sideMenuContainer
   padding-right: design.space(6)
@@ -60,6 +75,7 @@
         margin: design.space(1) design.space(0)
         height: design.space(9)
 
+
   .mobileMenuControlContainer
     display: none
     width: design.space(3)
@@ -91,6 +107,3 @@
         background-color: design.$red
         &:last-child
           margin-bottom: 0
-
-#pageContentContainer
-  background-color: orange

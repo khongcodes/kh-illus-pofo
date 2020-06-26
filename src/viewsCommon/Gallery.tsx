@@ -1,11 +1,44 @@
+//                                                    src/viewsCommon/Gallery.tsx
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - take in gallery metadata and build slideshow components
+//  - handle slideshow state
+//  - call ResizingThumbGallery
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                                TODO
+// 1. continue documentation
+// 2. extract ResizingThumbGallery functionality
+// 3. on deploy, setup getting img src from data path/thumb members
+// 
+// CURRENTLY:
+// use galleryMetadata index to index-match to thumbnailSrcArray, holding img srcs in array
+
+// IN THE FUTURE:
+// use galleryMetadata object's path/thumb members to pull images from 3rd party host
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                             IMPORTS
+// 1. system & packages
+// 2. models & config data
+// 3. components & assets
+// 4. styles
+
 import React, { useState, CSSProperties } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
+
 import useWindowDimensions from '../util/UseWindowDimensions';
 import { mobileBreakpoint, maxWindowBreakpoint } from './Layout';
 
 import galleryStyles from '../style/Gallery.module.sass';
-import galleryThumbStyles from '../style/GalleryThumbnail.module.sass';
+import galleryThumbStyles from '../style/GalleryThumbnails.module.sass';
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               TYPES
 
 type GalleryProps = {
   thumbnailSrcArray: string[];
@@ -31,14 +64,15 @@ type ArrowDirection = "left" | "right";
 type ImageOrientationTypes = "portrait" | "landscape" | "square" | "";
 type ImageOrientations = ImageOrientationTypes[];
 
-// CURRENTLY:
-// use galleryMetadata index to index-match to thumbnailSrcArray, holding img srcs in array
 
-// IN THE FUTURE:
-// use galleryMetadata object's path/thumb members to pull images from 3rd party host
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                  COMPONENTS & LOGIC
 
-
-
+// Lightbox: FC
+// function: take in slidehsow navigation state and controls
+//           manage user input with slideshow navigation/interaction
+//           big mouseover event listener tracking if mouse position is left/right of center
+//      why: separate concern - the Lightbox is its own whole sphere under the Gallery's leash
 const Lightbox = ({ 
   currentImg, returnNextImg, returnPrevImg,
   toNextImg, toPrevImg, closeLightbox,
@@ -60,6 +94,8 @@ const Lightbox = ({
   });
   
   const activateArrow = (direction: ArrowDirection) => {
+    // if one arrow becomes activated by user moving mouse over center of page,
+    // set up the arrow on the opposite side to be deactivated
 
     let setReferencedArrow: React.Dispatch<React.SetStateAction<TimeoutState>>;
     let referencedArrowStatus: TimeoutState;
@@ -81,6 +117,7 @@ const Lightbox = ({
         break;
     }
 
+    // start a timer that, after interval, returns the arrow's timerGoing member to false
     const refreshTimer = () => {
       const timer = setTimeout(
         (() => setReferencedArrow({ timerGoing: false, active: false })
@@ -94,16 +131,14 @@ const Lightbox = ({
       setOpposedArrow({ timerGoing: false, active: false });
     }
 
-    // set current arrow timer, reset if there already is one
-    if (referencedArrowStatus.timerGoing === false) {
-      refreshTimer();
-    }
-    else {
+    // set current arrow timer, or reset it if there already is one
+    if (referencedArrowStatus.timerGoing !== false) {
       clearTimeout(referencedArrowStatus.timerGoing as NodeJS.Timeout);
-      refreshTimer();
     }
+    refreshTimer();
   };
 
+  // switch which arrows are activated on mouseX
   const handleMouseOver = (event: React.MouseEvent) => {
     if (event.clientX <= midBoundary) {
       activateArrow("left");
@@ -112,6 +147,7 @@ const Lightbox = ({
     }
   };
 
+  // switch which image gets pulled up on mouseX
   const handleSlideChange = (event: React.MouseEvent) => {
     if (event.clientX <= midBoundary) {
       toPrevImg();
@@ -121,10 +157,7 @@ const Lightbox = ({
   }
 
   return (
-    // if !isLightboxHidden
-    // onMouseMove = {isLightboxHiden ? ( () => {} ) : handleMouseOver}
     <div>
-      
       <div 
         className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
         onMouseMove={handleMouseOver}
@@ -134,6 +167,11 @@ const Lightbox = ({
           <div className={galleryStyles.carousel}>
             {/* later derive SRC of this image from galleryMetadata[currentImg].path */}
             {galleryMetadata.map(data => {
+              // query the item in the stack -
+              //    are you the current image?
+              //    are you the previous image?
+              //    are you the next image?
+              // based on the answer, give the div the appropriate classname for styling
               const isThisImgActive = data.id === currentImg;
               const isThisPrevOfActive = data.id === returnPrevImg(currentImg);
               const isThisNextOfActive = data.id === returnNextImg(currentImg);
@@ -153,14 +191,13 @@ const Lightbox = ({
               return (
                 <div 
                   className={`${galleryStyles.lightboxImgContainer} ${imgClassModifier}`}
-                  onClick={(e) => console.log(e.target)}
                   key={data.id}
                 >
                   <img 
                     className={galleryStyles.lightboxImg}
                     src={imgArray[data.id]}
                   />
-                  <div className={`${galleryStyles.imgMetaContainer} ${isThisImgActive? galleryStyles.metaActive : ''}`}>
+                  <div className={`${galleryStyles.imgMetaContainer} ${isThisImgActive ? galleryStyles.metaActive : ''}`}>
                     <h1>{data.title}</h1>
                     <p>{data.description}</p>
                   </div>
@@ -171,6 +208,7 @@ const Lightbox = ({
           </div>
         </div>
         
+        {/* left arrow */}
         <div 
           className={`${galleryStyles.lightboxLeft} ${leftArrowStatus.timerGoing ? galleryStyles.active : ''}`} 
           onClick={toPrevImg}
@@ -180,6 +218,7 @@ const Lightbox = ({
           </span>
         </div>
 
+        {/* right arrow */}
         <div 
           className={`${galleryStyles.lightboxRight} ${rightArrowStatus.timerGoing ? galleryStyles.active : ''}`}
           onClick={toNextImg}
@@ -190,7 +229,8 @@ const Lightbox = ({
         </div>
       </div>
 
-
+      {/* close button */}
+      {/* needs to be located outside the gallery root in order to work, actually */}
       <div 
         className={`${galleryStyles.lightboxClose} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
         onClick={closeLightbox}
@@ -202,12 +242,19 @@ const Lightbox = ({
 }
 
 
+// Gallery: FC (main)
+// function: intake image metaData and display a gallery and slideshow
+//           contain state for slideshow - currentImg and open/closed
+//      why: this component will be able to be called and create a gallery+slideshow 
+//           on any page with any imagemetadata set
 const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps) => {
   const [currentImg, setCurrentImg] = useState<number | null>(null);
   
   const firstImgIndex = 0;
   const lastImgIndex = imgArray.length-1;
 
+  // methods for implementing ruby-like arrays -
+  // negative indices revert to negative-from-end index being pulled
   const returnPrevImg = (imgIndex: number | null): number | null => {
     if (imgIndex !== null) {
       return (imgIndex !== firstImgIndex) ? imgIndex - 1 : lastImgIndex;
@@ -222,7 +269,6 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
       return imgIndex;
     }
   }
-
   const toNextImg = (): void => {
     if (currentImg !== null) {
       setCurrentImg(returnNextImg(currentImg))
@@ -233,13 +279,16 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
       setCurrentImg(returnPrevImg(currentImg))
     }
   }
+
+  // while lightbox is open, hide scrollbar and prevent scrolling
+  // also create gap replacing righthand scrollbar to prevent disruption of body on modal open
+  // then reset it
   const closeLightbox = (): void => {
     document.body.style.overflowY="unset";
     document.body.style.paddingRight = `0px`;
     setCurrentImg(null);
   };
   const openLightbox = (index: number): void => {
-    // create gap replacing righthand scrollbar to prevent disruption of body on modal open
     const documentWidth = document.documentElement.clientWidth;
     const windowWidth = window.innerWidth;
     const scrollBarWidth = windowWidth - documentWidth;
@@ -248,7 +297,17 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
     document.body.style.overflowY="hidden";
     setCurrentImg(index);
   };
-
+  
+  // get windowWidth
+  // setup thumb to window-width ratio
+  const { windowHeight, windowWidth } = useWindowDimensions();
+  const getThumbnailWindowRatio = (): number => (
+    windowWidth >= mobileBreakpoint ? (360 / maxWindowBreakpoint) : (370 / mobileBreakpoint)
+  );
+  // generate array of image orientations
+  // onLoad, check if height or width is bigger
+  // if height, thumbnail width maps to windowWidth
+  // if width, thumbnail height maps to windowWidth
   const [imageOrientations, setImageOrientations] = useState(galleryMetadata.map(() => ""));
 
   const getImgOrientation = (img: HTMLImageElement, index: number): void => {
@@ -270,14 +329,7 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
       return {}
     }
   }
-
-  const { windowHeight, windowWidth } = useWindowDimensions();
-  const getThumbnailWindowRatio = (): number => (
-    windowWidth >= mobileBreakpoint ? (360 / maxWindowBreakpoint) : (370 / mobileBreakpoint)
-  );
-  const thumbnailWindowRatio = 360 / 1440;
   
-  console.log(windowWidth);
   return (
     <>
       <div>
@@ -291,7 +343,6 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
           imgArray = {imgArray}
           galleryMetadata = {galleryMetadata}
         />
-
       </div>
 
       <div id={galleryStyles.galleryRootContainer}>
@@ -302,15 +353,9 @@ const Gallery = ({ thumbnailSrcArray, imgArray, galleryMetadata }: GalleryProps)
             return (
               <div 
                 className = {galleryStyles.thumbSquareSizer}
-                onClick = {() => {
-                  openLightbox(index)
-                }}
+                onClick = {() => openLightbox(index)}
                 key = {index}
               >
-                {/* SOME KIND OF FUNCTION */}
-                {/* on window resize */}
-                {/* recalculate image size */}
-
                 <div className={galleryStyles.thumbContainer}>
                   {/* later derive SRC of this image from item.thumb */}
                   <img 
