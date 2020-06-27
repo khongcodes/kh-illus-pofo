@@ -1,28 +1,23 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
-type ChildProps = {
-  children: React.ReactNode[] | React.ReactNode,
-}
+type ChildProps = { children: React.ReactNode[] | React.ReactNode }
 
 type TabAccessConsumers = "lightbox" | "sideMenu" | "mobileMenu";
-type TabAccessType = { [key in TabAccessConsumers]: number;
-  // lightbox: number;
-  // sideMenu: number;
-  // mobileMenu: number;
-};
+type TabAccessType = { [key in TabAccessConsumers]: number };
+// lightbox: number;
+// sideMenu: number;
+// mobileMenu: number;
 
 type TabAccessMode = "default" | "lightbox" | "mobileMenu";
-
-export type TabAccessSchemeType = { [key in TabAccessMode]: TabAccessType;
-  // default: TabAccessType; 
-  // lightbox: TabAccessType;
-  // mobileMenu: TabAccessType;
-}
+export type TabAccessSchemeType = { [key in TabAccessMode]: TabAccessType }
+// default: TabAccessType; 
+// lightbox: TabAccessType;
+// mobileMenu: TabAccessType;
 
 export type TabAccessContextType = {
   scheme: TabAccessSchemeType;
   tabAccessMode: TabAccessMode;
-  setTabAccess: (string: TabAccessMode) => void;
+  setTabAccessMode: (string: TabAccessMode) => void;
 }
 
 const tabAccessScheme = {
@@ -43,24 +38,26 @@ const tabAccessScheme = {
   }
 };
 
-const defaultTabAccessContext: TabAccessContextType = {
+const uselessTabAccessContext: TabAccessContextType = {
   scheme: tabAccessScheme,
   tabAccessMode: "default",
-  setTabAccess: (string: TabAccessMode) => {}
+  setTabAccessMode: (string: TabAccessMode) => {}
 }
 
-export const TabAccessContext = createContext<TabAccessContextType>(defaultTabAccessContext);
+export const TabAccessContext = createContext<TabAccessContextType>(uselessTabAccessContext);
 
 const TabAccessProvider = ({children}: ChildProps) => {
+  
   const [tabAccessMode, setTabAccessMode] = useState<TabAccessMode>("default");
-  const toggleTabAccessMode = (string: TabAccessMode) => setTabAccessMode(string);
+  
+  const defaultTabAccessContext: TabAccessContextType = {
+    scheme: tabAccessScheme,
+    tabAccessMode: tabAccessMode,
+    setTabAccessMode: setTabAccessMode
+  }
 
   return (
-    <TabAccessContext.Provider value={{
-      scheme: tabAccessScheme,
-      tabAccessMode: tabAccessMode,
-      setTabAccess: toggleTabAccessMode
-    }}>
+    <TabAccessContext.Provider value={defaultTabAccessContext}>
       {children}
     </TabAccessContext.Provider>
   )

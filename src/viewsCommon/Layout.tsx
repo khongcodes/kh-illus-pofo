@@ -16,7 +16,7 @@
 // 3. components & assets
 // 4. styles
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, SyntheticEvent } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import { LinkShape, SubmenuShape, MenuDataShape } from '../model/MenuShape'
@@ -60,39 +60,70 @@ type MobileMenuControlProps = {
 // ListItemNavLink: FC
 // function: formats NavLinks as list items
 //      why: DRY out code
-const ListItemNavLink = ({ item, resetMobileMenu }: {
+const ListItemNavLink = ({ item, resetMobileMenu, menuType }: {
   item: LinkShape;
   resetMobileMenu: () => void;
-}) => (
-  <li>
-    <NavLink to={item.path} onClick={resetMobileMenu}> {item.text} </NavLink>
-  </li>
-)
+  menuType: "sideMenu" | "mobileMenu"
+}) => {
+  // get tabAccess information corresponding to passed-in menuType
+  const tabAccessControl = useContext(TabAccessContext);
+  const menuTabIndexState = tabAccessControl.scheme[tabAccessControl.tabAccessMode][menuType];
+  return (
+    <li>
+      <NavLink 
+        to={item.path} 
+        onClick={resetMobileMenu}
+        tabIndex={menuTabIndexState}
+      > 
+        {item.text} 
+      </NavLink>
+    </li>
+  )
+}
 
 // TogglingSubMenu: FC
 // function:  creates a submenu usable in SideMenu: FC - toggles open and shut
 //      why:  separated logic to its own part of the doc
 //            a specialized, higher-functioning version of ListItemNavLink (above)
 //            also calls ListItemNavLink for the item prop's subitems
-const TogglingSubmenu = ({ item, resetMobileMenu }: { 
+const TogglingSubmenu = ({ item, resetMobileMenu, menuType }: { 
   item: SubmenuShape;
   resetMobileMenu: () => void;
+  menuType: "sideMenu" | "mobileMenu",
  }) => {
   const [submenuOpen, toggleSubmenu] = useState(false);
   const handleSubmenuToggle = () => toggleSubmenu(!submenuOpen)
 
+  const tabAccessControl = useContext(TabAccessContext);
+  const sideMenuTabIndexState = tabAccessControl.scheme[tabAccessControl.tabAccessMode].sideMenu;
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (event.key === "Enter") {
+      handleSubmenuToggle();
+    }
+  }
   return (
     <li>
-      <span className={layoutStyles.submenuTitle} onClick={handleSubmenuToggle}>
+      <a 
+        className={layoutStyles.submenuTitle} 
+        onClick={handleSubmenuToggle}
+        onKeyPress={handleKeyPress}
+        tabIndex={sideMenuTabIndexState}
+        aria-label="Open Comics submenu"
+      >
         {item.text}
-      </span>
+      </a>
       
       <ul className={`${layoutStyles.submenuList} ${submenuOpen ? layoutStyles.open : ''}`}>
         {
           item.items.map(subitem => {
             if (subitem.type==='link') {
               return (
-                <ListItemNavLink item={subitem} resetMobileMenu={resetMobileMenu} key={subitem.path}/>
+                <ListItemNavLink
+                  key={subitem.path}
+                  item={subitem} 
+                  {...{resetMobileMenu, menuType}}
+                />
               )
             } else { return <></> }
           }
@@ -108,9 +139,10 @@ const TogglingSubmenu = ({ item, resetMobileMenu }: {
 //      why: separated out logic
 //  PROPOSE: refactor to combine with TogglingSubmenu;
 //           Submenu FC with prop - toggling: boolean
-const LockedSubmenu = ({ item, resetMobileMenu }: {
+const LockedSubmenu = ({ item, resetMobileMenu, menuType }: {
   item: SubmenuShape;
   resetMobileMenu: () => void;
+  menuType: "sideMenu" | "mobileMenu";
 }) => (
   <li>
     {item.text}
@@ -118,7 +150,11 @@ const LockedSubmenu = ({ item, resetMobileMenu }: {
       {item.items.map(subitem => {
         if (subitem.type==='link') {
           return (
-            <ListItemNavLink item={subitem} resetMobileMenu={resetMobileMenu} key={subitem.path}/>
+            <ListItemNavLink
+              key={subitem.path}
+              item={subitem}
+              {...{resetMobileMenu, menuType}}
+            />
           )
         } else { return <></> }
       })}
@@ -132,28 +168,37 @@ const LockedSubmenu = ({ item, resetMobileMenu }: {
 //      why: have a filter handling input and controlling output before passing data to FCs
 const mapMenuContent = (
   data: (LinkShape | SubmenuShape)[],
+  menuType: "sideMenu" | "mobileMenu",
   submenuType: "toggling" | "locked",
   resetMobileMenu: () => void
   ) => (
   data.map(item => {
     // const linkTriggersMobileMenu = !!resetMobileMenu;
-
     switch(item.type) {
 
       case "link":
         return (
-          <ListItemNavLink item={item} resetMobileMenu={resetMobileMenu} key={item.path}/>
+          <ListItemNavLink 
+            key={item.path}
+            {...{item, resetMobileMenu, menuType}}
+          />
         )
 
       case "submenu":
         switch (submenuType) {
           case "toggling":
             return (
-              <TogglingSubmenu item={item} key={item.text} resetMobileMenu={resetMobileMenu}/>
+              <TogglingSubmenu 
+                key={item.text}
+                {...{item, resetMobileMenu, menuType}}
+              />
             )
           case "locked":
             return (
-              <LockedSubmenu item={item} key={item.text} resetMobileMenu={resetMobileMenu}/>
+              <LockedSubmenu
+                key={item.text} 
+                {...{item, resetMobileMenu, menuType}}
+              />
             )
         }
     }
@@ -207,7 +252,7 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
       
       {/* Side menu, display:none on mobile-media */}
       <ul className={layoutStyles.sideMenuList}>
-        {mapMenuContent(data, "toggling", resetMobileMenu)}
+        {mapMenuContent(data, "sideMenu", "toggling", resetMobileMenu)}
       </ul>
 
       {/* Toggle mobile menu, display:none on desktop-media */}
@@ -225,10 +270,12 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
 // function: take in menu config data and give shape to mobile menu
 //      why: semantic clarity in Layout
 const MobileMenuDrawer = ({ data, mobileMenuOpen, resetMobileMenu }: MenuDataProps & MobileMenuControlProps): JSX.Element => {
+  // NEW PARAM FOR MAPMENUCONTENT
+  // if menu is mobile or not
   return (
     <div className={`${layoutStyles.mobileMenuContainer} ${mobileMenuOpen ? layoutStyles.open : ''}`} >
       <ul>
-        {mapMenuContent(data, "locked", resetMobileMenu)}
+        {mapMenuContent(data, "mobileMenu", "locked", resetMobileMenu)}
       </ul>
     </div>
   )
