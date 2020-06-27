@@ -16,16 +16,16 @@
 // 3. components & assets
 // 4. styles
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import { LinkShape, SubmenuShape, MenuDataShape } from '../model/MenuShape'
 import rawMenuData from '../configData/menuData.json';
 
+import { TabAccessContext } from '../util/TabAccessContext';
 import siteLogo from '../images/site-logo.png'
 
 import layoutStyles from '../style/Layout.module.sass';
-
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                               SETUP
@@ -42,10 +42,10 @@ const menuData = rawMenuData as MenuDataShape;
 /////////////                                                               TYPES
 
 type LayoutProps = {
-  children: React.ReactNode[] | React.ReactNode
+  children: React.ReactNode[] | React.ReactNode,
 }
 type MenuDataProps = {
-  data: (LinkShape | SubmenuShape)[]
+  data: (LinkShape | SubmenuShape)[];
 }
 type MobileMenuControlProps = {
   mobileMenuOpen: boolean;
@@ -187,11 +187,17 @@ const MobileMenuControl = ({ mobileMenuOpen, handleMobileMenuToggle }: MobileMen
 //           call component controller and MobileMenuControl
 //      why: semantic clarity in Layout
 const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMenu }: MenuDataProps & MobileMenuControlProps): JSX.Element => {
-  
+  const tabAccessControl = useContext(TabAccessContext);
+  const sideMenuTabIndexState = tabAccessControl.scheme[tabAccessControl.tabAccessMode].sideMenu;
+  console.log(tabAccessControl);
+  // console.log(tabAccessControl.scheme[tabAccessControl.tabAccessMode].sideMenu);
   return (
     <div className={layoutStyles.sideMenuContainer} >
       {/* Site Logo */}
-      <Link to='/'>
+      <Link 
+        to='/'
+        tabIndex={sideMenuTabIndexState}
+      >
         <img 
           src={siteLogo}
           id={layoutStyles.siteLogo}
@@ -228,12 +234,14 @@ const MobileMenuDrawer = ({ data, mobileMenuOpen, resetMobileMenu }: MenuDataPro
   )
 }
 
+
+
 // Layout: FC(main)
 // function: handle menu states (is mobile menu open?)
 //           give whole app shape
 //      why: DRY out code in pages
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [mobileMenuOpen, toggleMobileMenu] = useState(false);
+  const [mobileMenuOpen, toggleMobileMenu] = useState<boolean>(false);
   const handleMobileMenuToggle = () => toggleMobileMenu(!mobileMenuOpen)
   const resetMobileMenu = () => toggleMobileMenu(false)
 

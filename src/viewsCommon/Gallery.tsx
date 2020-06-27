@@ -25,7 +25,7 @@
 // 4. styles
 // 5. lazy imports
 
-import React, { Suspense, lazy, useState, useRef } from 'react';
+import React, { Suspense, lazy, useState, useRef, useContext } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 
@@ -186,6 +186,8 @@ const Lightbox = ({
         className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
         onMouseMove={handleMouseOver}
         onClick={handleLightboxClick}
+        onKeyDown={(event) => console.log('test')}
+        tabIndex={0}
       >
         <div className={galleryStyles.carouselWrapper}>
           <div className={galleryStyles.carousel}>

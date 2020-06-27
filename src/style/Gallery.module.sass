@@ -58,6 +58,9 @@ $slide-transition-time: 0.5s
   opacity: 1
   transition: visibility 0s linear $transition-time, opacity 0.1s linear
   transition-delay: 0s
+  &:focus
+    outline: none
+    
   &.hidden
     opacity: 0
     visibility: hidden

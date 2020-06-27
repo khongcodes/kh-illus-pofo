@@ -23,6 +23,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 // import About from './views/About';
 
 import Layout from './viewsCommon/Layout';
+import TabAccessProvider from './util/TabAccessContext';
 
 const Home = lazy(() => import('./views/Home'));
 const PenInk = lazy(() => import('./views/PenInk'));
@@ -35,25 +36,33 @@ const About = lazy(() => import('./views/About'));
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
 
+// const TabAccessToggle = () => {
+//   const [tabAccessMode, toggleTabAccessMode] = useContext(TabAccessContext);
+//   return () => toggleTabAccessMode(tabAccessMode.lightbox == -1 ? tabAccessScheme.modal : tabAccessScheme.default)
+// }
+
 const App: React.FC = () => {
+
   return (
     <Router>
-      <Layout>
-        <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/illustration' element={<Navigate to='/' />} />
-          <Route path='/pen-ink' element={<PenInk />} />
-          <Route path='/comics'>
-            <Route path='/snake' element={<ComicsSnake />} />
-            <Route path='/darkest-knife' element={<ComicsDarkestKnife />} />
-            <Route path='/etc' element={<ComicsEtc />} />
-          </Route>
-          <Route path='/sketchbook' element={<Sketchbook />} />
-          <Route path='/about' element={<About />} />
-        </Routes>
-        </Suspense>
-      </Layout>
+      <TabAccessProvider>
+        <Layout>
+          <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/illustration' element={<Navigate to='/' />} />
+            <Route path='/pen-ink' element={<PenInk />} />
+            <Route path='/comics'>
+              <Route path='/snake' element={<ComicsSnake />} />
+              <Route path='/darkest-knife' element={<ComicsDarkestKnife />} />
+              <Route path='/etc' element={<ComicsEtc />} />
+            </Route>
+            <Route path='/sketchbook' element={<Sketchbook />} />
+            <Route path='/about' element={<About />} />
+          </Routes>
+          </Suspense>
+        </Layout>
+      </TabAccessProvider>
     </Router>
   );
 }
