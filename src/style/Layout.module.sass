@@ -45,7 +45,11 @@
 .sideMenuContainer
   padding-right: design.space(6)
   box-sizing: border-box
+  width: 216px
+  position: fixed
   @include design.mobile-media
+    position: static
+    width: unset
     padding-bottom: design.space(3.5)
     padding-right: design.space(0)
 
@@ -71,6 +75,7 @@
       overflow: hidden
       transition-property: height margin
       transition-duration: 0.3s
+      padding-left: 8px
       &.open
         margin: design.space(1) design.space(0)
         height: design.space(9)
@@ -111,3 +116,8 @@
         background-color: design.$red
         &:last-child
           margin-bottom: 0
+
+#pageContentContainer
+  grid-column: 2/3
+  @include design.mobile-media
+    grid-column: unset

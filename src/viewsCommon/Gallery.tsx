@@ -85,7 +85,7 @@ const Lightbox = forwardRef<LightboxRef, LightboxProps>(({
       const lightboxDiv = lightboxRef as MutableRefObject<HTMLDivElement>;
       lightboxDiv.current.focus();
     }
-  }, [tabIndex]);
+  }, [tabIndex, lightboxRef]);
 
   const isLightboxHidden = currentImg === null;
 

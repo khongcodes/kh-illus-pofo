@@ -102,10 +102,12 @@ const ResizingThumbGallery = ({
     }}))
   }
 
+  const galleryDataSortedByOrder = galleryMetadata.sort((a, b) => a.order > b.order ? 1 : -1)
+
   return (
     <div id={resizingGalleryStyles.galleryRootContainer}>
       {
-        galleryMetadata.map((item: GalleryItemShape, index: number): JSX.Element => {
+        galleryDataSortedByOrder.map((item: GalleryItemShape, index: number): JSX.Element => {
           
           // LEGACY - NO LONGER NEEDED
           // entry point for setting style of thumbnail in React

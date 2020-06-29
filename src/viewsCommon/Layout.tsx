@@ -241,6 +241,7 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
   // console.log(tabAccessControl.scheme[tabAccessControl.tabAccessMode].sideMenu);
   return (
     <div className={layoutStyles.sideMenuContainer} >
+      {/* <div style={{"position":"fixed"}}> */}
       {/* Site Logo */}
       <Link 
         to='/'
@@ -264,6 +265,7 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
         handleMobileMenuToggle={handleMobileMenuToggle}
         resetMobileMenu={resetMobileMenu}
       />
+      {/* </div> */}
     </div>
   )
 }
