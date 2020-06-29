@@ -193,7 +193,10 @@ const Lightbox = forwardRef<LightboxRef, LightboxProps>(({
     }
   }
 
-  
+
+  const dontRenderMeta = galleryMetadata[0].title === "";
+
+  // handler for navigation elements
   const ifInputMatchEnterOrKeyThen = ( input: string, key: KeyMapValueTypes, callback: VoidFunction) => {
     if (["Enter", key].includes(input)) {
       callback();
@@ -258,10 +261,14 @@ const Lightbox = forwardRef<LightboxRef, LightboxProps>(({
                     src={imgArray[data.id]}
                     alt={data.alt}
                   />
-                  <div className={`${galleryStyles.imgMetaContainer}`}>
+                  {
+                    dontRenderMeta ? <></> 
+                    :
+                    <div className={`${galleryStyles.imgMetaContainer}`}>
                     <h1>{data.title}</h1>
                     <p>{data.description}</p>
                   </div>
+                  }
                 </div>
               )
             })}

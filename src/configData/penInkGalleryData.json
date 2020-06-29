@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "order": 0,
+    "path": "",
+    "thumbStyle": "ink-triceratops",
+    "title": "Triceratops Summer",
+    "description": "For the short story written by Michael Swanwick (2016).",
+    "alt": ""
+  },
+  {
+    "id": 1,
+    "order": 1,
+    "path": "",
+    "thumbStyle": "ink-rain",
+    "title": "The Long Rain",
+    "description": "For the short story written by Ray Bradbury (2016).",
+    "alt": ""
+  },
+  {
+    "id": 2,
+    "order": 2,
+    "path": "",
+    "thumbStyle": "ink-no",
+    "title": "No Particular Night Or Morning",
+    "description": "For the short story written by Ray Bradbury (2016).",
+    "alt": ""
+  },
+  {
+    "id": 3,
+    "order": 3,
+    "path": "",
+    "thumbStyle": "ink-cube1",
+    "title": "Wood",
+    "description": "Part of a Cube series (2016).",
+    "alt": ""
+  },
+  {
+    "id": 4,
+    "order": 4,
+    "path": "",
+    "thumbStyle": "ink-cube2",
+    "title": "Brass",
+    "description": "Part of a Cube series (2016).",
+    "alt": ""
+  },
+  {
+    "id": 5,
+    "order": 5,
+    "path": "",
+    "thumbStyle": "ink-cube3",
+    "title": "Stone",
+    "description": "Part of a Cube series (2016).",
+    "alt": ""
+  }
+]
