@@ -17,7 +17,8 @@ export type TabAccessSchemeType = { [key in TabAccessMode]: TabAccessType }
 export type TabAccessContextType = {
   scheme: TabAccessSchemeType;
   tabAccessMode: TabAccessMode;
-  setTabAccessMode: (string: TabAccessMode) => void;
+  prevTabAccessMode: TabAccessMode;
+  switchTabAccessMode: (string: TabAccessMode) => void;
 }
 
 const tabAccessScheme = {
@@ -41,7 +42,8 @@ const tabAccessScheme = {
 const uselessTabAccessContext: TabAccessContextType = {
   scheme: tabAccessScheme,
   tabAccessMode: "default",
-  setTabAccessMode: (string: TabAccessMode) => {}
+  prevTabAccessMode: "default",
+  switchTabAccessMode: (string: TabAccessMode) => {}
 }
 
 export const TabAccessContext = createContext<TabAccessContextType>(uselessTabAccessContext);
@@ -49,11 +51,21 @@ export const TabAccessContext = createContext<TabAccessContextType>(uselessTabAc
 const TabAccessProvider = ({children}: ChildProps) => {
   
   const [tabAccessMode, setTabAccessMode] = useState<TabAccessMode>("default");
-  
+  const [prevTabAccessMode, setPrevTabAccessMode] = useState<TabAccessMode>("default");
+
+  const switchTabAccessMode = (consumerCaller: TabAccessMode): void => {
+    // if the current mode is already this caller: revert it to previous tab state
+    // otherwise set it to this caller
+    const newTabAccessMode = tabAccessMode !== consumerCaller ? consumerCaller : prevTabAccessMode;
+    setPrevTabAccessMode(tabAccessMode);
+    setTabAccessMode(newTabAccessMode);
+  };
+
   const defaultTabAccessContext: TabAccessContextType = {
     scheme: tabAccessScheme,
     tabAccessMode: tabAccessMode,
-    setTabAccessMode: setTabAccessMode
+    prevTabAccessMode: prevTabAccessMode,
+    switchTabAccessMode: switchTabAccessMode
   }
 
   return (

@@ -25,15 +25,16 @@
 // 4. styles
 // 5. lazy imports
 
-import React, { Suspense, lazy, useState, useRef, useContext } from 'react';
+import React, { Suspense, lazy, useState, useRef, useContext, MutableRefObject, forwardRef, useEffect } from 'react';
 
 import { GalleryItemShape } from '../model/GalleryShape';
 
 // import ResizingThumbGallery from './ResizingThumbGallery';
-
+import { TabAccessContext } from '../util/TabAccessContext';
 import useWindowDimensions from '../util/UseWindowDimensions';
 
 import galleryStyles from '../style/Gallery.module.sass';
+
 
 const ResizingThumbGallery = lazy(() => import('./ResizingThumbGallery'));
 /////////////////////////////////////////////////////////////////////////////////
@@ -52,12 +53,16 @@ type LightboxProps = {
   closeLightbox: VoidFunction;
   imgArray: string[];
   galleryMetadata: GalleryItemShape[];
+  tabIndex: number;
 }
+type LightboxRef = HTMLDivElement | null;
 type TimeoutState = {
   timerGoing: boolean | NodeJS.Timeout;
   active: boolean;
 }
 type ArrowDirection = "left" | "right";
+const keyMapValues = ["Escape", "ArrowLeft", "ArrowRight"] as const;
+type KeyMapValueTypes = typeof keyMapValues[number];
 
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -68,11 +73,19 @@ type ArrowDirection = "left" | "right";
 //           manage user input with slideshow navigation/interaction
 //           big mouseover event listener tracking if mouse position is left/right of center
 //      why: separate concern - the Lightbox is its own whole sphere under the Gallery's leash
-const Lightbox = ({ 
+const Lightbox = forwardRef<LightboxRef, LightboxProps>(({ 
   currentImg, returnNextImg, returnPrevImg,
   toNextImg, toPrevImg, closeLightbox,
-  imgArray, galleryMetadata 
-}: LightboxProps) => {
+  imgArray, galleryMetadata,
+  tabIndex
+}, lightboxRef) => {
+  
+  useEffect(() => {
+    if (tabIndex !== -1) {
+      const lightboxDiv = lightboxRef as MutableRefObject<HTMLDivElement>;
+      lightboxDiv.current.focus();
+    }
+  }, [tabIndex]);
 
   const isLightboxHidden = currentImg === null;
 
@@ -180,14 +193,35 @@ const Lightbox = ({
     }
   }
 
+  
+  const ifInputMatchEnterOrKeyThen = ( input: string, key: KeyMapValueTypes, callback: VoidFunction) => {
+    if (["Enter", key].includes(input)) {
+      callback();
+    }
+  }
+
   return (
     <div>
       <div 
         className={`${galleryStyles.lightboxRoot} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
+        ref={lightboxRef}
         onMouseMove={handleMouseOver}
         onClick={handleLightboxClick}
-        onKeyDown={(event) => console.log('test')}
-        tabIndex={0}
+        tabIndex={tabIndex}
+        onKeyDown = {event => {
+          switch (event.key) {
+            case "Escape":
+                closeLightbox();
+              break;
+            case " ":
+            case "ArrowRight":
+                toNextImg();
+              break;
+            case "ArrowLeft":
+                toPrevImg();
+              break;
+          }
+        }}
       >
         <div className={galleryStyles.carouselWrapper}>
           <div className={galleryStyles.carousel}>
@@ -239,6 +273,8 @@ const Lightbox = ({
         <div 
           className={`${galleryStyles.lightboxLeft} ${leftArrowStatus.timerGoing ? galleryStyles.active : ''}`} 
           onClick={toPrevImg}
+          tabIndex={tabIndex}
+          onKeyDown = {(event) => ifInputMatchEnterOrKeyThen(event.key, "ArrowLeft", toPrevImg)}
         > 
           <span className={galleryStyles.arrow}>
             &lt;
@@ -249,6 +285,8 @@ const Lightbox = ({
         <div 
           className={`${galleryStyles.lightboxRight} ${rightArrowStatus.timerGoing ? galleryStyles.active : ''}`}
           onClick={toNextImg}
+          tabIndex={tabIndex}
+          onKeyDown = {(event) => ifInputMatchEnterOrKeyThen(event.key, "ArrowRight", toNextImg)}
         > 
           <span className={galleryStyles.arrow}>
             &gt;
@@ -258,24 +296,15 @@ const Lightbox = ({
         <div 
           className={`${galleryStyles.lightboxClose} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
           ref={lightboxCloseEl}
-          // onClick={closeLightbox}
-          // onLoad={()=>console.log("I loaded")}
+          tabIndex={tabIndex}
+          onKeyDown = {event => ifInputMatchEnterOrKeyThen(event.key, "Escape", closeLightbox)}
         >
             <span style={{userSelect: 'none'}}> X </span>
         </div>
       </div>
-
-      {/* close button */}
-      {/* needs to be located outside the gallery root in order to work, actually */}
-      {/* <div 
-        className={`${galleryStyles.lightboxClose} ${isLightboxHidden ? galleryStyles.hidden : ''}`}
-        onClick={closeLightbox}
-      >
-          <span style={{userSelect: 'none'}}> X </span>
-      </div> */}
     </div>
   )
-}
+})
 
 
 // Gallery: FC (main)
@@ -284,8 +313,8 @@ const Lightbox = ({
 //      why: this component will be able to be called and create a gallery+slideshow 
 //           on any page with any imagemetadata set
 const Gallery = ({ imgArray, galleryMetadata }: OuterGalleryProps) => {
+  // setup image array
   const [currentImg, setCurrentImg] = useState<number | null>(null);
-  
   const firstImgIndex = 0;
   const lastImgIndex = imgArray.length-1;
 
@@ -316,12 +345,18 @@ const Gallery = ({ imgArray, galleryMetadata }: OuterGalleryProps) => {
     }
   }
 
+  const tabAccessControl = useContext(TabAccessContext);
+  const lightboxTabIndex = tabAccessControl.scheme[tabAccessControl.tabAccessMode].lightbox;
+
+  const lightboxEl = useRef<HTMLDivElement | null>(null);
+
   // while lightbox is open, hide scrollbar and prevent scrolling
   // also create gap replacing righthand scrollbar to prevent disruption of body on modal open
   // then reset it
   const closeLightbox = (): void => {
     document.body.style.overflowY="unset";
     document.body.style.paddingRight = `0px`;
+    tabAccessControl.switchTabAccessMode("lightbox");
     setCurrentImg(null);
   };
   const openLightbox = (index: number): void => {
@@ -329,8 +364,9 @@ const Gallery = ({ imgArray, galleryMetadata }: OuterGalleryProps) => {
     const windowWidth = window.innerWidth;
     const scrollBarWidth = windowWidth - documentWidth;
     document.body.style.paddingRight = `${scrollBarWidth}px`;
-    
-    document.body.style.overflowY="hidden";
+    document.body.style.overflowY = "hidden";
+
+    tabAccessControl.switchTabAccessMode("lightbox");
     setCurrentImg(index);
   };
   
@@ -346,6 +382,8 @@ const Gallery = ({ imgArray, galleryMetadata }: OuterGalleryProps) => {
           closeLightbox = {closeLightbox}
           imgArray = {imgArray}
           galleryMetadata = {galleryMetadata}
+          tabIndex = {lightboxTabIndex}
+          ref={lightboxEl}
         />
       </div>
       

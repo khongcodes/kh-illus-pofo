@@ -16,7 +16,7 @@
 // 3. components & assets
 // 4. styles
 
-import React, { useState, useContext, SyntheticEvent } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import { LinkShape, SubmenuShape, MenuDataShape } from '../model/MenuShape'
@@ -24,6 +24,7 @@ import rawMenuData from '../configData/menuData.json';
 
 import { TabAccessContext } from '../util/TabAccessContext';
 import siteLogo from '../images/site-logo.png'
+import useWindowDimensions from '../util/UseWindowDimensions';
 
 import layoutStyles from '../style/Layout.module.sass';
 
@@ -60,20 +61,18 @@ type MobileMenuControlProps = {
 // ListItemNavLink: FC
 // function: formats NavLinks as list items
 //      why: DRY out code
-const ListItemNavLink = ({ item, resetMobileMenu, menuType }: {
+const ListItemNavLink = ({ item, resetMobileMenu, tabIndex }: {
   item: LinkShape;
   resetMobileMenu: () => void;
-  menuType: "sideMenu" | "mobileMenu"
+  tabIndex: number
 }) => {
   // get tabAccess information corresponding to passed-in menuType
-  const tabAccessControl = useContext(TabAccessContext);
-  const menuTabIndexState = tabAccessControl.scheme[tabAccessControl.tabAccessMode][menuType];
   return (
     <li>
       <NavLink 
         to={item.path} 
         onClick={resetMobileMenu}
-        tabIndex={menuTabIndexState}
+        tabIndex={tabIndex}
       > 
         {item.text} 
       </NavLink>
@@ -86,16 +85,13 @@ const ListItemNavLink = ({ item, resetMobileMenu, menuType }: {
 //      why:  separated logic to its own part of the doc
 //            a specialized, higher-functioning version of ListItemNavLink (above)
 //            also calls ListItemNavLink for the item prop's subitems
-const TogglingSubmenu = ({ item, resetMobileMenu, menuType }: { 
+const TogglingSubmenu = ({ item, resetMobileMenu, tabIndex }: { 
   item: SubmenuShape;
   resetMobileMenu: () => void;
-  menuType: "sideMenu" | "mobileMenu",
+  tabIndex: number,
  }) => {
   const [submenuOpen, toggleSubmenu] = useState(false);
   const handleSubmenuToggle = () => toggleSubmenu(!submenuOpen)
-
-  const tabAccessControl = useContext(TabAccessContext);
-  const sideMenuTabIndexState = tabAccessControl.scheme[tabAccessControl.tabAccessMode].sideMenu;
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLSpanElement>) => {
     if (event.key === "Enter") {
@@ -108,7 +104,7 @@ const TogglingSubmenu = ({ item, resetMobileMenu, menuType }: {
         className={layoutStyles.submenuTitle} 
         onClick={handleSubmenuToggle}
         onKeyPress={handleKeyPress}
-        tabIndex={sideMenuTabIndexState}
+        tabIndex={tabIndex}
         aria-label="Open Comics submenu"
       >
         {item.text}
@@ -122,7 +118,7 @@ const TogglingSubmenu = ({ item, resetMobileMenu, menuType }: {
                 <ListItemNavLink
                   key={subitem.path}
                   item={subitem} 
-                  {...{resetMobileMenu, menuType}}
+                  {...{resetMobileMenu, tabIndex}}
                 />
               )
             } else { return <></> }
@@ -139,10 +135,10 @@ const TogglingSubmenu = ({ item, resetMobileMenu, menuType }: {
 //      why: separated out logic
 //  PROPOSE: refactor to combine with TogglingSubmenu;
 //           Submenu FC with prop - toggling: boolean
-const LockedSubmenu = ({ item, resetMobileMenu, menuType }: {
+const LockedSubmenu = ({ item, resetMobileMenu, tabIndex }: {
   item: SubmenuShape;
   resetMobileMenu: () => void;
-  menuType: "sideMenu" | "mobileMenu";
+  tabIndex: number;
 }) => (
   <li>
     {item.text}
@@ -153,7 +149,7 @@ const LockedSubmenu = ({ item, resetMobileMenu, menuType }: {
             <ListItemNavLink
               key={subitem.path}
               item={subitem}
-              {...{resetMobileMenu, menuType}}
+              {...{resetMobileMenu, tabIndex}}
             />
           )
         } else { return <></> }
@@ -173,6 +169,11 @@ const mapMenuContent = (
   resetMobileMenu: () => void
   ) => (
   data.map(item => {
+    // call useContext just when creating items for a list
+    // not once in each individual list item
+    // child component doesn't need to know what menuType it's in
+    const tabAccessControl = useContext(TabAccessContext);
+    const tabIndex = tabAccessControl.scheme[tabAccessControl.tabAccessMode][menuType];
     // const linkTriggersMobileMenu = !!resetMobileMenu;
     switch(item.type) {
 
@@ -180,7 +181,7 @@ const mapMenuContent = (
         return (
           <ListItemNavLink 
             key={item.path}
-            {...{item, resetMobileMenu, menuType}}
+            {...{item, resetMobileMenu, tabIndex}}
           />
         )
 
@@ -190,14 +191,14 @@ const mapMenuContent = (
             return (
               <TogglingSubmenu 
                 key={item.text}
-                {...{item, resetMobileMenu, menuType}}
+                {...{item, resetMobileMenu, tabIndex}}
               />
             )
           case "locked":
             return (
               <LockedSubmenu
                 key={item.text} 
-                {...{item, resetMobileMenu, menuType}}
+                {...{item, resetMobileMenu, tabIndex}}
               />
             )
         }
@@ -213,10 +214,12 @@ const mapMenuContent = (
 //      why: semantic clarity in SideMenu
 //           to keep in mind the transforming functionality
 const MobileMenuControl = ({ mobileMenuOpen, handleMobileMenuToggle }: MobileMenuControlProps) => {
+  const { windowWidth } = useWindowDimensions();
   return (
     <div 
       className={`${layoutStyles.mobileMenuControlContainer} ${mobileMenuOpen ? layoutStyles.open : ''}`}
       onClick={handleMobileMenuToggle}
+      tabIndex={windowWidth <= mobileBreakpoint ? 0 : 1}
     >
       <div className={layoutStyles.bar1}/>
       <div className={layoutStyles.bar2}/>
@@ -289,8 +292,14 @@ const MobileMenuDrawer = ({ data, mobileMenuOpen, resetMobileMenu }: MenuDataPro
 //      why: DRY out code in pages
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [mobileMenuOpen, toggleMobileMenu] = useState<boolean>(false);
-  const handleMobileMenuToggle = () => toggleMobileMenu(!mobileMenuOpen)
-  const resetMobileMenu = () => toggleMobileMenu(false)
+  const tabAccessControl = useContext(TabAccessContext);
+  
+  const handleMobileMenuToggle = () => {
+    tabAccessControl.switchTabAccessMode("mobileMenu");
+    toggleMobileMenu(!mobileMenuOpen);
+  };
+
+  const resetMobileMenu = () => toggleMobileMenu(false);
 
   return (
     <>

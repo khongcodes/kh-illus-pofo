@@ -60,7 +60,7 @@ $slide-transition-time: 0.5s
   transition-delay: 0s
   &:focus
     outline: none
-    
+
   &.hidden
     opacity: 0
     visibility: hidden
@@ -75,11 +75,14 @@ $slide-transition-time: 0.5s
     align-items: center
     justify-content: center
     box-sizing: border-box
-    color: design.$ui-gray
+    color: white
     font-size: 30px
     z-index: 12
     opacity: 0
     transition: opacity $transition-time
+    
+    &:focus
+      opacity: 1
     
     &.active
       opacity: 1
