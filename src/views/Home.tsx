@@ -21,7 +21,6 @@ import React from 'react';
 import illusMetadata from '../configData/illustrationGalleryData.json';
 // remove on deploy
 import { illusArray } from '../images/index';
-
 import Gallery from '../viewsCommon/Gallery';
 
 
@@ -29,12 +28,10 @@ import Gallery from '../viewsCommon/Gallery';
 /////////////                                                  COMPONENTS & LOGIC
 
 const Home = () => (
-  <div>
-    <Gallery 
-      imgArray = {illusArray}
-      galleryMetadata = {illusMetadata}
-    />
-  </div>
+  <Gallery 
+    imgArray = {illusArray}
+    galleryMetadata = {illusMetadata}
+  />
 )
 
 export default Home

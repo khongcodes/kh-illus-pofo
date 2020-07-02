@@ -30,7 +30,7 @@
     "id": 3,
     "order": 3,
     "path": "",
-    "thumbStyle": "sketch-hunter",
+    "thumbStyle": "sketch-bad",
     "title": "",
     "description": "",
     "alt": ""
@@ -39,7 +39,7 @@
     "id": 4,
     "order": 4,
     "path": "",
-    "thumbStyle": "sketch-adidas",
+    "thumbStyle": "sketch-dmv",
     "title": "",
     "description": "",
     "alt": ""
@@ -48,7 +48,7 @@
     "id": 5,
     "order": 5,
     "path": "",
-    "thumbStyle": "sketch-dmv",
+    "thumbStyle": "sketch-adidas",
     "title": "",
     "description": "",
     "alt": ""
@@ -84,7 +84,7 @@
     "id": 9,
     "order": 9,
     "path": "",
-    "thumbStyle": "sketch-dungeon",
+    "thumbStyle": "sketch-comp",
     "title": "",
     "description": "",
     "alt": ""
@@ -93,7 +93,7 @@
     "id": 10,
     "order": 10,
     "path": "",
-    "thumbStyle": "sketch-fatt",
+    "thumbStyle": "sketch-stream",
     "title": "",
     "description": "",
     "alt": ""
@@ -111,7 +111,7 @@
     "id": 12,
     "order": 12,
     "path": "",
-    "thumbStyle": "sketch-magnetone",
+    "thumbStyle": "sketch-dungeon",
     "title": "",
     "description": "",
     "alt": ""
@@ -120,7 +120,7 @@
     "id": 13,
     "order": 13,
     "path": "",
-    "thumbStyle": "sketch-swamp",
+    "thumbStyle": "sketch-fatt",
     "title": "",
     "description": "",
     "alt": ""
@@ -128,6 +128,15 @@
   {
     "id": 14,
     "order": 14,
+    "path": "",
+    "thumbStyle": "sketch-hunter",
+    "title": "",
+    "description": "",
+    "alt": ""
+  },
+  {
+    "id": 15,
+    "order": 15,
     "path": "",
     "thumbStyle": "sketch-portrait",
     "title": "",
