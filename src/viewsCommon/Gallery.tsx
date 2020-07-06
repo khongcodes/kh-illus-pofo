@@ -20,49 +20,25 @@
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                             IMPORTS
 // 1. system & packages
-// 2. models & config data
+// 2. types & config data
 // 3. components & assets
 // 4. styles
 // 5. lazy imports
 
 import React, { Suspense, lazy, useState, useRef, useContext, MutableRefObject, forwardRef, useEffect } from 'react';
 
-import { GalleryItemShape } from '../model/GalleryShape';
+import { 
+  OuterGalleryProps, LightboxRef, LightboxProps,    // main component prop types
+  TimeoutState, ArrowDirection, KeyMapValueTypes    // component state types
+ } from '../model/Gallery';
 
 // import ResizingThumbGallery from './ResizingThumbGallery';
 import { TabAccessContext } from '../util/TabAccessContext';
 import useWindowDimensions from '../util/UseWindowDimensions';
 
-import galleryStyles from '../style/Gallery.module.sass';
-
+import galleryStyles from '../assets/style/Gallery.module.sass';
 
 const ResizingThumbGallery = lazy(() => import('./ResizingThumbGallery'));
-/////////////////////////////////////////////////////////////////////////////////
-/////////////                                                               TYPES
-
-type OuterGalleryProps = {
-  imgArray: string[];
-  galleryMetadata: GalleryItemShape[];
-}
-type LightboxProps = {
-  currentImg: number | null;
-  toNextImg: VoidFunction;
-  toPrevImg: VoidFunction;
-  returnNextImg: (imgIndex: number | null) => number | null;
-  returnPrevImg: (imgIndex: number | null) => number | null;
-  closeLightbox: VoidFunction;
-  imgArray: string[];
-  galleryMetadata: GalleryItemShape[];
-  tabIndex: number;
-}
-type LightboxRef = HTMLDivElement | null;
-type TimeoutState = {
-  timerGoing: boolean | NodeJS.Timeout;
-  active: boolean;
-}
-type ArrowDirection = "left" | "right";
-const keyMapValues = ["Escape", "ArrowLeft", "ArrowRight"] as const;
-type KeyMapValueTypes = typeof keyMapValues[number];
 
 
 /////////////////////////////////////////////////////////////////////////////////

@@ -18,30 +18,14 @@
 
 import React, { useState } from 'react';
 
-import { GalleryItemShape } from '../model/GalleryShape';
+import { GalleryItemShape, ThumbGalleryProps, ThumbType } from '../model/Gallery';
 
 // import useWindowDimensions from '../util/UseWindowDimensions';
 // import { mobileBreakpoint, maxWindowBreakpoint } from './Layout';
 
-import resizingGalleryStyles from '../style/ResizingThumbGallery.module.sass';
-import galleryThumbStyles from '../style/GalleryThumbnails.module.sass';
+import resizingGalleryStyles from '../assets/style/ResizingThumbGallery.module.sass';
+import galleryThumbStyles from '../assets/style/GalleryThumbnails.module.sass';
 
-
-////////////////////////////////////////////////////////////////////////////////
-/////////////                                                               TYPES
-
-type GalleryProps = {
-  imgArray: string[];
-  galleryMetadata: GalleryItemShape[];
-  openLightbox: (currentImg: number) => void;
-}
-type ImageOrientationTypes = "portrait" | "landscape"| "";
-type ImageLoadedTypes = "loaded" | "";
-type SingleThumbType = {
-  orientation: ImageOrientationTypes,
-  loaded: ImageLoadedTypes
-};
-type ThumbType = SingleThumbType[];
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
@@ -52,7 +36,7 @@ type ThumbType = SingleThumbType[];
 //           and potentially, future reusability
 const ResizingThumbGallery = ({ 
   imgArray, galleryMetadata, openLightbox
-}: GalleryProps) => {
+}: ThumbGalleryProps) => {
 
   // get windowWidth
   // setup thumb to window-width ratio

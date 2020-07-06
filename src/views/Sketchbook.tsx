@@ -18,9 +18,9 @@
 
 import React from 'react';
 
-import sketchMetadata from "../configData/sketchGallery.json";
+import sketchMetadata from "../configData/galleryDataSketch.json";
 // remove on deploy
-import { sketchArray } from "../images/index";
+import { sketchArray } from "../assets/images/index";
 import Gallery from "../viewsCommon/Gallery";
 
 

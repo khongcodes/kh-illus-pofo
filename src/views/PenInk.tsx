@@ -17,9 +17,9 @@
 // 4. styles
 import React from 'react';
 
-import peninkMetadata from "../configData/penInkGalleryData.json";
+import peninkMetadata from "../configData/galleryDataPenInk.json";
 // remove on deploy
-import { peninkArray } from "../images/index";
+import { peninkArray } from "../assets/images/index";
 import Gallery from "../viewsCommon/Gallery";
 
 

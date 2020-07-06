@@ -18,9 +18,9 @@
 
 import React from 'react';
 
-import illusMetadata from '../configData/illustrationGalleryData.json';
+import illusMetadata from '../configData/galleryDataIllustration.json';
 // remove on deploy
-import { illusArray } from '../images/index';
+import { illusArray } from '../assets/images/index';
 import Gallery from '../viewsCommon/Gallery';
 
 

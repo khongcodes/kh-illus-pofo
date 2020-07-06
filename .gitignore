@@ -23,4 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # images - to be dealt with on S3 or other hosting
-/src/images
+/src/assets/images/comics
+/src/assets/images/illustration
+/src/assets/images/penInk
+/src/assets/images/sketch

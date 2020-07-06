@@ -19,14 +19,18 @@
 import React, { useState, useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import { LinkShape, SubmenuShape, MenuDataShape } from '../model/MenuShape'
+import { 
+  LinkShape, SubmenuShape, MenuDataShape,               // data handling
+  LayoutProps, MenuDataProps, MobileMenuControlProps,   // main component prop types 
+  ListItemNavLinkProps, ListItemSubmenuProps            // sub component prop types
+} from '../model/Menu';
 import rawMenuData from '../configData/menuData.json';
 
 import { TabAccessContext } from '../util/TabAccessContext';
-import siteLogo from '../images/site-logo.png'
+import siteLogo from '../assets/images/site-logo.png'
 import useWindowDimensions from '../util/UseWindowDimensions';
 
-import layoutStyles from '../style/Layout.module.sass';
+import layoutStyles from '../assets/style/Layout.module.sass';
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                               SETUP
@@ -40,32 +44,12 @@ const menuData = rawMenuData as MenuDataShape;
 
 
 /////////////////////////////////////////////////////////////////////////////////
-/////////////                                                               TYPES
-
-type LayoutProps = {
-  children: React.ReactNode[] | React.ReactNode,
-}
-type MenuDataProps = {
-  data: (LinkShape | SubmenuShape)[];
-}
-type MobileMenuControlProps = {
-  mobileMenuOpen: boolean;
-  handleMobileMenuToggle?: () => void;
-  resetMobileMenu: () => void;
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
 
 // ListItemNavLink: FC
 // function: formats NavLinks as list items
 //      why: DRY out code
-const ListItemNavLink = ({ item, resetMobileMenu, tabIndex }: {
-  item: LinkShape;
-  resetMobileMenu: () => void;
-  tabIndex: number
-}) => {
+const ListItemNavLink = ({ item, resetMobileMenu, tabIndex }: ListItemNavLinkProps) => {
   // get tabAccess information corresponding to passed-in menuType
   return (
     <li>
@@ -85,11 +69,7 @@ const ListItemNavLink = ({ item, resetMobileMenu, tabIndex }: {
 //      why:  separated logic to its own part of the doc
 //            a specialized, higher-functioning version of ListItemNavLink (above)
 //            also calls ListItemNavLink for the item prop's subitems
-const TogglingSubmenu = ({ item, resetMobileMenu, tabIndex }: { 
-  item: SubmenuShape;
-  resetMobileMenu: () => void;
-  tabIndex: number,
- }) => {
+const TogglingSubmenu = ({ item, resetMobileMenu, tabIndex }: ListItemSubmenuProps) => {
   const [submenuOpen, toggleSubmenu] = useState(false);
   const handleSubmenuToggle = () => toggleSubmenu(!submenuOpen)
 
@@ -135,11 +115,7 @@ const TogglingSubmenu = ({ item, resetMobileMenu, tabIndex }: {
 //      why: separated out logic
 //  PROPOSE: refactor to combine with TogglingSubmenu;
 //           Submenu FC with prop - toggling: boolean
-const LockedSubmenu = ({ item, resetMobileMenu, tabIndex }: {
-  item: SubmenuShape;
-  resetMobileMenu: () => void;
-  tabIndex: number;
-}) => (
+const LockedSubmenu = ({ item, resetMobileMenu, tabIndex }: ListItemSubmenuProps) => (
   <li>
     {item.text}
     <ul>
@@ -237,7 +213,7 @@ const MobileMenuControl = ({ mobileMenuOpen, handleMobileMenuToggle }: MobileMen
 const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMenu }: MenuDataProps & MobileMenuControlProps): JSX.Element => {
   const tabAccessControl = useContext(TabAccessContext);
   const sideMenuTabIndexState = tabAccessControl.scheme[tabAccessControl.tabAccessMode].sideMenu;
-  console.log(tabAccessControl);
+  // console.log(tabAccessControl);
   // console.log(tabAccessControl.scheme[tabAccessControl.tabAccessMode].sideMenu);
   return (
     <div className={layoutStyles.sideMenuContainer} >
