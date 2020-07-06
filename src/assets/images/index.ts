@@ -40,6 +40,12 @@ const sketch14 = require("./sketch/sketch14.png");
 const sketch15 = require("./sketch/sketch15.png");
 const sketch16 = require("./sketch/sketch16.png");
 
+const snake00 = require("./comics/snake/sn0.jpg");
+const snake01 = require("./comics/snake/sn1.jpg");
+const snake02 = require("./comics/snake/sn2.jpg");
+const snake03 = require("./comics/snake/sn3.jpg");
+
 export const illusArray = [illus01, illus02, illus03, illus04, illus05, illus06, illus07, illus08, illus09, illus10, illus11, illus12, illus13, illus14, illus15, illus16, illus17]
 export const peninkArray = [penink01, penink02, penink03, penink04, penink05, penink06];
 export const sketchArray = [sketch01, sketch02, sketch03, sketch04, sketch05, sketch06, sketch07, sketch08, sketch09, sketch10, sketch11, sketch12, sketch13, sketch14, sketch15, sketch16];
+export const snakeArray = [snake00, snake01, snake02, snake03];

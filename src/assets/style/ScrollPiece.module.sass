@@ -1,0 +1,49 @@
+//                                              src/style/ScrollPiece.module.sass
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - referenced in src/viewsCommon/ScrollPiece.tsx
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               SETUP
+
+@use 'design'
+
+$root-container-width: design.space(128)
+$copy-container-ratio: 42%
+$scroll-container-ratio: calc(100% - #{$copy-container-ratio})
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                              STYLES
+
+.rootContainer
+  // display: grid
+  // grid-template-columns: design.space(50) auto
+  // grid-template-rows: auto
+  display: flex
+  // justify-content: flex-end
+  max-width: $root-container-width
+
+.copyContainer
+  width: $copy-container-ratio
+  padding: design.space(8) design.space(4) 0
+  height: fit-content
+  position: fixed
+  
+  p
+    @include design.copy-type
+  h1
+    @include design.copy-head-type
+  a
+    color: design.$red
+    font-style: italic
+    &:hover
+      color: design.$light-red
+
+
+
+.scrollContainer
+  width: $scroll-container-ratio
+  margin-left: $copy-container-ratio
+  img
+    width: 100%
