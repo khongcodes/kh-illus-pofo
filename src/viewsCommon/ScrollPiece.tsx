@@ -27,22 +27,40 @@ import scrollPieceStyles from "../assets/style/ScrollPiece.module.sass";
 /////////////                                                  COMPONENTS & LOGIC
 
 type ScrollPieceProps = {
-  infoContent: JSX.Element;
+  title: string;
+  infoContent?: JSX.Element;
   imgArray: string[];
   metadata: ImageData[];
+  hrMap?: number[];
 }
 
-const ScrollPiece = ({ infoContent, imgArray, metadata}: ScrollPieceProps) => {
-  console.log(imgArray)
+const ScrollPiece = ({ title, infoContent, imgArray, metadata, hrMap }: ScrollPieceProps) => {
   return (
     <div className={scrollPieceStyles.rootContainer}>
-      <div className={scrollPieceStyles.copyContainer}>
-        {infoContent}
+      <div className={scrollPieceStyles.infoContainer}>
+        <div className={scrollPieceStyles.infoTitleContainer}>
+          <h1>{title}</h1>
+        </div>
+
+        <div className={scrollPieceStyles.infoCopyContainer}>
+          {infoContent}
+        </div>
       </div>
 
       <div className={scrollPieceStyles.scrollContainer}>
         {
-          imgArray.map((src, index) => <img src={src} alt={metadata[index].alt}/>)
+          imgArray.map((src, index) => (
+            <>
+              <img 
+                src={src} 
+                alt={metadata[index].alt}
+                key={index}
+              />
+              {
+                !!hrMap && hrMap.includes(index) ? <hr/> : <></>
+              }
+            </>
+          ))
         }
       </div>
     </div>

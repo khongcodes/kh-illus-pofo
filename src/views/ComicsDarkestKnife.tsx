@@ -17,14 +17,23 @@
 
 import React from 'react';
 
+import { ImageData } from "../model/Image";
+import comicsData from "../configData/imageDataComics.json";
+
 import ScrollPiece from "../viewsCommon/ScrollPiece";
+import { dkArray } from "../assets/images/index";
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               SETUP
+
+const dkMetadata: ImageData[] = comicsData["darkest-knife"];
 
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
 
 const darkestPageCopy = <>
-  <h1>Darkest Knife</h1>
   <p>(Fall 2016)</p>
   <p>A 4-page comic based on an exquisite corpse exercise.</p>
   <p>
@@ -37,10 +46,13 @@ const darkestPageCopy = <>
 </>
 
 const ComicsDarkestKnife = () => (
-  // <ScrollPiece 
-  //   infoContent={ darkestPageCopy }
-  // />
-  <div></div>
+  <ScrollPiece 
+    title="Darkest Knife"
+    infoContent={ darkestPageCopy }
+    imgArray={ dkArray }
+    metadata={ dkMetadata }
+  />
+
 )
 
 export default ComicsDarkestKnife

@@ -34,7 +34,6 @@ const snakeMetadata: ImageData[] = comicsData.snake;
 /////////////                                                  COMPONENTS & LOGIC
 
 const snakePageCopy = <>
-  <h1>Snake</h1>
   <p>(Spring 2017)</p>
   <p>A 24-page comic written about moving and identity.</p>
   <p>Written and drawn by Kevin Hong</p>
@@ -45,6 +44,7 @@ const snakePageCopy = <>
 
 const ComicsSnake = () => (
   <ScrollPiece 
+    title="Snake"
     infoContent={ snakePageCopy }
     imgArray={ snakeArray }
     metadata={ snakeMetadata }

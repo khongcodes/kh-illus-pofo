@@ -45,7 +45,25 @@ const snake01 = require("./comics/snake/sn1.jpg");
 const snake02 = require("./comics/snake/sn2.jpg");
 const snake03 = require("./comics/snake/sn3.jpg");
 
+const dk01 = require("./comics/darkest-knife/dk1.jpg");
+const dk02 = require("./comics/darkest-knife/dk2.jpg");
+const dk03 = require("./comics/darkest-knife/dk3.jpg");
+const dk04 = require("./comics/darkest-knife/dk4.jpg");
+
+const etc00 = require("./comics/etc/etc00.png");
+const etc01 = require("./comics/etc/etc01.png");
+const etc02 = require("./comics/etc/etc02.png");
+const etc03 = require("./comics/etc/etc03.png");
+const etc04 = require("./comics/etc/etc04.png");
+const etc05 = require("./comics/etc/etc05.png");
+const etc06 = require("./comics/etc/etc06.png");
+const etc07 = require("./comics/etc/etc07.png");
+const etc08 = require("./comics/etc/etc08.png");
+const etc09 = require("./comics/etc/etc09.png");
+
 export const illusArray = [illus01, illus02, illus03, illus04, illus05, illus06, illus07, illus08, illus09, illus10, illus11, illus12, illus13, illus14, illus15, illus16, illus17]
 export const peninkArray = [penink01, penink02, penink03, penink04, penink05, penink06];
 export const sketchArray = [sketch01, sketch02, sketch03, sketch04, sketch05, sketch06, sketch07, sketch08, sketch09, sketch10, sketch11, sketch12, sketch13, sketch14, sketch15, sketch16];
 export const snakeArray = [snake00, snake01, snake02, snake03];
+export const dkArray = [dk01, dk02, dk03, dk04];
+export const etcArray = [etc00, etc01, etc02, etc03, etc04, etc05, etc06, etc07, etc08, etc09];

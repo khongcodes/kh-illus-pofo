@@ -11,39 +11,77 @@
 
 $root-container-width: design.space(128)
 $copy-container-ratio: 42%
-$scroll-container-ratio: calc(100% - #{$copy-container-ratio})
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                              STYLES
 
 .rootContainer
-  // display: grid
-  // grid-template-columns: design.space(50) auto
-  // grid-template-rows: auto
-  display: flex
+  display: grid
+  grid-template-columns: $copy-container-ratio auto
+  grid-template-rows: auto
+  // display: flex
   // justify-content: flex-end
   max-width: $root-container-width
 
-.copyContainer
-  width: $copy-container-ratio
+  @include design.scrollpiece-to-mobile
+    grid-template-columns: auto
+    grid-template-rows: auto auto
+
+.infoContainer
+  width: 23%
   padding: design.space(8) design.space(4) 0
   height: fit-content
   position: fixed
+  // grid-area: unset
   
-  p
-    @include design.copy-type
+  @include design.scrollpiece-to-mobile
+    padding: design.space(3) 0
+    grid-area: 1/1/2/2
+    position: static
+    width: unset
+
+    display: grid
+    grid-template-columns: 80px auto
+    grid-template-rows: auto
+
+
+.infoTitleContainer
   h1
     @include design.copy-head-type
+    @include design.scrollpiece-to-mobile
+      text-align: right
+      margin-block-end: design.space(8)
+
+.infoCopyContainer
+  p
+    @include design.copy-type
   a
     color: design.$red
     font-style: italic
     &:hover
       color: design.$light-red
-
+  
+  @include design.scrollpiece-to-mobile
+    padding-left: design.space(3)
 
 
 .scrollContainer
-  width: $scroll-container-ratio
-  margin-left: $copy-container-ratio
+  grid-area: 2/3
+
   img
     width: 100%
+    margin: design.space(4) 0 design.space(4.5)
+    &:first-of-type
+      margin-top: 0
+    &:last-of-type
+      margin-bottom: 0
+  
+  hr
+    margin: design.space(4) 0
+    border: 1px solid rgba(0,0,0,0.1)
+
+  @include design.scrollpiece-to-mobile
+    grid-area: 2/1/2/2
+    text-align: center
+    img
+      max-width: 580px

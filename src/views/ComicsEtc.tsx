@@ -17,22 +17,30 @@
 
 import React from 'react';
 
+import { ImageData } from "../model/Image";
+import comicsData from "../configData/imageDataComics.json";
+
 import ScrollPiece from "../viewsCommon/ScrollPiece";
+import { etcArray } from "../assets/images/index";
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               SETUP
+
+const etcMetadata: ImageData[] = comicsData.etc;
 
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
 
-const etcPageCopy = <>
-  <h1>Etc. comics</h1>
-</>
-
 const ComicsEtc = () => {
   return (
-    // <ScrollPiece 
-    //   infoContent={ etcPageCopy }
-    // />
-    <div></div>
+    <ScrollPiece 
+      title="Etc. comics"
+      imgArray={ etcArray }
+      metadata={ etcMetadata }
+      hrMap={[0, 2, 6, 7]}
+    />
   )
 }
 
