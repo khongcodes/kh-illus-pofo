@@ -33,13 +33,9 @@ const ComicsEtc = lazy(() => import('./views/ComicsEtc'));
 const Sketchbook = lazy(() => import('./views/Sketchbook'));
 const About = lazy(() => import('./views/About'));
 
+
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
-
-// const TabAccessToggle = () => {
-//   const [tabAccessMode, toggleTabAccessMode] = useContext(TabAccessContext);
-//   return () => toggleTabAccessMode(tabAccessMode.lightbox == -1 ? tabAccessScheme.modal : tabAccessScheme.default)
-// }
 
 const App: React.FC = () => {
 
@@ -47,19 +43,19 @@ const App: React.FC = () => {
     <Router>
       <TabAccessProvider>
         <Layout>
-          <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/illustration' element={<Navigate to='/' />} />
-            <Route path='/pen-ink' element={<PenInk />} />
-            <Route path='/comics'>
-              <Route path='/snake' element={<ComicsSnake />} />
-              <Route path='/darkest-knife' element={<ComicsDarkestKnife />} />
-              <Route path='/etc' element={<ComicsEtc />} />
-            </Route>
-            <Route path='/sketchbook' element={<Sketchbook />} />
-            <Route path='/about' element={<About />} />
-          </Routes>
+          <Suspense fallback={<div/>}>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/illustration' element={<Navigate to='/' />} />
+              <Route path='/pen-ink' element={<PenInk />} />
+              <Route path='/comics'>
+                <Route path='/snake' element={<ComicsSnake />} />
+                <Route path='/darkest-knife' element={<ComicsDarkestKnife />} />
+                <Route path='/etc' element={<ComicsEtc />} />
+              </Route>
+              <Route path='/sketchbook' element={<Sketchbook />} />
+              <Route path='/about' element={<About />} />
+            </Routes>
           </Suspense>
         </Layout>
       </TabAccessProvider>

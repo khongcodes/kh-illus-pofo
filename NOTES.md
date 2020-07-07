@@ -3,7 +3,8 @@
 ## Develop
 
 - [x] finish About page
-- [ ] finish styling on side menu and mobile menu
+- [x] finish styling on side menu and mobile menu
+- [ ] make simple 404 page
 - [ ] write alt descriptions for images
 - [ ] final review of code
 - [ ] refactor if necessary

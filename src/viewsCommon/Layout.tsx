@@ -57,6 +57,7 @@ const ListItemNavLink = ({ item, resetMobileMenu, tabIndex }: ListItemNavLinkPro
         to={item.path} 
         onClick={resetMobileMenu}
         tabIndex={tabIndex}
+        
       > 
         {item.text} 
       </NavLink>
@@ -118,7 +119,7 @@ const TogglingSubmenu = ({ item, resetMobileMenu, tabIndex }: ListItemSubmenuPro
 const LockedSubmenu = ({ item, resetMobileMenu, tabIndex }: ListItemSubmenuProps) => (
   <li>
     {item.text}
-    <ul>
+    <ul className={layoutStyles.lockedSubmenu}>
       {item.items.map(subitem => {
         if (subitem.type==='link') {
           return (
@@ -231,7 +232,7 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
       </Link>
       
       {/* Side menu, display:none on mobile-media */}
-      <ul className={layoutStyles.sideMenuList}>
+      <ul className={ `${layoutStyles.sideMenuList} sidemenu` }>
         {mapMenuContent(data, "sideMenu", "toggling", resetMobileMenu)}
       </ul>
 
@@ -255,7 +256,7 @@ const MobileMenuDrawer = ({ data, mobileMenuOpen, resetMobileMenu }: MenuDataPro
   // if menu is mobile or not
   return (
     <div className={`${layoutStyles.mobileMenuContainer} ${mobileMenuOpen ? layoutStyles.open : ''}`} >
-      <ul>
+      <ul className="mobilemenu">
         {mapMenuContent(data, "mobileMenu", "locked", resetMobileMenu)}
       </ul>
     </div>
