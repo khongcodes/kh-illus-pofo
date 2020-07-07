@@ -79,7 +79,6 @@ $white: #FFF;
 
 @mixin misc-link-styling {
   color: $red;
-  font-style: italic;
   &:hover {
     color: $light-red;
   }

@@ -56,11 +56,14 @@
   #siteLogo
     width: 100%
     height: auto
+    margin-bottom: 24px
     @include design.mobile-media
       width: auto
       height: 100%
 
   .sideMenuList
+    & > li
+      line-height: 32px
     @include design.mobile-media
       display: none
     @include design.menu-link-type
@@ -76,6 +79,8 @@
       transition-property: height margin
       transition-duration: 0.3s
       padding-left: 8px
+      & > li
+        line-height: 24px
       &.open
         margin: design.space(1) design.space(0)
         height: design.space(9)
