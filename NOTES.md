@@ -2,7 +2,8 @@
 
 ## Develop
 
-- [] finish About page
+- [x] finish About page
+- [] finish styling on side menu and mobile menu
 - [] write alt descriptions for images
 - [] final review of code
 - [] refactor if necessary

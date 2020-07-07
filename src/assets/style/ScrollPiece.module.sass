@@ -63,10 +63,7 @@ $copy-container-ratio: 42%
   p
     @include design.copy-type
   a
-    color: design.$red
-    font-style: italic
-    &:hover
-      color: design.$light-red
+    @include design.misc-link-styling
   
   @include scrollpiece-mobile-view
     padding-left: design.space(3)

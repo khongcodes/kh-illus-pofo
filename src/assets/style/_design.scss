@@ -76,6 +76,14 @@ $white: #FFF;
   color: $white;
   @include mobile-media { margin-block-start: space(1.5); }
 }
+
+@mixin misc-link-styling {
+  color: $red;
+  font-style: italic;
+  &:hover {
+    color: $light-red;
+  }
+}
 // usage:
 // @include art-meta-copy-type
 

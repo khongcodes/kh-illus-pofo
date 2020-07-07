@@ -30,7 +30,7 @@ const About = () => (
     <div className={aboutStyles.copyContainer}>
       <h1>Kevin Hong</h1>
       <p>is an illustrator and designer currently based in the North Shore who graduated from the Rhode Island School of Design (RISD) in 2017. They enjoy combining traditional and digital media. They also like tabletop RPGs, comics, and walking in the woods.</p>
-      <p>Inquries at khongdraws@gmail.com</p>
+      <p>Inquries at <a href="mailto:khongdraws@gmail.com">khongdraws@gmail.com</a></p>
     </div>
 
     <div className={aboutStyles.profileContainer}>

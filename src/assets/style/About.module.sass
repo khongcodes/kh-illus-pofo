@@ -12,10 +12,13 @@
 
 $about-breakpoint: 960px
 
-@mixin about-mobile-view
+@mixin mobile-view
   @media (max-width: $about-breakpoint)
     @content
-    
+
+@mixin mobile-bounds($width)
+  max-width: $width
+  width: 100%
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                              STYLES
@@ -23,6 +26,7 @@ $about-breakpoint: 960px
 .root
   display: flex
   flex-direction: column
+
   h1
     @include design.copy-head-type
   p
@@ -30,19 +34,43 @@ $about-breakpoint: 960px
 
 .copyContainer
   order: 2
-  width: 348px
+  width: 354px
   align-self: flex-end
   margin-bottom: 24px
+  box-sizing: border-box
+
+  a
+    @include design.misc-link-styling
+  
+  @include mobile-view
+    order: 1
+    @include mobile-bounds(428px)
+    align-self: flex-start
+    padding-right: 16px
+    
+    h1
+      margin-block-start: 0
+
 
 .profileContainer
   order: 1
+  position: relative
+  top: -32px
   img
     width: 288px
-    position: relative
-    top: -32px
+  
+  @include mobile-view
+    order: 2
+    position: static
+    margin: -32px 0 16px
+    img
+      @include mobile-bounds(360px)
 
 
 .awardsContainer
   order: 3
   text-align: right
+  
+  @include mobile-view
+    @include mobile-bounds(428px)
 
