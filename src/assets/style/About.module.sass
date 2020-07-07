@@ -1,0 +1,48 @@
+//                                                    src/style/About.module.sass
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - referenced in src/views/About.tsx
+//  - style About page
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               SETUP
+
+@use 'design'
+
+$about-breakpoint: 960px
+
+@mixin about-mobile-view
+  @media (max-width: $about-breakpoint)
+    @content
+    
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                              STYLES
+
+.root
+  display: flex
+  flex-direction: column
+  h1
+    @include design.copy-head-type
+  p
+    @include design.copy-type
+
+.copyContainer
+  order: 2
+  width: 348px
+  align-self: flex-end
+  margin-bottom: 24px
+
+.profileContainer
+  order: 1
+  img
+    width: 288px
+    position: relative
+    top: -32px
+
+
+.awardsContainer
+  order: 3
+  text-align: right
+

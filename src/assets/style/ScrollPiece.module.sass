@@ -9,6 +9,13 @@
 
 @use 'design'
 
+$scrollpiece-breakpoint: 890px
+
+@mixin scrollpiece-mobile-view
+  @media (max-width: $scrollpiece-breakpoint)
+    @content
+
+
 $root-container-width: design.space(128)
 $copy-container-ratio: 42%
 
@@ -23,7 +30,7 @@ $copy-container-ratio: 42%
   // justify-content: flex-end
   max-width: $root-container-width
 
-  @include design.scrollpiece-to-mobile
+  @include scrollpiece-mobile-view
     grid-template-columns: auto
     grid-template-rows: auto auto
 
@@ -34,7 +41,7 @@ $copy-container-ratio: 42%
   position: fixed
   // grid-area: unset
   
-  @include design.scrollpiece-to-mobile
+  @include scrollpiece-mobile-view
     padding: design.space(3) 0
     grid-area: 1/1/2/2
     position: static
@@ -48,7 +55,7 @@ $copy-container-ratio: 42%
 .infoTitleContainer
   h1
     @include design.copy-head-type
-    @include design.scrollpiece-to-mobile
+    @include scrollpiece-mobile-view
       text-align: right
       margin-block-end: design.space(8)
 
@@ -61,7 +68,7 @@ $copy-container-ratio: 42%
     &:hover
       color: design.$light-red
   
-  @include design.scrollpiece-to-mobile
+  @include scrollpiece-mobile-view
     padding-left: design.space(3)
 
 
@@ -80,7 +87,7 @@ $copy-container-ratio: 42%
     margin: design.space(4) 0
     border: 1px solid rgba(0,0,0,0.1)
 
-  @include design.scrollpiece-to-mobile
+  @include scrollpiece-mobile-view
     grid-area: 2/1/2/2
     text-align: center
     img

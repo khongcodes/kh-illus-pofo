@@ -12,5 +12,6 @@
 
 - [] deploy images on S3
 - [] copy paths to image metadata
+- [] delete image folder and remove references to imageArrays in views
 - [] deploy site on S3
 - [] update self code portfolio

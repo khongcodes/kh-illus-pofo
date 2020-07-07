@@ -13,7 +13,6 @@
 /////////////                                                         BREAKPOINTS
 
 $mobile-breakpoint: 788px;
-$scrollpiece-breakpoint: 890px;
 
 @mixin mobile-media {
   @media (max-width: $mobile-breakpoint) {
@@ -24,12 +23,6 @@ $scrollpiece-breakpoint: 890px;
 // @use 'design'
 // @include design.mobile-media
 //    background-color: red
-
-@mixin scrollpiece-to-mobile {
-  @media (max-width: $scrollpiece-breakpoint) {
-    @content;
-  }
-}
 
 
 /////////////////////////////////////////////////////////////////////////////////
