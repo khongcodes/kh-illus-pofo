@@ -139,9 +139,9 @@ const Lightbox = forwardRef<LightboxRef, LightboxProps>(({
   const handleLightboxClick = (event: React.MouseEvent) => {
     const fairGameBounds = {
       top: windowHeight * 0.03,
-      left: 12,
+      left: 24,
       bottom: windowHeight * 0.96,
-      right: windowWidth - 12
+      right: windowWidth - 24
     }
     const mouseOutX = event.clientX < fairGameBounds.left || event.clientX > fairGameBounds.right;
     const mouseOutY = event.clientY < fairGameBounds.top || event.clientY > fairGameBounds.bottom;
