@@ -14,18 +14,18 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// import Home from './views/Home';
+import Home from './views/Home';
 // import PenInk from './views/PenInk';
 // import ComicsSnake from './views/ComicsSnake';
 // import ComicsDarkestKnife from './views/ComicsDarkestKnife';
 // import ComicsEtc from './views/ComicsEtc';
 // import Sketchbook from './views/Sketchbook';
 // import About from './views/About';
+import PageNotFound from "./views/PageNotFound";
 
 import Layout from './viewsCommon/Layout';
 import TabAccessProvider from './util/TabAccessContext';
 
-const Home = lazy(() => import('./views/Home'));
 const PenInk = lazy(() => import('./views/PenInk'));
 const ComicsSnake = lazy(() => import('./views/ComicsSnake'));
 const ComicsDarkestKnife = lazy(() => import('./views/ComicsDarkestKnife'));
@@ -52,9 +52,11 @@ const App: React.FC = () => {
                 <Route path='/snake' element={<ComicsSnake />} />
                 <Route path='/darkest-knife' element={<ComicsDarkestKnife />} />
                 <Route path='/etc' element={<ComicsEtc />} />
+                <Route path='' element={<PageNotFound/>} />
               </Route>
               <Route path='/sketchbook' element={<Sketchbook />} />
               <Route path='/about' element={<About />} />
+              <Route path='*' element={<PageNotFound/>} />
             </Routes>
           </Suspense>
         </Layout>
