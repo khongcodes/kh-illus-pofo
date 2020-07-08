@@ -16,11 +16,28 @@
 // 4. styles
 
 import React from "react";
+import { Link } from "react-router-dom";
 
+import pnfStyles from "../assets/style/PageNotFound.module.sass";
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
 
-const PageNotFound = () => (<div>404</div>);
+const PageNotFound = () => (
+<div className={pnfStyles.root}>
+  <h1>404 Error</h1>
+  <p>This page could not be found.</p>
+  
+  <div className={pnfStyles.adviseContainer}>
+    <p>
+      Check the URL and try again or&nbsp;
+      <Link to="/">
+        click here
+      </Link>
+      &nbsp;to return home.
+    </p>
+  </div>
+</div>
+);
 
 export default PageNotFound;

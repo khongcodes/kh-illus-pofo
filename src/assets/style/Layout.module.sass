@@ -77,14 +77,14 @@
   #siteLogo
     width: 100%
     height: auto
-    margin-bottom: design.space(2)
     @include design.mobile-media
       width: auto
       height: 100%
 
   .sideMenuList
+    margin-top: design.space(2)
     & > li
-      line-height: 32px
+      line-height: 28px
     @include design.mobile-media
       display: none
     @include design.menu-link-type
@@ -97,14 +97,14 @@
     .submenuList
       height: design.space(0)
       overflow: hidden
-      transition-property: height margin
+      transition-property: height padding-top padding-bottom
       transition-duration: 0.3s
-      padding-left: 8px
+      padding-left: design.space(1)
       & > li
         line-height: 24px
       &.open
-        margin: design.space(1) design.space(0)
         height: design.space(9)
+        padding: design.space(1)
 
 
   .mobileMenuControlContainer

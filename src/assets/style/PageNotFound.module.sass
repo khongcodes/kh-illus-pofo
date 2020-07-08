@@ -1,0 +1,33 @@
+//                                             src/style/PageNotFound.module.sass
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - referenced in src/views/PageNotFound.tsx
+//  - style 404 page
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               SETUP
+
+@use 'design'
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                              STYLES
+
+.root
+  width: 100%
+  height: 100%
+  text-align: center
+  h1
+    margin-block-start: 0.5em
+    color: design.$red
+    font-size: 3rem
+  
+  .adviseContainer
+    width: fit-content
+    margin: design.space(2) auto
+    @include design.copy-type
+    a
+      color: design.$red
+      &:hover
+        color: design.$light-red
