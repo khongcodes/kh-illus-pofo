@@ -9,7 +9,7 @@
 - [x] final review of code
 - [x] refactor if necessary
 - [x] finish documentation
-- [ ] address javascript console warnings
+- [x] address javascript console warnings
 
 
 ## Pre-Deploy

@@ -75,12 +75,13 @@ const TogglingSubmenu = ({ item, resetMobileMenu, tabIndex }: ListItemSubmenuPro
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLSpanElement>) => {
     if (event.key === "Enter") {
+      event.preventDefault();
       handleSubmenuToggle();
     }
   }
   return (
     <li>
-      <a 
+      <button 
         className={layoutStyles.submenuTitle} 
         onClick={handleSubmenuToggle}
         onKeyPress={handleKeyPress}
@@ -88,9 +89,9 @@ const TogglingSubmenu = ({ item, resetMobileMenu, tabIndex }: ListItemSubmenuPro
         aria-label="Open Comics submenu"
       >
         {item.text}
-      </a>
+      </button>
       
-      <ul className={`${layoutStyles.submenuList} ${submenuOpen ? layoutStyles.open : ''}`}>
+      <ul className={`${layoutStyles.submenuList} ${submenuOpen ? layoutStyles.open : ''} ${submenuOpen}`}>
         {
           item.items.map(subitem => {
             if (subitem.type==='link') {
