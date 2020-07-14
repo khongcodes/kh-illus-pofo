@@ -6,7 +6,7 @@
     "thumbStyle": "ink-triceratops",
     "title": "Triceratops Summer",
     "description": "For the short story written by Michael Swanwick (2016).",
-    "alt": ""
+    "alt": "A tall composition, most of it taken up by the flowing sky and clouds. A house sits against woods in the distance on the right, with a field of tall grass between the viewer and the house. Several triceratops graze in the field"
   },
   {
     "id": 1,
@@ -15,7 +15,7 @@
     "thumbStyle": "ink-rain",
     "title": "The Long Rain",
     "description": "For the short story written by Ray Bradbury (2016).",
-    "alt": ""
+    "alt": "A dying astronaut looks up in a dilapidated and dark sun dome. Jungle plants have overtaken it and grow over the edges of its shattered ceiling, and with them rain pours in. The astronaut looks up sightlessly, foaming flowing from his mouth."
   },
   {
     "id": 2,
@@ -24,7 +24,7 @@
     "thumbStyle": "ink-no",
     "title": "No Particular Night Or Morning",
     "description": "For the short story written by Ray Bradbury (2016).",
-    "alt": ""
+    "alt": "A portrait of an astronaut. Their helmet obscures their face completely, and viewers see in the reflection of its glass that the astronaut is looking into a window, at their own reflection, but in the reflection seen by the viewer, they can't see the helmet of the astronaut; just the black of the space outside filling where their head should be. A hand from a fellow astronaut outside the composition grips the portrait subject by their pack."
   },
   {
     "id": 3,
@@ -33,7 +33,7 @@
     "thumbStyle": "ink-cube1",
     "title": "Wood",
     "description": "Part of a Cube series (2016).",
-    "alt": ""
+    "alt": "A pen-and-ink-drawn cube, its surface made of wooden floorboards, rendered in different states of shadow and disrepair."
   },
   {
     "id": 4,
@@ -42,7 +42,7 @@
     "thumbStyle": "ink-cube2",
     "title": "Brass",
     "description": "Part of a Cube series (2016).",
-    "alt": ""
+    "alt": "A pen-and-ink-drawn cube, an amalgamation of wood crates and brass pipes."
   },
   {
     "id": 5,
@@ -51,6 +51,6 @@
     "thumbStyle": "ink-cube3",
     "title": "Stone",
     "description": "Part of a Cube series (2016).",
-    "alt": ""
+    "alt": "A pen-and-ink-drawn cube, made of stone. It's partially covered in ivy."
   }
 ]
