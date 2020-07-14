@@ -15,7 +15,7 @@
 ## Pre-Deploy
 
 - [x] add SEO configuration/React Helmet
-- [ ] change icon in /public
+- [x] change icon in /public
 - [ ] deploy images on S3
 - [ ] copy paths to image metadata
 - [ ] delete image folder and remove references to imageArrays in views
