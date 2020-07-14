@@ -32,7 +32,6 @@ import {
   TimeoutState, ArrowDirection, KeyMapValueTypes    // component state types
  } from '../model/Gallery';
 
-// import ResizingThumbGallery from './ResizingThumbGallery';
 import { TabAccessContext } from '../util/TabAccessContext';
 import useWindowDimensions from '../util/UseWindowDimensions';
 

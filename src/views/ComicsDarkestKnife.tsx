@@ -16,6 +16,7 @@
 // 4. styles
 
 import React from 'react';
+import { Helmet } from "react-helmet-async";
 
 import { ImageData } from "../model/Image";
 import comicsData from "../configData/imageDataComics.json";
@@ -46,12 +47,18 @@ const darkestPageCopy = <>
 </>
 
 const ComicsDarkestKnife = () => (
-  <ScrollPiece 
-    title="Darkest Knife"
-    infoContent={ darkestPageCopy }
-    imgArray={ dkArray }
-    metadata={ dkMetadata }
-  />
+  <>
+    <Helmet>
+      <title>KHong Draws - Darkest Knife</title>
+    </Helmet>
+
+    <ScrollPiece 
+      title="Darkest Knife"
+      infoContent={ darkestPageCopy }
+      imgArray={ dkArray }
+      metadata={ dkMetadata }
+    />
+  </>
 
 )
 

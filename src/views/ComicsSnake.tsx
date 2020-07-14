@@ -16,6 +16,7 @@
 // 4. styles
 
 import React from 'react';
+import { Helmet } from "react-helmet-async";
 
 import { ImageData } from "../model/Image";
 import comicsData from "../configData/imageDataComics.json";
@@ -43,12 +44,18 @@ const snakePageCopy = <>
 </>
 
 const ComicsSnake = () => (
-  <ScrollPiece 
-    title="Snake"
-    infoContent={ snakePageCopy }
-    imgArray={ snakeArray }
-    metadata={ snakeMetadata }
-  />
+  <>
+    <Helmet>
+      <title>KHong Draws - Snake</title>
+    </Helmet>
+
+    <ScrollPiece 
+      title="Snake"
+      infoContent={ snakePageCopy }
+      imgArray={ snakeArray }
+      metadata={ snakeMetadata }
+    />
+  </>
 )
 
 export default ComicsSnake

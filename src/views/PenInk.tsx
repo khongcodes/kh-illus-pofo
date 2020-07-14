@@ -16,6 +16,7 @@
 // 3. components & assets
 // 4. styles
 import React from 'react';
+import { Helmet } from "react-helmet-async";
 
 import peninkMetadata from "../configData/galleryDataPenInk.json";
 // remove on deploy
@@ -27,10 +28,16 @@ import Gallery from "../viewsCommon/Gallery";
 /////////////                                                  COMPONENTS & LOGIC
 
 const PenInk = () => (
-  <Gallery 
-    imgArray = {peninkArray}
-    galleryMetadata = {peninkMetadata}
-  />
+  <>
+    <Helmet>
+      <title>KHong Draws - Pen & Ink</title>
+    </Helmet>
+
+    <Gallery 
+      imgArray = {peninkArray}
+      galleryMetadata = {peninkMetadata}
+    />
+  </>
 )
 
 export default PenInk

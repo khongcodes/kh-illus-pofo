@@ -20,9 +20,6 @@ import React, { useState } from 'react';
 
 import { GalleryItemShape, ThumbGalleryProps, ThumbType } from '../model/Gallery';
 
-// import useWindowDimensions from '../util/UseWindowDimensions';
-// import { mobileBreakpoint, maxWindowBreakpoint } from './Layout';
-
 import resizingGalleryStyles from '../assets/style/ResizingThumbGallery.module.sass';
 import galleryThumbStyles from '../assets/style/GalleryThumbnails.module.sass';
 
@@ -38,14 +35,6 @@ const ResizingThumbGallery = ({
   imgArray, galleryMetadata, openLightbox
 }: ThumbGalleryProps) => {
 
-  // get windowWidth
-  // setup thumb to window-width ratio
-  // const { windowHeight, windowWidth } = useWindowDimensions();
-  // const { windowWidth } = useWindowDimensions();
-  // const getThumbnailWindowRatio = (): number => (
-  //   windowWidth >= mobileBreakpoint ? (360 / maxWindowBreakpoint) : (370 / mobileBreakpoint)
-  // );
-
   // generate array of image orientations
   // onLoad, check if height or width is bigger
   // if height, thumbnail width maps to windowWidth
@@ -56,26 +45,6 @@ const ResizingThumbGallery = ({
       loaded: ""
     }
   )));
-
-  // LEGACY - NO LONGER NEEDED
-  // state-dependent classname and CSS attribute object-fit: contain
-  // make this function no longer necessary
-  // no need to unnecessarily control styles at a granular level from React
-
-  // const makeOrientationDependentStyleObj = (orientation: ImageOrientationTypes): CSSProperties => {
-  //   if (windowWidth <= maxWindowBreakpoint) {
-  //     switch (orientation) {
-  //       case "landscape":
-  //         return { "height": getThumbnailWindowRatio() * windowWidth };
-  //       case "portrait":
-  //         return { "width": getThumbnailWindowRatio() * windowWidth };
-  //       default:
-  //         return {}
-  //     }
-  //   } else {
-  //     return {}
-  //   }
-  // }
 
   const handleImgLoad = (img: HTMLImageElement, index: number): void => {
     const adjucatedOrientation = img.naturalHeight <= img.naturalWidth ? "landscape" : "portrait";
@@ -92,12 +61,6 @@ const ResizingThumbGallery = ({
     <div id={resizingGalleryStyles.galleryRootContainer}>
       {
         galleryDataSortedByOrder.map((item: GalleryItemShape, index: number): JSX.Element => {
-          
-          // LEGACY - NO LONGER NEEDED
-          // entry point for setting style of thumbnail in React
-          // see const makeOrientationDependentStyleObj
-          // const orientationDependentStyling = makeOrientationDependentStyleObj(imageOrientations[index] as ImageOrientationTypes);
-
           // combine element styles to make classname:
           //    sass class thumbImg
           //    metadata item thumbStyle
@@ -120,13 +83,9 @@ const ResizingThumbGallery = ({
                 {/* later derive SRC of this image from item.path */}
                 <img 
                   className={imgClassName} 
-                  // src={item.path}
                   src={imgArray[index]}
                   alt={item.alt}
                   onLoad={(event) => handleImgLoad(event.target as HTMLImageElement, index)}
-                  // LEGACY - NO LONGER NEEDED
-                  // see const makeOrientationDependentStyleObj
-                  // style = {orientationDependentStyling}
                 />
               </div>
             </div>

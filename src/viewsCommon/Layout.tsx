@@ -57,7 +57,6 @@ const ListItemNavLink = ({ item, resetMobileMenu, tabIndex }: ListItemNavLinkPro
         to={item.path} 
         onClick={resetMobileMenu}
         tabIndex={tabIndex}
-        
       > 
         {item.text} 
       </NavLink>
@@ -218,7 +217,6 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
   // console.log(tabAccessControl.scheme[tabAccessControl.tabAccessMode].sideMenu);
   return (
     <div className={layoutStyles.sideMenuContainer} >
-      {/* <div style={{"position":"fixed"}}> */}
       {/* Site Logo */}
       <Link 
         to='/'
@@ -242,7 +240,6 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
         handleMobileMenuToggle={handleMobileMenuToggle}
         resetMobileMenu={resetMobileMenu}
       />
-      {/* </div> */}
     </div>
   )
 }
@@ -252,8 +249,6 @@ const SideMenu = ({ data, mobileMenuOpen, handleMobileMenuToggle, resetMobileMen
 // function: take in menu config data and give shape to mobile menu
 //      why: semantic clarity in Layout
 const MobileMenuDrawer = ({ data, mobileMenuOpen, resetMobileMenu }: MenuDataProps & MobileMenuControlProps): JSX.Element => {
-  // NEW PARAM FOR MAPMENUCONTENT
-  // if menu is mobile or not
   return (
     <div className={`${layoutStyles.mobileMenuContainer} ${mobileMenuOpen ? layoutStyles.open : ''}`} >
       <ul className="mobilemenu">

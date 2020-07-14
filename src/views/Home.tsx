@@ -16,7 +16,8 @@
 // 3. components & assets
 // 4. styles
 
-import React from 'react';
+import React from "react";
+import { Helmet } from "react-helmet-async";
 
 import illusMetadata from '../configData/galleryDataIllustration.json';
 // remove on deploy
@@ -28,10 +29,16 @@ import Gallery from '../viewsCommon/Gallery';
 /////////////                                                  COMPONENTS & LOGIC
 
 const Home = () => (
-  <Gallery 
-    imgArray = {illusArray}
-    galleryMetadata = {illusMetadata}
-  />
+  <>
+    <Helmet>
+      <title>KHong Draws - Illustration</title>
+    </Helmet>
+
+    <Gallery 
+      imgArray = {illusArray}
+      galleryMetadata = {illusMetadata}
+    />
+  </>
 )
 
 export default Home

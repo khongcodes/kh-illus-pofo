@@ -5,15 +5,17 @@
 - [x] finish About page
 - [x] finish styling on side menu and mobile menu
 - [x] make simple 404 page
-- [ ] write alt descriptions for images
-- [ ] final review of code
-- [ ] refactor if necessary
-- [ ] finish documentation
+- [x] write alt descriptions for images
+- [x] final review of code
+- [x] refactor if necessary
+- [x] finish documentation
+- [ ] address javascript console warnings
 
 
 ## Pre-Deploy
 
-- [ ] add SEO configuration/React Helmet
+- [x] add SEO configuration/React Helmet
+- [ ] change icon in /public
 - [ ] deploy images on S3
 - [ ] copy paths to image metadata
 - [ ] delete image folder and remove references to imageArrays in views

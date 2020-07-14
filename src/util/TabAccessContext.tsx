@@ -1,4 +1,20 @@
+//                                                  src/util/TabAccessContext.tsx
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                    RESPONSIBILITIES
+//  - Create and manage context for controlling tabIndex between
+//    lightbox, sideMenu, and mobileMenu
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                                TODO
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                             IMPORTS
+// 1. system & packages
+
 import React, { createContext, useState } from 'react';
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                               SETUP
 
 type ChildProps = { children: React.ReactNode[] | React.ReactNode }
 
@@ -20,6 +36,10 @@ export type TabAccessContextType = {
   prevTabAccessMode: TabAccessMode;
   switchTabAccessMode: (string: TabAccessMode) => void;
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////                                                  COMPONENTS & LOGIC
 
 const tabAccessScheme = {
   default: {

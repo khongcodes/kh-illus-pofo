@@ -16,6 +16,7 @@
 // 4. styles
 
 import React from 'react';
+import { Helmet } from "react-helmet-async";
 
 import { ImageData } from "../model/Image";
 import comicsData from "../configData/imageDataComics.json";
@@ -35,12 +36,18 @@ const etcMetadata: ImageData[] = comicsData.etc;
 
 const ComicsEtc = () => {
   return (
-    <ScrollPiece 
-      title="Etc. comics"
-      imgArray={ etcArray }
-      metadata={ etcMetadata }
-      hrMap={[0, 2, 6, 7]}
-    />
+    <>
+      <Helmet>
+        <title>KHong Draws - Etc. comics</title>
+      </Helmet>
+
+      <ScrollPiece 
+        title="Etc. comics"
+        imgArray={ etcArray }
+        metadata={ etcMetadata }
+        hrMap={[0, 2, 6, 7]}
+      />
+    </>
   )
 }
 

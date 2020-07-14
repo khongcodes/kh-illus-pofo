@@ -17,6 +17,7 @@
 // 4. styles
 
 import React from 'react';
+import { Helmet } from "react-helmet-async";
 
 import sketchMetadata from "../configData/galleryDataSketch.json";
 // remove on deploy
@@ -28,10 +29,16 @@ import Gallery from "../viewsCommon/Gallery";
 /////////////                                                  COMPONENTS & LOGIC
 
 const Sketchbook = () => (
-  <Gallery 
-    imgArray={sketchArray}
-    galleryMetadata={sketchMetadata}
-  />
+  <>
+    <Helmet>
+      <title>KHong Draws - Sketchbook</title>
+    </Helmet>
+
+    <Gallery 
+      imgArray={sketchArray}
+      galleryMetadata={sketchMetadata}
+    />
+  </>
 )
 
 export default Sketchbook

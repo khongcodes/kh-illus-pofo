@@ -50,7 +50,7 @@ const ScrollPiece = ({ title, infoContent, imgArray, metadata, hrMap }: ScrollPi
       <div className={scrollPieceStyles.scrollContainer}>
         {
           imgArray.map((src, index) => (
-            <>
+            <React.Fragment key={index}>
               <img 
                 src={src} 
                 alt={metadata[index].alt}
@@ -59,7 +59,7 @@ const ScrollPiece = ({ title, infoContent, imgArray, metadata, hrMap }: ScrollPi
               {
                 !!hrMap && hrMap.includes(index) ? <hr/> : <></>
               }
-            </>
+            </React.Fragment>
           ))
         }
       </div>

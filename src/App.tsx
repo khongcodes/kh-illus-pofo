@@ -13,14 +13,9 @@
 
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider } from "react-helmet-async";
 
 import Home from './views/Home';
-// import PenInk from './views/PenInk';
-// import ComicsSnake from './views/ComicsSnake';
-// import ComicsDarkestKnife from './views/ComicsDarkestKnife';
-// import ComicsEtc from './views/ComicsEtc';
-// import Sketchbook from './views/Sketchbook';
-// import About from './views/About';
 import PageNotFound from "./views/PageNotFound";
 
 import Layout from './viewsCommon/Layout';
@@ -41,6 +36,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
+      <HelmetProvider>
       <TabAccessProvider>
         <Layout>
           <Suspense fallback={<div/>}>
@@ -61,6 +57,7 @@ const App: React.FC = () => {
           </Suspense>
         </Layout>
       </TabAccessProvider>
+      </HelmetProvider>
     </Router>
   );
 }

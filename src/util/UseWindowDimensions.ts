@@ -1,19 +1,15 @@
-//                                                             src/views/Home.tsx
+//                                               src/util/UseWindowDimensions.tsx
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                    RESPONSIBILITIES
-//  - Home page
-//  - serve Illustration Gallery and Lightbox
+//  - Get window dimensions for other components
+//  - Used in Lightbox part of Gallery component
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                                TODO
-// 1. trim the fat on deploy
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                             IMPORTS
 // 1. system & packages
-// 2. models & config data
-// 3. components & assets
-// 4. styles
 
 import { useState, useEffect } from 'react';
 
@@ -27,11 +23,6 @@ function getWindowDimensions() {
     windowHeight
   };
 }
-
-// function getWindowWidth() {
-//   const { innerWidth: windowWidth } = window;
-//   return { windowWidth };
-// }
 
 export default function useWindowDimensions() {
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
