@@ -13,6 +13,7 @@
     "@types/react-helmet": "^6.0.0",
     "clsx": "^1.1.1",
     "dart-sass": "^1.25.0",
+    "lodash": "4.17.19",
     "node-sass": "npm:sass",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
