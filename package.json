@@ -22,7 +22,8 @@
     "react-router": "6.0.0-alpha.4",
     "react-router-dom": "6.0.0-alpha.4",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "websocket-extensions": "0.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
