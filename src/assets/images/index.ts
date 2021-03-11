@@ -61,9 +61,9 @@ const etc07 = require("./comics/etc/etc07.png");
 const etc08 = require("./comics/etc/etc08.png");
 const etc09 = require("./comics/etc/etc09.png");
 
-export const illusArray = [illus01, illus02, illus03, illus04, illus05, illus06, illus07, illus08, illus09, illus10, illus11, illus12, illus13, illus14, illus15, illus16, illus17]
-export const peninkArray = [penink01, penink02, penink03, penink04, penink05, penink06];
-export const sketchArray = [sketch01, sketch02, sketch03, sketch04, sketch05, sketch06, sketch07, sketch08, sketch09, sketch10, sketch11, sketch12, sketch13, sketch14, sketch15, sketch16];
-export const snakeArray = [snake00, snake01, snake02, snake03];
-export const dkArray = [dk01, dk02, dk03, dk04];
-export const etcArray = [etc00, etc01, etc02, etc03, etc04, etc05, etc06, etc07, etc08, etc09];
+export const illusArray = [illus01, illus02, illus03, illus04, illus05, illus06, illus07, illus08, illus09, illus10, illus11, illus12, illus13, illus14, illus15, illus16, illus17].map(a => a.default);
+export const peninkArray = [penink01, penink02, penink03, penink04, penink05, penink06].map(a => a.default);
+export const sketchArray = [sketch01, sketch02, sketch03, sketch04, sketch05, sketch06, sketch07, sketch08, sketch09, sketch10, sketch11, sketch12, sketch13, sketch14, sketch15, sketch16].map(a => a.default);
+export const snakeArray = [snake00, snake01, snake02, snake03].map(a => a.default);
+export const dkArray = [dk01, dk02, dk03, dk04].map(a => a.default);
+export const etcArray = [etc00, etc01, etc02, etc03, etc04, etc05, etc06, etc07, etc08, etc09].map(a => a.default);

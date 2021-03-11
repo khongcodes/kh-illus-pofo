@@ -28,7 +28,8 @@ import Gallery from '../viewsCommon/Gallery';
 /////////////////////////////////////////////////////////////////////////////////
 /////////////                                                  COMPONENTS & LOGIC
 
-const Home = () => (
+const Home = () => {
+  return (
   <>
     <Helmet>
       <title>KHong Draws - Illustration</title>
@@ -40,5 +41,6 @@ const Home = () => (
     />
   </>
 )
+}
 
 export default Home
