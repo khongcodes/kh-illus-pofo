@@ -32,6 +32,8 @@ import {
   TimeoutState, ArrowDirection, KeyMapValueTypes    // component state types
  } from '../model/Gallery';
 
+import { mobileBreakpoint } from "./Layout";
+
 import { TabAccessContext } from '../util/TabAccessContext';
 import useWindowDimensions from '../util/UseWindowDimensions';
 
@@ -132,16 +134,28 @@ const Lightbox = forwardRef<LightboxRef, LightboxProps>(({
 
   const lightboxCloseEl = useRef<HTMLDivElement>(null!);
 
+
   // Check mouse position
   // if inside close button bounded rectangle, close lightbox
   // else change slide
   const handleLightboxClick = (event: React.MouseEvent) => {
-    const fairGameBounds = {
+    
+    const viewIsMobile = windowWidth <= mobileBreakpoint;
+
+    const desktopFairGameBounds = {
       top: windowHeight * 0.03,
       left: 24,
       bottom: windowHeight * 0.96,
       right: windowWidth - 24
-    }
+    };
+    const mobileFairGameBounds = {
+      top: 0,
+      left: 0,
+      bottom: windowHeight,
+      right: windowWidth
+    };
+    const fairGameBounds = viewIsMobile ? mobileFairGameBounds : desktopFairGameBounds;
+
     const mouseOutX = event.clientX < fairGameBounds.left || event.clientX > fairGameBounds.right;
     const mouseOutY = event.clientY < fairGameBounds.top || event.clientY > fairGameBounds.bottom;
     const mouseOutOfBounds = mouseOutX || mouseOutY;
@@ -153,22 +167,32 @@ const Lightbox = forwardRef<LightboxRef, LightboxProps>(({
 
     if (mouseOutOfBounds || mouseIntersectClose) {
       closeLightbox();
-    }
-    else {
-      handleSlideChange(event);
-    }
-  }
-
-  // switch which image gets pulled up on mouseX
-  const handleSlideChange = (event: React.MouseEvent) => {
-    if (event.clientX <= midBoundary) {
-      toPrevImg();
+      
+      // if desktopView
     } else {
-      toNextImg();
+      const desktopNavBounds = {
+        left: (midBoundary - 1),
+        right: midBoundary
+      };
+      const mobileNavBounds = {
+        left: (0.3 * windowWidth),
+        right: (0.7 * windowWidth)
+      };
+      const navBounds = !viewIsMobile ? desktopNavBounds : mobileNavBounds;
+      const clickNavLeft = event.clientX <= navBounds.left;
+      const clickNavRight = event.clientX >= navBounds.right;
+      if (clickNavLeft) {
+        toPrevImg();
+      } else if (clickNavRight) {
+        toNextImg();
+      }
     }
+
   }
 
 
+  // don't render metainfo if there is no metainfo
+  // for: /sketch page gallery
   const dontRenderMeta = galleryMetadata[0].title === "";
 
   // handler for navigation elements
@@ -240,9 +264,9 @@ const Lightbox = forwardRef<LightboxRef, LightboxProps>(({
                     dontRenderMeta ? <></> 
                     :
                     <div className={`${galleryStyles.imgMetaContainer}`}>
-                    <h1>{data.title}</h1>
-                    <p>{data.description}</p>
-                  </div>
+                      <h1>{data.title}</h1>
+                      <p>{data.description}</p>
+                    </div>
                   }
                 </div>
               )
