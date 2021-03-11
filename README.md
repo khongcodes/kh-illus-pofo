@@ -1,7 +1,10 @@
-## Work-in-Progress
+## KHong Draws - Illustration Portfolio
 
-This is a work in progress rebuild of my old squarespace illustration portfolio.
-Screenshots of my wireframing and prototyping in Figma below
+This is a rebuild of my old squarespace illustration portfolio. The web app features mobile-responsive views and accessible tabbing. All images have an alt attribute (though the usefulness of an art portfolio app to someone who would access the alt attribute may be questionable).
+
+This front-end web app was built with React-TypeScript and SASS, and deployed on AWS S3.
+
+Screenshots of my wireframing and prototyping in Figma below:
 ![](https://i.imgur.com/EjJX6jd.png)
 ![](https://i.imgur.com/B5JMbeR.png)
 
